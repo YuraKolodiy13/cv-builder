@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import './Info.scss';
-import defaultImg from './assets/no-avatar.jpg';
-import {ReactComponent as DeleteIcon} from './assets/delete.svg';
+import defaultImg from '../../assets/no-avatar.jpg';
+import {ReactComponent as DeleteIcon} from '../../assets/delete.svg';
 
 interface IAvatar {
   file: object | FileList;
@@ -108,10 +108,23 @@ const Info: React.FC = () => {
     setState(newState)
   }
 
+
+  const removeItem = (i: number, id: number) => {
+    const neItems = state[i];
+    neItems.items = neItems.items.filter(item => item.id !==id);
+    const newState = [...state.slice(0, i), neItems, ...state.slice(i + 1)]
+    setState(newState)
+  }
+
+  const addSection = () => {
+
+  }
+
   console.log(state, 'state')
 
   return (
     <div className="info">
+      <p onClick={addSection}>Add section</p>
       <div className="info__avatar" style={{backgroundImage: `url(${avatar.previewFile})`}}>
         <label>
           <input
@@ -151,7 +164,9 @@ const Info: React.FC = () => {
                     placeholder='Enter value'
                   />
                 </p>
-                <div className="remove"><DeleteIcon/></div>
+                <div className="remove" onClick={() => removeItem(i, el.id)}>
+                  <DeleteIcon/>
+                </div>
               </div>
             )}
             <div className="addMore" onClick={() => addItems(i)}>

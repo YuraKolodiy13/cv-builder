@@ -1,15 +1,14 @@
 import React  from 'react'
 import './App.scss'
-import Info from "./Info";
+import Info from "./components/Info/Info";
+import Experience from "./components/Experience/Experience";
 
 const App: React.FC = () => {
 
   return (
     <div className="App">
       <Info/>
-      <div className="main">
-        ds
-      </div>
+      <Experience/>
     </div>
   )
 }

@@ -1,0 +1,12 @@
+.experience{
+  width: 100%;
+  border: 1px solid gray;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+  border-left: none;
+  .experience__header{
+    background-color: green;
+    margin: 50px 0;
+    padding: 16px;
+  }
+}
