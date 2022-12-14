@@ -25,15 +25,25 @@
   .info__elements{
     .info__element{
       padding-bottom: 20px;
-      &:not(:last-of-type){
-        border-bottom: 1px solid #fff;
-        margin-bottom: 20px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #fff;
+      &:last-of-type{
+        border-color: transparent;
+
+      }
+      &.active{
+        background: red;
+        h3 .reorder{
+          opacity: 0;
+        }
       }
     }
     .info__item{
       margin-bottom: 10px;
       position: relative;
-      overflow-x: hidden;
+      &.active {
+        background: red;
+      }
       h3{
         margin: 0;
         color: #fff;
@@ -63,6 +73,20 @@
     h2{
       margin: 0 0 10px;
       color: #fff;
+    }
+
+    h2, h3{
+      position: relative;
+      .reorder{
+        position: absolute;
+        left: -50px;
+        top: 2px;
+        opacity: .7;
+        transition: .3s;
+        &:hover{
+          opacity: 1;
+        }
+      }
     }
 
     input{

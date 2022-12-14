@@ -1,7 +1,16 @@
 import React, {useState} from 'react';
 import './Info.scss';
 import defaultImg from '../../assets/no-avatar.jpg';
-import {ReactComponent as DeleteIcon} from '../../assets/delete.svg';
+import deleteImg from '../../assets/delete.svg';
+import reorderImg from '../../assets/reorder.svg';
+import {
+  DragDropContext,
+  Draggable,
+  DraggableProvided, DraggableStateSnapshot,
+  Droppable,
+  DroppableProvided,
+  DropResult
+} from "react-beautiful-dnd";
 
 interface IAvatar {
   file: object | FileList;
@@ -88,31 +97,31 @@ const Info: React.FC = () => {
   };
 
   const handleElementsState = (e:React.ChangeEvent<HTMLInputElement>, i: number) => {
-    const neItems = state[i];
-    neItems.title = e.target.value;
-    const newState = [...state.slice(0, i), neItems, ...state.slice(i + 1)]
+    const newItems = {...state[i]};
+    newItems.title = e.target.value;
+    const newState = [...state.slice(0, i), newItems, ...state.slice(i + 1)]
     setState(newState)
   }
 
   const handleItemsState = (e:React.ChangeEvent<HTMLInputElement>, i: number, j: number, name: keyof IItem) => {
-    const neItems = state[i];
-    neItems.items[j][name] = e.target.value;
-    const newState = [...state.slice(0, i), neItems, ...state.slice(i + 1)]
+    const newItems = {...state[i]};
+    newItems.items[j][name] = e.target.value;
+    const newState = [...state.slice(0, i), newItems, ...state.slice(i + 1)]
     setState(newState)
   }
 
   const addItems = (i: number) => {
-    const neItems = state[i];
-    neItems.items = [...neItems.items, {id: neItems.items.length + 1, ...initialItem}]
-    const newState = [...state.slice(0, i), neItems, ...state.slice(i + 1)]
+    const newItems = {...state[i]};
+    newItems.items = [...newItems.items, {id: newItems.items.length + 1, ...initialItem}]
+    const newState = [...state.slice(0, i), newItems, ...state.slice(i + 1)]
     setState(newState)
   }
 
 
   const removeItem = (i: number, id: number) => {
-    const neItems = state[i];
-    neItems.items = neItems.items.filter(item => item.id !==id);
-    const newState = [...state.slice(0, i), neItems, ...state.slice(i + 1)]
+    const newItems = {...state[i]};
+    newItems.items = newItems.items.filter(item => item.id !==id);
+    const newState = [...state.slice(0, i), newItems, ...state.slice(i + 1)]
     setState(newState)
   }
 
@@ -120,7 +129,30 @@ const Info: React.FC = () => {
 
   }
 
-  console.log(state, 'state')
+  const onDragEndElements = (result: DropResult) => {
+    const {source, destination} = result;
+    if(destination){
+      const copiedItems = [...state];
+      const [removed] = copiedItems.splice(source.index, 1);
+      copiedItems.splice(destination.index, 0, removed);
+      setState(copiedItems)
+    }
+  }
+
+
+  const onDragEndItems = (result: DropResult, i: number) => {
+    const {source, destination} = result;
+    if(destination){
+      const newItems = {...state[i]};
+      const copiedItems = [...newItems.items];
+      const [removed] = copiedItems.splice(source.index, 1);
+      copiedItems.splice(destination.index, 0, removed);
+      newItems.items = copiedItems;
+      const newState = [...state.slice(0, i), newItems, ...state.slice(i + 1)]
+      setState(newState)
+    }
+  }
+
 
   return (
     <div className="info">
@@ -135,46 +167,102 @@ const Info: React.FC = () => {
           />
         </label>
       </div>
-      <div className='info__elements'>
-        {state.map((item, i) =>
-          <div key={item.id} className='info__element'>
-            <h2>
-              <input
-                type="text"
-                value={item.title}
-                onChange={(e) => handleElementsState(e, i)}
-                placeholder='Enter value'
-              />
-            </h2>
-            {item.items.map((el: IItem, j) =>
-              <div key={el.id} className='info__item'>
-                <h3>
-                  <input
-                    type="text"
-                    value={el.title}
-                    onChange={(e) => handleItemsState(e, i, j, 'title')}
-                    placeholder='Enter value'
-                  />
-                </h3>
-                <p>
-                  <input
-                    type="text"
-                    value={el.details}
-                    onChange={(e) => handleItemsState(e, i, j, 'details')}
-                    placeholder='Enter value'
-                  />
-                </p>
-                <div className="remove" onClick={() => removeItem(i, el.id)}>
-                  <DeleteIcon/>
-                </div>
-              </div>
-            )}
-            <div className="addMore" onClick={() => addItems(i)}>
-              <span>Add more {item.title} +</span>
+      <DragDropContext onDragEnd={onDragEndElements}>
+        <Droppable droppableId="info">
+          {(provided: DroppableProvided) => (
+            <div
+              ref={provided.innerRef}
+              {...provided.droppableProps}
+              className='info__elements'
+            >
+              {state.map((item: IElement, i: number) =>
+                <Draggable
+                  draggableId={item.id.toString()}
+                  index={i}
+                  key={item.id}
+                >
+                  {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => (
+                    <div
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                      ref={provided.innerRef}
+                      className={`info__element ${snapshot.isDragging ? 'active' : ''}`}
+                    >
+                      <h2>
+                        <div className="reorder">
+                          <img src={reorderImg} alt=""/>
+                        </div>
+                        <input
+                          type="text"
+                          value={item.title}
+                          onChange={(e) => handleElementsState(e, i)}
+                          placeholder='Enter value'
+                        />
+                      </h2>
+                      <DragDropContext onDragEnd={(result) => onDragEndItems(result, i)}>
+                        <Droppable droppableId={item.title}>
+                          {(provided: DroppableProvided) => (
+                            <div
+                              ref={provided.innerRef}
+                              {...provided.droppableProps}
+                            >
+                              {item.items.map((el: IItem, j: number) =>
+                                <Draggable
+                                  draggableId={el.id.toString()}
+                                  index={j}
+                                  key={el.id}
+                                >
+                                  {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => (
+                                    <div
+                                      {...provided.draggableProps}
+                                      {...provided.dragHandleProps}
+                                      key={el.id}
+                                      ref={provided.innerRef}
+                                      className={`info__item ${snapshot.isDragging ? 'active' : ''}`}
+                                    >
+                                      <h3>
+                                        <div className="reorder">
+                                          <img src={reorderImg} alt=""/>
+                                        </div>
+                                        <input
+                                          type="text"
+                                          value={el.title}
+                                          onChange={(e) => handleItemsState(e, i, j, 'title')}
+                                          placeholder='Enter value'
+                                        />
+                                      </h3>
+                                      <p>
+                                        <input
+                                          type="text"
+                                          value={el.details}
+                                          onChange={(e) => handleItemsState(e, i, j, 'details')}
+                                          placeholder='Enter value'
+                                        />
+                                      </p>
+                                      <div className="remove" onClick={() => removeItem(i, el.id)}>
+                                        <img src={deleteImg} alt=""/>
+                                      </div>
+                                    </div>
+                                    )}
+                                </Draggable>
+                              )}
+                              {provided.placeholder}
+                            </div>
+                          )}
+                        </Droppable>
+                      </DragDropContext>
+                      <div className="addMore" onClick={() => addItems(i)}>
+                        <span>Add more {item.title} +</span>
+                      </div>
+                    </div>
+                  )}
+                </Draggable>
+              )}
+              {provided.placeholder}
             </div>
-          </div>
-        )}
-      </div>
+            )}
+          </Droppable>
+        </DragDropContext>
     </div>
   );
 };
