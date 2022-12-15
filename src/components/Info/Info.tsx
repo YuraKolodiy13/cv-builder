@@ -18,16 +18,19 @@ interface IAvatar {
 }
 
 interface IItem {
-  id: number,
   title: string;
   details: string | number;
 }
 
+interface IItemWithId extends IItem{
+  id: number;
+}
+
 interface IElement {
-  id: number,
+  id: number;
   type: number;
   title: string;
-  items: IItem[]
+  items: IItemWithId[]
 }
 
 
@@ -96,14 +99,14 @@ const Info: React.FC = () => {
     }
   };
 
-  const handleElementsState = (e:React.ChangeEvent<HTMLInputElement>, i: number) => {
+  const handleElementsState = (e: React.ChangeEvent<HTMLInputElement>, i: number) => {
     const newItems = {...state[i]};
     newItems.title = e.target.value;
     const newState = [...state.slice(0, i), newItems, ...state.slice(i + 1)]
     setState(newState)
   }
 
-  const handleItemsState = (e:React.ChangeEvent<HTMLInputElement>, i: number, j: number, name: keyof IItem) => {
+  const handleItemsState = (e: React.ChangeEvent<HTMLInputElement>, i: number, j: number, name: keyof IItem) => {
     const newItems = {...state[i]};
     newItems.items[j][name] = e.target.value;
     const newState = [...state.slice(0, i), newItems, ...state.slice(i + 1)]
@@ -120,7 +123,7 @@ const Info: React.FC = () => {
 
   const removeItem = (i: number, id: number) => {
     const newItems = {...state[i]};
-    newItems.items = newItems.items.filter(item => item.id !==id);
+    newItems.items = newItems.items.filter(item => item.id !== id);
     const newState = [...state.slice(0, i), newItems, ...state.slice(i + 1)]
     setState(newState)
   }
@@ -131,12 +134,10 @@ const Info: React.FC = () => {
 
   const onDragEndElements = (result: DropResult) => {
     const {source, destination} = result;
-    if(destination){
-      const copiedItems = [...state];
-      const [removed] = copiedItems.splice(source.index, 1);
-      copiedItems.splice(destination.index, 0, removed);
-      setState(copiedItems)
-    }
+    const copiedItems = [...state];
+    const [removed] = copiedItems.splice(source.index, 1);
+    copiedItems.splice(destination!.index, 0, removed);
+    setState(copiedItems)
   }
 
 
@@ -206,7 +207,7 @@ const Info: React.FC = () => {
                               ref={provided.innerRef}
                               {...provided.droppableProps}
                             >
-                              {item.items.map((el: IItem, j: number) =>
+                              {item.items.map((el: IItemWithId, j: number) =>
                                 <Draggable
                                   draggableId={el.id.toString()}
                                   index={j}
@@ -227,7 +228,7 @@ const Info: React.FC = () => {
                                         <input
                                           type="text"
                                           value={el.title}
-                                          onChange={(e) => handleItemsState(e, i, j, 'title')}
+                                          onChange={(e) => handleItemsState(e, i, j, "title")}
                                           placeholder='Enter value'
                                         />
                                       </h3>
@@ -235,7 +236,7 @@ const Info: React.FC = () => {
                                         <input
                                           type="text"
                                           value={el.details}
-                                          onChange={(e) => handleItemsState(e, i, j, 'details')}
+                                          onChange={(e) => handleItemsState(e, i, j, "details")}
                                           placeholder='Enter value'
                                         />
                                       </p>
