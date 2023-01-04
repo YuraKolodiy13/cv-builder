@@ -8,5 +8,42 @@
     background-color: green;
     margin: 50px 0;
     padding: 16px;
+    input{
+
+    }
+  }
+  input{
+    border: none;
+    border-radius: 0;
+    background-color: transparent;
+    font-size: inherit;
+    color: inherit;
+    font-family: inherit;
+    font-weight: inherit;
+    width: 100%;
+    box-sizing: border-box;
+    transition: .3s;
+    &:focus{
+      border-color: #86b7fe;
+      outline: 0;
+      color: #000;
+      background-color: #fff;
+    }
+  }
+  .experience__block{
+    padding: 0 16px;
+  }
+  h2, h3{
+    position: relative;
+    .reorder{
+      position: absolute;
+      right: -50px;
+      top: 2px;
+      opacity: .7;
+      transition: .3s;
+      &:hover{
+        opacity: 1;
+      }
+    }
   }
 }

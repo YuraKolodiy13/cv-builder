@@ -1,11 +1,11 @@
 .info{
-  width: 280px;
+  width: 35%;
   box-sizing: border-box;
   flex: none;
-  background-color: blueviolet;
   border-top-left-radius: 8px;
   border-bottom-left-radius: 8px;
   padding: 40px 16px;
+  position: relative;
   .info__avatar{
     width: 180px;
     height: 180px;
@@ -27,6 +27,7 @@
       padding-bottom: 20px;
       margin-bottom: 20px;
       border-bottom: 1px solid #fff;
+      mix-blend-mode: difference;
       &:last-of-type{
         border-color: transparent;
 
@@ -47,10 +48,12 @@
       h3{
         margin: 0;
         color: #fff;
+        mix-blend-mode: difference;
       }
       p{
         margin: 0;
         color: #fff;
+        mix-blend-mode: difference;
       }
       .remove{
         opacity: 0;
@@ -73,6 +76,7 @@
     h2{
       margin: 0 0 10px;
       color: #fff;
+      mix-blend-mode: difference;
     }
 
     h2, h3{

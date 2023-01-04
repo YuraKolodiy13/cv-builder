@@ -9,7 +9,7 @@ const App: React.FC = () => {
   return (
     <>
       <Pdf targetRef={ref} filename="document.pdf">
-        {({toPdf}) => ( //@ts-ignore
+        {({toPdf}) => (
           <button onClick={toPdf} className="button">
             Generate PDF
           </button>

@@ -11,6 +11,19 @@ import {
   DroppableProvided,
   DropResult
 } from "react-beautiful-dnd";
+import SpeedDial from '@mui/material/SpeedDial';
+import SpeedDialIcon from '@mui/material/SpeedDialIcon';
+import SpeedDialAction from '@mui/material/SpeedDialAction';
+import SaveIcon from '@mui/icons-material/Save';
+import PrintIcon from '@mui/icons-material/Print';
+import ShareIcon from '@mui/icons-material/Share';
+import {Rating} from "@mui/material";
+
+const actions = [
+  { icon: <SaveIcon />, name: 'Save' },
+  { icon: <PrintIcon />, name: 'Preview' },
+  { icon: <ShareIcon />, name: 'Share' },
+];
 
 interface IAvatar {
   file: object | FileList;
@@ -18,19 +31,16 @@ interface IAvatar {
 }
 
 interface IItem {
+  id: number;
   title: string;
   details: string | number;
-}
-
-interface IItemWithId extends IItem{
-  id: number;
 }
 
 interface IElement {
   id: number;
   type: number;
   title: string;
-  items: IItemWithId[]
+  items: IItem[]
 }
 
 
@@ -41,6 +51,8 @@ const initialItem = {
 
 const Info: React.FC = () => {
 
+  const [open, setOpen] = useState<boolean>(false);
+  const [color, setColor] = useState<string>('#8a2be2');
   const [avatar, setAvatar] = useState<IAvatar>({
     file: {},
     previewFile: defaultImg,
@@ -106,7 +118,7 @@ const Info: React.FC = () => {
     setState(newState)
   }
 
-  const handleItemsState = (e: React.ChangeEvent<HTMLInputElement>, i: number, j: number, name: keyof IItem) => {
+  const handleItemsState = (e: React.ChangeEvent<HTMLInputElement>, i: number, j: number, name: keyof Omit<IItem, 'id'>) => {
     const newItems = {...state[i]};
     newItems.items[j][name] = e.target.value;
     const newState = [...state.slice(0, i), newItems, ...state.slice(i + 1)]
@@ -156,8 +168,27 @@ const Info: React.FC = () => {
 
 
   return (
-    <div className="info">
-      <p onClick={addSection}>Add section</p>
+    <div className="info" style={{backgroundColor: color}}>
+      <SpeedDial
+        ariaLabel="SpeedDial"
+        icon={<SpeedDialIcon />}
+        onClose={() => setOpen(false)}
+        onOpen={() => setOpen(true)}
+        direction='down'
+        style={{position: 'absolute', top: 16, left: -100}}
+        open={open}
+      >
+        {actions.map((action) => (
+          <SpeedDialAction
+            key={action.name}
+            icon={action.icon}
+            tooltipTitle={action.name}
+            onClick={() => setOpen(false)}
+            title=''
+          />
+        ))}
+      </SpeedDial>
+      <input type="color" value={color} onChange={e => setColor(e.target.value)} />
       <div className="info__avatar" style={{backgroundImage: `url(${avatar.previewFile})`}}>
         <label>
           <input
@@ -207,7 +238,7 @@ const Info: React.FC = () => {
                               ref={provided.innerRef}
                               {...provided.droppableProps}
                             >
-                              {item.items.map((el: IItemWithId, j: number) =>
+                              {item.items.map((el: IItem, j: number) =>
                                 <Draggable
                                   draggableId={el.id.toString()}
                                   index={j}
@@ -228,17 +259,24 @@ const Info: React.FC = () => {
                                         <input
                                           type="text"
                                           value={el.title}
-                                          onChange={(e) => handleItemsState(e, i, j, "title")}
+                                          onChange={(e) => handleItemsState(e, i, j, 'title')}
                                           placeholder='Enter value'
                                         />
                                       </h3>
                                       <p>
-                                        <input
-                                          type="text"
-                                          value={el.details}
-                                          onChange={(e) => handleItemsState(e, i, j, "details")}
-                                          placeholder='Enter value'
-                                        />
+                                        {item.type === 2
+                                          ? <Rating
+                                              value={el.details}
+                                              onChange={(e) => handleItemsState(e, i, j, 'details')}
+                                            />
+                                          : <input
+                                              type="text"
+                                              value={el.details}
+                                              onChange={(e) => handleItemsState(e, i, j, 'details')}
+                                              placeholder='Enter value'
+                                            />
+                                        }
+
                                       </p>
                                       <div className="remove" onClick={() => removeItem(i, el.id)}>
                                         <img src={deleteImg} alt=""/>
@@ -261,9 +299,9 @@ const Info: React.FC = () => {
               )}
               {provided.placeholder}
             </div>
-            )}
-          </Droppable>
-        </DragDropContext>
+          )}
+        </Droppable>
+      </DragDropContext>
     </div>
   );
 };

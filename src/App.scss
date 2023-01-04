@@ -1,12 +1,16 @@
 .App{
   min-height: 1200px;
   display: flex;
-  padding: 50px 0;
   max-width: 800px;
   margin: 0 auto;
   font-family: 'Roboto Condensed', sans-serif;
   font-weight: 300;
+  .MuiRating-icon{
+    mix-blend-mode: difference;
+    color: inherit;
+  }
 }
 h1, h2, h3, h4, h5, h6{
   font-weight: 400;
+  margin: 0;
 }
