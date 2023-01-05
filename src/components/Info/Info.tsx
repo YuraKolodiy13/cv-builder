@@ -205,7 +205,7 @@ const Info: React.FC = () => {
             <div
               ref={provided.innerRef}
               {...provided.droppableProps}
-              className='info__elements'
+              className='elements'
             >
               {state.map((item: IElement, i: number) =>
                 <Draggable
@@ -218,7 +218,7 @@ const Info: React.FC = () => {
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}
                       ref={provided.innerRef}
-                      className={`info__element ${snapshot.isDragging ? 'active' : ''}`}
+                      className={`element ${snapshot.isDragging ? 'active' : ''}`}
                     >
                       <h2>
                         <div className="reorder">
@@ -250,7 +250,7 @@ const Info: React.FC = () => {
                                       {...provided.dragHandleProps}
                                       key={el.id}
                                       ref={provided.innerRef}
-                                      className={`info__item ${snapshot.isDragging ? 'active' : ''}`}
+                                      className={`item ${snapshot.isDragging ? 'active' : ''}`}
                                     >
                                       <h3>
                                         <div className="reorder">

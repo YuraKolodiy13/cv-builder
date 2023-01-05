@@ -9,6 +9,111 @@
     mix-blend-mode: difference;
     color: inherit;
   }
+  .elements{
+    .element{
+      padding-bottom: 20px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #fff;
+      mix-blend-mode: difference;
+      &:last-of-type{
+        border-color: transparent;
+
+      }
+      &.active{
+        background: red;
+        h3 .reorder{
+          opacity: 0;
+        }
+      }
+    }
+    h2{
+      margin: 0 0 10px;
+      color: #fff;
+      mix-blend-mode: difference;
+    }
+
+    h2, h3{
+      position: relative;
+      .reorder{
+        position: absolute;
+        left: -50px;
+        top: 2px;
+        opacity: .7;
+        transition: .3s;
+        &:hover{
+          opacity: 1;
+        }
+      }
+    }
+    .item{
+      margin-bottom: 10px;
+      position: relative;
+      &.active {
+        background: red;
+      }
+      h3{
+        margin: 0;
+        color: #fff;
+        mix-blend-mode: difference;
+      }
+      p{
+        margin: 0;
+        color: #fff;
+        mix-blend-mode: difference;
+      }
+      .remove{
+        opacity: 0;
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        transition: .3s;
+      }
+      &:hover{
+        .remove{
+          opacity: .7;
+          &:hover{
+            opacity: 1;
+          }
+        }
+      }
+    }
+    .addMore{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      span{
+        cursor: pointer;
+        padding: 4px;
+        background-color: red;
+        border-radius: 4px;
+        color: white;
+        mix-blend-mode: difference;
+        &:hover{
+          opacity: .7;
+        }
+      }
+    }
+  }
+  input{
+    border: none;
+    border-radius: 0;
+    background-color: transparent;
+    font-size: inherit;
+    color: inherit;
+    font-family: inherit;
+    font-weight: inherit;
+    width: 100%;
+    box-sizing: border-box;
+    transition: .3s;
+    &:focus{
+      border-color: #86b7fe;
+      outline: 0;
+      color: #000;
+      background-color: #fff;
+    }
+  }
 }
 h1, h2, h3, h4, h5, h6{
   font-weight: 400;

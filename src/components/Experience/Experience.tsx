@@ -181,12 +181,12 @@ const Experience: React.FC = () => {
 
 
       <DragDropContext onDragEnd={onDragEndElements}>
-        <Droppable droppableId="info">
+        <Droppable droppableId="experience">
           {(provided: DroppableProvided) => (
             <div
               ref={provided.innerRef}
               {...provided.droppableProps}
-              className='experience__block'
+              className='elements'
             >
               {state.map((item: IExperience, i: number) =>
                 <Draggable
@@ -199,7 +199,7 @@ const Experience: React.FC = () => {
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}
                       ref={provided.innerRef}
-                      className={`info__element ${snapshot.isDragging ? 'active' : ''}`}
+                      className={`element ${snapshot.isDragging ? 'active' : ''}`}
                     >
                       <h2>
                         <div className="reorder">
@@ -231,7 +231,7 @@ const Experience: React.FC = () => {
                                       {...provided.dragHandleProps}
                                       key={el.id}
                                       ref={provided.innerRef}
-                                      className={`info__item ${snapshot.isDragging ? 'active' : ''}`}
+                                      className={`item ${snapshot.isDragging ? 'active' : ''}`}
                                     >
                                       <h3>
                                         <div className="reorder">
