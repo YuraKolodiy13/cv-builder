@@ -1,0 +1,52 @@
+.auth{
+  display: flex;
+  flex-direction: column;
+  max-width: 300px;
+  margin: 0 auto;
+  width: 100%;
+  .form__field{
+    position: relative;
+    margin: 0 0 40px;
+    .MuiFormControl-root{
+      margin-bottom: 0;
+    }
+    & > p{
+      position: absolute;
+      color: red;
+      font-size: 12px;
+      margin-top: 3px;
+    }
+    &.form__password{
+      .form__icon{
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        height: 40px;
+        width: 40px;
+        z-index: 10;
+        cursor: pointer;
+        &::after{
+          content: '\f070';
+          font-family: "Font Awesome 5 Free", sans-serif;
+          font-size: 20px;
+          font-weight: bold;
+          color: #747474;
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%, -50%);
+        }
+      }
+      &.show{
+        .form__icon{
+          &::after{
+            content: '\f06e';
+          }
+        }
+      }
+    }
+  }
+  .MuiFormControl-root{
+    width: 100%;
+  }
+}

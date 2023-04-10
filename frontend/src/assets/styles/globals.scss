@@ -1,0 +1,246 @@
+@import "modal";
+@import "variables";
+
+body {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+  padding: 20px 0;
+  @media (max-width: 479px) {
+    background-color: var(--color-neutrals-0);
+  }
+
+  .container {
+    padding: 0 16px;
+    @media (max-width: 767px) {
+      padding: 0 10px;
+    }
+    @media (max-width: 479px) {
+      padding: 0;
+    }
+  }
+
+  .App{
+    background-color: var(--color-neutrals-0);
+    max-width: 1168px;
+    margin: 0 auto;
+    @media (max-width: 1200px) {
+      margin: 0 50px;
+    }
+    @media (max-width: 767px) {
+      margin: 0 30px;
+    }
+    @media (max-width: 479px) {
+      margin: 0 25px;
+      &.border{
+        border: none;
+      }
+    }
+  }
+
+  p{
+    font-size: 14px;
+    line-height: 20px;
+    margin: 0;
+  }
+
+  .text{
+    font-size: 16px;
+    line-height: 24px;
+    @media (max-width: 991px) {
+      font-size: 14px;
+      line-height: 22px;
+    }
+  }
+
+  .heading{
+    font-size: 26px;
+    line-height: 32px;
+    font-weight: bold;
+    margin: 0;
+    @media (max-width: 991px) {
+      font-size: 22px;
+      line-height: 28px;
+    }
+    @media (max-width: 767px) {
+      font-size: 18px;
+      line-height: 26px;
+    }
+  }
+
+  h3{
+    font-size: 20px;
+    line-height: 28px;
+    margin: 0;
+    @media (max-width: 991px) {
+      font-size: 18px;
+      line-height: 26px;
+    }
+    @media (max-width: 767px) {
+      font-size: 16px;
+      line-height: 24px;
+    }
+    @media (max-width: 479px) {
+      font-size: 14px;
+      line-height: 20px;
+    }
+  }
+
+  .border{
+    border: 1px solid var(--color-neutrals-400);
+    box-sizing: border-box;
+  }
+  .border-b{
+    border-bottom: 1px solid var(--color-neutrals-400);
+  }
+  .MuiTooltip-arrow{
+    color: var(--color-neutrals-1000);
+  }
+
+  .MuiTooltip-tooltip{
+    background-color: var(--color-neutrals-1000);
+    font-size: 14px;
+    line-height: 20px;
+    padding: 8px 16px;
+    b{
+      margin-left: 5px;
+    }
+  }
+
+  .MuiList-root {
+    overflow: inherit;
+    a {
+      text-decoration: none;
+      color: var(--color-neutrals-1000);
+    }
+  }
+
+  .MuiSelect-selectMenu{
+    display: flex;
+    align-items: center;
+  }
+
+  .MuiButton-root,
+  .MuiInputBase-root,
+  .MuiMenuItem-root,
+  .MuiTooltip-tooltip,
+  .MuiTypography-body1{
+    font-family: 'Roboto', sans-serif;
+    text-transform: none;
+  }
+
+  .heading-wrap{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    @media (max-width: 767px) {
+      display: block;
+    }
+  }
+
+  .w-50{
+    width: 50%;
+  }
+  @media (max-width: 767px) {
+    .w-100-mob{
+      width: 100%;
+      margin-bottom: 10px;
+    }
+  }
+  .d-flex{
+    display: flex;
+  }
+  .space-between{
+    justify-content: space-between;
+  }
+  .align-center{
+    align-items: center;
+  }
+
+  .arrow{
+    width: 7px;
+    height: 7px;
+    border-right: 2px solid var(--color-primary-500);
+    border-bottom: 2px solid var(--color-primary-500);
+    transform: rotate(45deg);
+    transition: .3s;
+    @media (max-width: 479px) {
+      width: 5px;
+      height: 5px;
+    }
+  }
+  .Mui-expanded > .MuiTreeItem-content{
+    .arrow{
+      transform: rotate(-135deg);
+      border-color: var(--color-neutrals-1000);
+    }
+  }
+  .MuiButton-textPrimary,
+  .MuiTypography-colorPrimary,
+  .MuiPickersDay-current{
+    color: var(--color-primary-500);
+  }
+  .MuiPickersDay-daySelected{
+    color: var(--color-neutrals-0);
+  }
+  .MuiPickersDay-daySelected{
+    background-color: var(--color-primary-500);
+  }
+  .MuiTreeItem-label{
+    color: initial;
+    &:hover{
+      background-color: transparent;
+    }
+  }
+
+  .remove-icon{
+    color: darkred;
+    padding: 0 5px;
+    margin-left: 5px;
+    cursor: pointer;
+    transition: .3s;
+    &:hover{
+      font-weight: bold;
+    }
+  }
+
+  .breadcrumbs{
+    padding: 0;
+    margin: 0 0 24px;
+    list-style: none;
+    display: flex;
+    li{
+      white-space: nowrap;
+      max-width: 275px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      &:not(:last-of-type){
+        padding-right: 25px;
+        margin-right: 16px;
+        position: relative;
+        &::after{
+          content: '';
+          position: absolute;
+          right: 2px;
+          top: 50%;
+          transform: translateY(-50%) rotate(45deg);
+          border-top: 2px solid #000;
+          border-right: 2px solid #000;
+          width: 7px;
+          height: 7px;
+        }
+      }
+      a{
+        text-decoration: none;
+        color: var(--color-primary-500);
+      }
+    }
+    @media (max-width: 767px) {
+      flex-wrap: wrap;
+      li{
+        font-size: 12px;
+        margin-bottom: 5px;
+      }
+    }
+  }
+}

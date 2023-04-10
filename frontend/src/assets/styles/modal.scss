@@ -1,0 +1,211 @@
+.modal{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  &.modal-wide{
+    .modal__content{
+      width: 920px;
+    }
+  }
+  .modal__content{
+    background-color: var(--color-neutrals-0);
+    width: 485px;
+    max-height: 80vh;
+    padding: 24px;
+    overflow-y: auto;
+    outline: none;
+    box-sizing: border-box;
+    z-index: 10;
+    h3{
+      margin-bottom: 18px;
+    }
+    .modal__row{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      @media (max-width: 767px) {
+        flex-direction: column;
+        margin-bottom: 0;
+        .modal__field{
+          width: 100%;
+          margin-right: 0;
+          margin-bottom: 30px;
+        }
+      }
+    }
+    .modal__dynamic-row{
+      margin-bottom: 40px;
+    }
+    .modal__btns{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .modal__assignee-btns{
+      display: flex;
+      margin-bottom: 6px;
+      button{
+        margin-left: 8px;
+        &:first-of-type{
+          margin-left: auto;
+        }
+      }
+    }
+
+    h5{
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      margin: 0 0 10px;
+    }
+  }
+}
+.modal__field{
+  position: relative;
+  width: 50%;
+  .MuiAutocomplete-root,
+  &.w100{
+    width: 100%;
+  }
+  .MuiFormControl-root{
+    width: 100%;
+    margin: 0;
+  }
+  p,
+  .MuiFormHelperText-root.Mui-error{
+    position: absolute;
+    top: 100%;
+    color: var(--color-error-400);
+    white-space: nowrap;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 12px;
+    margin: 0;
+    &.error{
+      overflow: visible;
+    }
+  }
+  .MuiFormLabel-root.Mui-error{
+    color: var(--color-error-400);
+  }
+  .MuiOutlinedInput-root{
+    &:hover{
+      .MuiOutlinedInput-notchedOutline{
+        border-color: var(--color-primary-500);
+      }
+    }
+    &.Mui-focused{
+      .MuiOutlinedInput-notchedOutline{
+        border-color: var(--color-primary-500);
+      }
+    }
+    &.Mui-error{
+      .MuiOutlinedInput-notchedOutline{
+        border-color: var(--color-error-400);
+      }
+    }
+  }
+  .error + div{
+    .MuiOutlinedInput-notchedOutline{
+      border-color: var(--color-error-400);
+    }
+  }
+  .MuiAutocomplete-inputRoot[class*="MuiOutlinedInput-root"]{
+    padding: 0 40px 0 0!important;
+  }
+  .MuiOutlinedInput-notchedOutline{
+    border-color: var(--color-neutrals-400);
+    transition: .3s;
+  }
+  .MuiOutlinedInput-input,
+  .MuiAutocomplete-inputRoot[class*="MuiOutlinedInput-root"] .MuiAutocomplete-input:first-child {
+    padding: 12px 14px;
+    font-size: 14px;
+  }
+  .MuiSelect-select{
+    line-height: 14px;
+  }
+  .MuiInputLabel-outlined{
+    transform: translate(14px, 13px) scale(1);
+    font-size: 14px;
+    background-color: var(--color-neutrals-0);
+    &.MuiInputLabel-shrink{
+      transform: translate(14px, -4px) scale(0.85);
+    }
+  }
+  .MuiOutlinedInput-multiline,
+  .MuiIconButton-root{
+    padding: 0;
+  }
+  .MuiAutocomplete-endAdornment{
+    display: flex;
+    margin-top: 2px;
+    .MuiAutocomplete-popupIndicator{
+      height: 24px;
+      width: 24px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: .3s;
+      svg{
+        width: 7px;
+        height: 7px;
+        border-right: 2px solid var(--color-primary-500);
+        border-bottom: 2px solid var(--color-primary-500);
+        transform: rotate(45deg);
+        margin-bottom: 5px;
+        path{
+          display: none;
+        }
+      }
+    }
+  }
+  .MuiSelect-select{
+    & ~ svg{
+      width: 7px;
+      height: 7px;
+      border-right: 2px solid var(--color-primary-500);
+      border-bottom: 2px solid var(--color-primary-500);
+      margin-bottom: 5px;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-75%) rotate(45deg);
+      transition: .3s;
+      &.MuiSelect-iconOpen{
+        transform: translateY(-50%) rotate(-135deg);
+      }
+      path{
+        display: none;
+      }
+    }
+  }
+  .MuiInputAdornment-root path:first-of-type{
+    fill: var(--color-primary-500);
+  }
+  &:not(:last-of-type){
+    margin-right: 16px;
+  }
+  &.mr-0{
+    margin-right: 0;
+  }
+  &.modal__field-grow{
+    flex: none;
+  }
+}
+.modal__field--only-child{
+  width: calc(50% - 8px);
+}
+.modal__form.hideErrors{
+  .modal__row:not(.modal__row--assignee){
+    .Mui-error {
+      .MuiOutlinedInput-notchedOutline {
+        border-color: var(--color-neutrals-400);
+      }
+    }
+    .MuiFormLabel-root.Mui-error{
+      color: rgba(0, 0, 0, 0.54);
+    }
+  }
+}
