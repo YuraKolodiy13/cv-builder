@@ -4,6 +4,7 @@ const router = Router();
 
 // Create a new cv
 router.post('/', cvController.createCV);
+router.get('/', cvController.getCVs);
 
 
 module.exports = router;

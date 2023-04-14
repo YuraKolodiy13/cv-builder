@@ -3,6 +3,7 @@ import './Header.scss'
 import LoginModal from "../modals/Auth/LoginModal/LoginModal";
 import RegisterModal from "../modals/Auth/RegisterModal/RegisterModal";
 import {useAppSelector} from "../../hooks/redux";
+import {NavLink} from 'react-router-dom';
 
 const Header = () => {
 
@@ -15,8 +16,17 @@ const Header = () => {
       <nav className='header__wrapper'>
         <div className='header container'>
           <h1>
-            lorem
+            <NavLink to='/'>lorem</NavLink>
           </h1>
+
+          <ul>
+            <li>
+              <NavLink to='/create-cv'>Create CV</NavLink>
+            </li>
+            <li>
+              <NavLink to='/cv-list'>Cv List</NavLink>
+            </li>
+          </ul>
 
           {user
             ? <ul>

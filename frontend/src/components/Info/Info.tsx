@@ -103,7 +103,7 @@ const Info: React.FC = () => {
 
   const removeItem = (i: number, id: number) => {
     const newItems = JSON.parse(JSON.stringify(state[i]));
-    newItems.items = newItems.items.filter(item => item.id !== id);
+    newItems.items = newItems.items.filter((item: IItem) => item.id !== id);
     const newState = [...state.slice(0, i), newItems, ...state.slice(i + 1)]
     changeInfo(newState);
   }
@@ -120,7 +120,7 @@ const Info: React.FC = () => {
   const onDragEndItems = (result: DropResult, i: number) => {
     const {source, destination} = result;
     if(destination){
-      const newItems = {...state[i]};
+      const newItems = JSON.parse(JSON.stringify(state[i]));
       const copiedItems = [...newItems.items];
       const [removed] = copiedItems.splice(source.index, 1);
       copiedItems.splice(destination.index, 0, removed);

@@ -3,7 +3,7 @@ import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
 export const cvApi = createApi({
   reducerPath: 'cv/api',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:5221/'
+    baseUrl: 'http://localhost:5222/'
   }),
   endpoints: (build) => ({
     createCV: build.mutation({
@@ -13,9 +13,15 @@ export const cvApi = createApi({
         body
       }),
     }),
+    getCVs: build.query({
+      query: () => ({
+        url: 'cv',
+      }),
+    })
   }),
 })
 
 export const {
   useCreateCVMutation,
+  useGetCVsQuery,
 } = cvApi;

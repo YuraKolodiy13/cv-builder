@@ -1,15 +1,36 @@
 const CV = require('../models/CV')
 
-// Create and save new Post
-exports.createCV = async (req, res) => {
+const createCV = async (req, res) => {
 
   try {
-    const cv = new CV({value: JSON.stringify(req.body)});
+    const {cvName, cvBody, username} = req.body;
+    const cv = new CV({
+      cvName,
+      cvBody: JSON.stringify(cvBody),
+      username
+    });
     await cv.save();
-    return res.status(200).json({message: 'You successfully created cv'});
+    return res.status(200).json({message: 'You have successfully created cv'});
   }catch (e) {
     console.log(e);
     res.status(400).json({message: 'createCV error'});
   }
 
 };
+
+const getCVs = async (req, res) => {
+
+  try {
+    const cvs = await CV.find();
+    return res.status(200).json(cvs);
+  }catch (e) {
+    console.log(e);
+    res.status(400).json({message: 'createCV error'});
+  }
+
+};
+
+module.exports = {
+  createCV,
+  getCVs,
+}

@@ -4,7 +4,7 @@ export const authApi = createApi({
   reducerPath: 'auth/api',
   tagTypes: ['Users', 'Posts'],
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:5221/auth/'
+    baseUrl: 'http://localhost:5222/auth/'
   }),
   endpoints: (build) => ({
     signIn: build.mutation({
