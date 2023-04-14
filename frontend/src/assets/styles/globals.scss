@@ -21,20 +21,7 @@ body {
 
   .App{
     background-color: var(--color-neutrals-0);
-    max-width: 1168px;
-    margin: 0 auto;
-    @media (max-width: 1200px) {
-      margin: 0 50px;
-    }
-    @media (max-width: 767px) {
-      margin: 0 30px;
-    }
-    @media (max-width: 479px) {
-      margin: 0 25px;
-      &.border{
-        border: none;
-      }
-    }
+    padding-top: 50px;
   }
 
   p{

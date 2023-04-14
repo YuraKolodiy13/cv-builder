@@ -2,11 +2,13 @@ import React, {useState} from 'react';
 import './Header.scss'
 import LoginModal from "../modals/Auth/LoginModal/LoginModal";
 import RegisterModal from "../modals/Auth/RegisterModal/RegisterModal";
+import {useAppSelector} from "../../hooks/redux";
 
 const Header = () => {
 
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
+  const user = useAppSelector(state => state.auth.user);
 
   return (
     <>
@@ -16,15 +18,24 @@ const Header = () => {
             lorem
           </h1>
 
-
-          <ul>
-            <li>
-              <span onClick={() => setIsLoginModalOpen(true)}>Увійти</span>
-            </li>
-            <li>
-              <span onClick={() => setIsRegisterModalOpen(true)}>Реєстрація</span>
-            </li>
-          </ul>
+          {user
+            ? <ul>
+                <li>
+                  <span>{user.username}</span>
+                </li>
+                <li>
+                  <span>Logout</span>
+                </li>
+              </ul>
+            : <ul>
+                <li>
+                  <span onClick={() => setIsLoginModalOpen(true)}>Увійти</span>
+                </li>
+                <li>
+                  <span onClick={() => setIsRegisterModalOpen(true)}>Реєстрація</span>
+                </li>
+              </ul>
+          }
         </div>
       </nav>
 

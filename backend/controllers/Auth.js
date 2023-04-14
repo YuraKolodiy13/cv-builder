@@ -1,11 +1,16 @@
 const {validationResult} = require("express-validator");
-const User = require('./models/User')
-const Role = require('./models/Role')
+const User = require('../models/User')
+const Role = require('../models/Role')
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
+const generateAccessToken = (id, roles) => {
+  const payload = {id, roles};
+  return jwt.sign(payload, process.env.JWT_SECRET, {expiresIn: 3600} )
+}
 
-class authController {
+
+class auth {
   async registration(req, res) {
     try {
       const errors = validationResult(req);
@@ -21,41 +26,42 @@ class authController {
       const userRoles = await Role.findOne({value: 'USER'});
       user = new User({username, email, password: hashPassword, roles: [userRoles.value]});
       await user.save();
-      return res.status(200).json({message: "User is successfully created"})
+      const token = generateAccessToken(user._id, user.roles);
+      return res.status(200).json({username: user.username, token})
     } catch (e) {
-      console.log(e)
+      console.log(e);
+      res.status(400).json({message: 'Registration error'});
     }
   }
 
   async login(req, res) {
     try {
       const {email, password} = req.body;
-      console.log(User, 'User')
       let user = await User.findOne({ email });
-      console.log(user, 'user')
       if (!user) {
         return res.status(404).json({message: "User doesn't exist"});
       }
-
       const isMatch = await bcrypt.compareSync(password, user.password);
-
       if (!isMatch) {
         return res.status(401).json({message: 'Invalid Credentials'});
       }
-
-      return res.status(200).json({message: "success"})
+      const token = generateAccessToken(user._id, user.roles);
+      return res.status(200).json({username: user.username, token});
     } catch (e) {
-      console.log(e)
+      console.log(e);
+      res.status(400).json({message: 'Login error'});
     }
   }
 
   async getUsers(req, res) {
+    console.log(222222)
     try {
-      return res.json({message: "success"})
+      const users = await User.find();
+      return res.status(200).json({users});
     } catch (e) {
-      console.log(e)
+      console.log(e);
     }
   }
 }
 
-module.exports = new authController()
+module.exports = new auth();

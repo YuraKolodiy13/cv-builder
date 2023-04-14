@@ -1,32 +1,29 @@
 import React, {useState} from 'react';
-import {useDispatch} from "react-redux";
-// import {loginRequest, resetErrors} from "../../../../actions/auth";
 import Modal from "@mui/material/Modal";
 import Backdrop from "@mui/material/Backdrop";
 import Slide from "@mui/material/Slide";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import {useSignInMutation} from "../../../../store/auth/auth.api";
+import {useActions} from "../../../../hooks/actions";
 
 
 
 const LoginModal = ({open, setIsModalOpen}) => {
 
   const [signIn] = useSignInMutation();
-  const dispatch = useDispatch();
+  const {setUser} = useActions();
 
   const [state, setState] = useState({
     email: '',
     password: ''
   });
 
-  // const submitLogin = () => {
-  //   dispatch(loginRequest(state, closeModal));
-  // };
-  //
-  // const submitLoginError = () => {
-  //   dispatch(resetErrors());
-  // };
+  const submitLogin = async () => {
+    const user = await signIn(state);
+    setUser(user.data);
+    closeModal()
+  };
 
   const onHandleChange = (e) => {
     setState({...state, [e.target.name]: e.target.value})
@@ -82,7 +79,7 @@ const LoginModal = ({open, setIsModalOpen}) => {
               variant="contained"
               type='submit'
               className='button'
-              onClick={() => signIn(state)}
+              onClick={submitLogin}
             >
               Увійти
             </Button>

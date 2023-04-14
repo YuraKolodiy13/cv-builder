@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const authRouter = require('./authRouter');
+const authRouter = require('./routers/auth');
+const cvRouter = require('./routers/cv');
 const cors = require("cors");
 
 
@@ -15,9 +16,10 @@ const corsSettings = {
 };
 
 app.use(cors(corsSettings));
-
 app.use(express.json());
+
 app.use("/auth", authRouter);
+app.use("/cv", cvRouter);
 
 
 const start = async () => {

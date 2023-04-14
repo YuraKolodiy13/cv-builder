@@ -18,6 +18,8 @@ import SaveIcon from '@mui/icons-material/Save';
 import PrintIcon from '@mui/icons-material/Print';
 import ShareIcon from '@mui/icons-material/Share';
 import {Rating} from "@mui/material";
+import {useAppSelector} from "../../hooks/redux";
+import {useActions} from "../../hooks/actions";
 
 const actions = [
   { icon: <SaveIcon />, name: 'Save' },
@@ -51,6 +53,7 @@ const initialItem = {
 
 const Info: React.FC = () => {
 
+  const {changeInfo} = useActions();
   const [open, setOpen] = useState<boolean>(false);
   const [color, setColor] = useState<string>('#8a2be2');
   const [avatar, setAvatar] = useState<IAvatar>({
@@ -58,42 +61,7 @@ const Info: React.FC = () => {
     previewFile: defaultImg,
   })
 
-  const [state, setState] = useState<IElement[]>([
-    {
-      id: 1,
-      type: 1,
-      title: 'Personal Info',
-      items: [
-        {
-          id: 1,
-          title: 'Info 1',
-          details: 'Details 1'
-        },
-        {
-          id: 2,
-          title: 'Info 2',
-          details: 'Details 2'
-        }
-      ]
-    },
-    {
-      id: 2,
-      type: 2,
-      title: 'Skills',
-      items: [
-        {
-          id: 1,
-          title: 'Skill 1',
-          details: 4
-        },
-        {
-          id: 2,
-          title: 'Skill 2',
-          details: 3
-        },
-      ]
-    }
-  ]);
+  const state = useAppSelector(state => state.cv.info);
 
   const handleFileChange = (e:React.ChangeEvent<HTMLInputElement>) => {
     const input = e.target;
@@ -114,34 +82,30 @@ const Info: React.FC = () => {
   const handleElementsState = (e: React.ChangeEvent<HTMLInputElement>, i: number) => {
     const newItems = {...state[i]};
     newItems.title = e.target.value;
-    const newState = [...state.slice(0, i), newItems, ...state.slice(i + 1)]
-    setState(newState)
+    const newState = [...state.slice(0, i), newItems, ...state.slice(i + 1)];
+    changeInfo(newState);
   }
 
   const handleItemsState = (e: React.ChangeEvent<HTMLInputElement>, i: number, j: number, name: keyof Omit<IItem, 'id'>) => {
-    const newItems = {...state[i]};
+    const newItems = JSON.parse(JSON.stringify(state[i]));
     newItems.items[j][name] = e.target.value;
-    const newState = [...state.slice(0, i), newItems, ...state.slice(i + 1)]
-    setState(newState)
+    const newState = [...state.slice(0, i), newItems, ...state.slice(i + 1)];
+    changeInfo(newState);
   }
 
   const addItems = (i: number) => {
-    const newItems = {...state[i]};
+    const newItems = JSON.parse(JSON.stringify(state[i]));
     newItems.items = [...newItems.items, {id: newItems.items.length + 1, ...initialItem}]
     const newState = [...state.slice(0, i), newItems, ...state.slice(i + 1)]
-    setState(newState)
+    changeInfo(newState);
   }
 
 
   const removeItem = (i: number, id: number) => {
-    const newItems = {...state[i]};
+    const newItems = JSON.parse(JSON.stringify(state[i]));
     newItems.items = newItems.items.filter(item => item.id !== id);
     const newState = [...state.slice(0, i), newItems, ...state.slice(i + 1)]
-    setState(newState)
-  }
-
-  const addSection = () => {
-
+    changeInfo(newState);
   }
 
   const onDragEndElements = (result: DropResult) => {
@@ -149,7 +113,7 @@ const Info: React.FC = () => {
     const copiedItems = [...state];
     const [removed] = copiedItems.splice(source.index, 1);
     copiedItems.splice(destination!.index, 0, removed);
-    setState(copiedItems)
+    changeInfo(copiedItems);
   }
 
 
@@ -161,8 +125,8 @@ const Info: React.FC = () => {
       const [removed] = copiedItems.splice(source.index, 1);
       copiedItems.splice(destination.index, 0, removed);
       newItems.items = copiedItems;
-      const newState = [...state.slice(0, i), newItems, ...state.slice(i + 1)]
-      setState(newState)
+      const newState = [...state.slice(0, i), newItems, ...state.slice(i + 1)];
+      changeInfo(newState);
     }
   }
 
