@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import TableComponent from "../../components/TableComponent/TableComponent";
 import { useGetCVsQuery } from '../../store/cv/cv.api';
 import {IHeadCell} from "../../types";
@@ -14,16 +14,21 @@ const columns: IHeadCell[] = [
 
 const CvList = () => {
 
-  const {data: rows = [], refetch} = useGetCVsQuery(null);
+  const [page, setPage] = useState<number>(0);
+  const limit = 2;
+  const {data: rows = {}} = useGetCVsQuery({limit, page}, {refetchOnMountOrArgChange: true});
+
 
   return (
     <div>
       <TableComponent
         headCells={columns}
-        data={rows}
+        data={rows.data || []}
         fixedRight={['status']}
-        total={rows.length}
-        fetchData={refetch}
+        total={rows.total}
+        setPage={setPage}
+        page={page}
+        defaultPaginate={limit}
       />
     </div>
   );

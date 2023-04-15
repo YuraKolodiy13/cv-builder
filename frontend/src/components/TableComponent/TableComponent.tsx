@@ -16,7 +16,8 @@ interface ITableComponentProps {
   fixedRight?: string[];
   defaultPaginate?: number;
   total: number;
-  fetchData: (limit: number, ofset: number) => void;
+  page: number;
+  setPage: (page: number) => void;
   setCheckedItems?: (value: [] | string[]) => void;
   showCheckbox?: boolean;
   checkedItems?: string[];
@@ -33,7 +34,8 @@ const TableComponent: React.FC<ITableComponentProps> = (props) => {
     fixedRight = [],
     defaultPaginate = 10,
     total,
-    fetchData,
+    page,
+    setPage,
     showCheckbox,
     checkedItems,
     setCheckedItems = () => {},
@@ -42,7 +44,6 @@ const TableComponent: React.FC<ITableComponentProps> = (props) => {
 
   const [order, setOrder] = useState<"desc" | "asc">('asc');
   const [orderBy, setOrderBy] = useState<string>('');
-  const [page, setPage] = useState<number>(0);
   const [rowsPerPage, setRowsPerPage] = useState<number>(defaultPaginate);
 
   const handleRequestSort = (property: string) => {
@@ -63,13 +64,11 @@ const TableComponent: React.FC<ITableComponentProps> = (props) => {
   })
 
   const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-    fetchData(parseInt(event.target.value, 10), 0);
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
 
   const handleChangePage = (newPage: number) => {
-    fetchData(rowsPerPage, newPage * rowsPerPage);
     setPage(newPage);
     setCheckedItems([]);
   };

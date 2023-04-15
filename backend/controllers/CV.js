@@ -5,9 +5,9 @@ const createCV = async (req, res) => {
   try {
     const {cvName, cvBody, username} = req.body;
     const cv = new CV({
-      cvName,
+      cvName: 'ds',
       cvBody: JSON.stringify(cvBody),
-      username
+      username: 'dsfd'
     });
     await cv.save();
     return res.status(200).json({message: 'You have successfully created cv'});
@@ -21,8 +21,14 @@ const createCV = async (req, res) => {
 const getCVs = async (req, res) => {
 
   try {
-    const cvs = await CV.find();
-    return res.status(200).json(cvs);
+    const {page, limit} = req.query;
+    const cvs = await CV.find().skip(page * limit).limit(limit);
+    const cvsCount = await CV.count()
+
+    return res.status(200).json({
+      data: cvs,
+      total: cvsCount,
+    });
   }catch (e) {
     console.log(e);
     res.status(400).json({message: 'createCV error'});
