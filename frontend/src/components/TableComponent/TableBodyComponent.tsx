@@ -2,6 +2,7 @@ import React, {Fragment} from 'react';
 import {TableBody, TableCell, TableRow} from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import {IHeadCell} from '../../types';
+import {Link} from "react-router-dom";
 
 interface ITableBodyComponentProps {
   headCells: IHeadCell[];
@@ -11,6 +12,7 @@ interface ITableBodyComponentProps {
   checkedItems?: string[];
   handleCheckedItems?: (value: [] | string) => void;
   tableData: any[];
+  link?: string;
 }
 
 const TableBodyComponent: React.FC<ITableBodyComponentProps> = (props) => {
@@ -22,20 +24,21 @@ const TableBodyComponent: React.FC<ITableBodyComponentProps> = (props) => {
     fixedRight = [],
     showCheckbox,
     checkedItems = [],
-    handleCheckedItems = () => {}
+    handleCheckedItems = () => {},
+    link
   } = props;
 
   return (
     <TableBody>
       {!!tableData.length
         ? tableData.map((item) =>
-          <Fragment key={item.field}>
-            <TableRow className='table-row'>
+          <Fragment key={item._id}>
+            <TableRow className={`table-row ${link ? 'hasHover' : ''}`}>
               {showCheckbox && (
                 <TableCell className="table-cell table-cell-checkbox">
                   <Checkbox
-                    checked={checkedItems.includes(item.id)}
-                    onChange={() => handleCheckedItems(item.id)}
+                    checked={checkedItems.includes(item._id)}
+                    onChange={() => handleCheckedItems(item._id)}
                     disableRipple
                   />
                 </TableCell>
@@ -50,6 +53,7 @@ const TableBodyComponent: React.FC<ITableBodyComponentProps> = (props) => {
 
               {headCells.map(el => ![...fixedLeft, ...fixedRight].includes(el.field) && (
                 <TableCell key={el.field} className='table-cell'>
+                  {link && (<Link to={`${link}/${item._id}`} className="table-link"/>)}
                   {item[el.field] || 'N/A'}
                 </TableCell>
               ))}

@@ -18,6 +18,11 @@ export const cvApi = createApi({
         url: 'cv',
         params: {page, limit}
       }),
+    }),
+    getCV: build.query({
+      query: (id) => ({
+        url: `cv/${id}`,
+      }),
     })
   }),
 })
@@ -25,4 +30,5 @@ export const cvApi = createApi({
 export const {
   useCreateCVMutation,
   useGetCVsQuery,
+  useGetCVQuery,
 } = cvApi;

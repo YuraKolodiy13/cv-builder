@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {TableContainer} from "@mui/material";
+import {Skeleton, TableContainer} from "@mui/material";
 import Table from "@mui/material/Table";
 import './TableComponent.scss';
 import TableHeadComponent from "./TableHeadComponent";
@@ -7,6 +7,18 @@ import TableBodyComponent from "./TableBodyComponent";
 import TablePagination from "@mui/material/TablePagination";
 import {IHeadCell} from '../../types';
 import {getComparator, stableSort} from '../../utils';
+
+const getTableSkeleton = (rows: number, cells: number) => {
+  return (
+    <tbody>
+      {[...Array(rows).keys()].map((i) =>
+        <tr className='table-row' key={i}>
+          {[...Array(cells).keys()].map((j) => <td key={j} className='table-cell'><Skeleton height={16}/></td>)}
+        </tr>
+      )}
+    </tbody>
+  )
+}
 
 interface ITableComponentProps {
   headCells: IHeadCell[];
@@ -22,6 +34,8 @@ interface ITableComponentProps {
   showCheckbox?: boolean;
   checkedItems?: string[];
   handleCheckedItems?: (value: [] | string) => void;
+  loading?: boolean;
+  link?: string;
 }
 
 const TableComponent: React.FC<ITableComponentProps> = (props) => {
@@ -39,7 +53,9 @@ const TableComponent: React.FC<ITableComponentProps> = (props) => {
     showCheckbox,
     checkedItems,
     setCheckedItems = () => {},
-    handleCheckedItems
+    handleCheckedItems,
+    loading,
+    link
   } = props;
 
   const [order, setOrder] = useState<"desc" | "asc">('asc');
@@ -89,26 +105,34 @@ const TableComponent: React.FC<ITableComponentProps> = (props) => {
             showCheckbox={showCheckbox}
             tableData={tableData}
           />
-          <TableBodyComponent
-            headCells={headCells}
-            tableData={renderRows}
-            fixedLeft={fixedLeft}
-            fixedRight={fixedRight}
-            handleCheckedItems={handleCheckedItems}
-            checkedItems={checkedItems}
-            showCheckbox={showCheckbox}
-          />
+          {!loading
+            ? <TableBodyComponent
+                headCells={headCells}
+                tableData={renderRows}
+                fixedLeft={fixedLeft}
+                fixedRight={fixedRight}
+                handleCheckedItems={handleCheckedItems}
+                checkedItems={checkedItems}
+                showCheckbox={showCheckbox}
+                link={link}
+              />
+            : getTableSkeleton(defaultPaginate, headCells.length)
+          }
         </Table>
       </TableContainer>
-      <TablePagination
-        rowsPerPageOptions={[5, 10, 20, 50, 100]}
-        component="div"
-        count={total}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={(event, newPage) => handleChangePage(newPage)}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
+      {!loading
+        ? <TablePagination
+            rowsPerPageOptions={[5, 10, 20, 50, 100]}
+            component="div"
+            count={total}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={(event, newPage) => handleChangePage(newPage)}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
+        : <Skeleton/>
+      }
+
     </>
   );
 };
