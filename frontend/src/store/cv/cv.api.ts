@@ -23,6 +23,13 @@ export const cvApi = createApi({
       query: (id) => ({
         url: `cv/${id}`,
       }),
+    }),
+    updateCV: build.mutation({
+      query: (body) => ({
+        url: `cv/${body.id}`,
+        method: 'PUT',
+        body
+      }),
     })
   }),
 })
@@ -31,4 +38,5 @@ export const {
   useCreateCVMutation,
   useGetCVsQuery,
   useGetCVQuery,
+  useUpdateCVMutation,
 } = cvApi;

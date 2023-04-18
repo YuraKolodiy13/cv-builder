@@ -6,6 +6,7 @@ const router = Router();
 router.post('/', cvController.createCV);
 router.get('/', cvController.getCVs);
 router.get('/:id', cvController.getCV);
+router.put('/:id', cvController.updateCV);
 
 
 module.exports = router;

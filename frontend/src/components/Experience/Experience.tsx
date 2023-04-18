@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import './Experience.scss';
 import {
   DragDropContext,
@@ -9,88 +9,36 @@ import {
   DroppableProvided, DropResult
 } from "react-beautiful-dnd";
 import reorderImg from "../../assets/reorder.svg";
-import {Rating} from "@mui/material";
 import deleteImg from "../../assets/delete.svg";
+import {IElement, IExperience, IExperienceItem, IGeneral, IState} from "../CVBuilder/CVBuilder";
 
-interface IGeneral {
-  name: string,
-  profession: string,
-  summary: string,
-}
-interface IExperienceItem {
-  id: number,
-  position: string,
-  company: string,
-  description: string,
-  year: string,
-}
-interface IExperience {
-  id: number,
-  title: string,
-  items: IExperienceItem[]
+
+interface IExperienceProps {
+  state: IState;
+  setState: (p: { general: IGeneral; experience: (IExperience | { id: number; title: string; items: IExperienceItem[] })[]; info: IElement[] }) => void;
+  editMode: boolean;
 }
 
-const Experience: React.FC = () => {
+const Experience: React.FC<IExperienceProps> = ({state, setState, editMode}) => {
 
-  const [general, setGeneral] = useState<IGeneral>({
-    name: 'Your name',
-    profession: 'Your profession',
-    summary: 'Summary of Yourself'
-  });
-
-  const [state, setState] = useState<IExperience[]>([
-    {
-      id: 1,
-      title: 'Work Experience',
-      items: [
-        {
-          id: 1,
-          position: 'Your Designation (E.g. Software Engineer)',
-          company: 'Company Name',
-          description: 'Express your skills and experience you\'ve acquired from this job.',
-          year: 'Year'
-        }
-      ]
-    },
-    {
-      id: 2,
-      title: 'Education',
-      items: [
-        {
-          id: 1,
-          position: 'Field of Study (E.g. Bachelor of IT)',
-          company: 'School or Institution',
-          description: 'Description',
-          year: 'Year'
-        }
-      ]
-    }
-  ])
+  const {general, experience} = state;
 
   const handleGeneral = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setGeneral({...general, [e.target.name]: e.target.value})
+    setState({...state, general: {...general, [e.target.name]: e.target.value}})
   }
 
-
-
-
-
-
-
-
-
   const handleElementsState = (e: React.ChangeEvent<HTMLInputElement>, i: number) => {
-    const newItems = {...state[i]};
+    const newItems = {...experience[i]};
     newItems.title = e.target.value;
-    const newState = [...state.slice(0, i), newItems, ...state.slice(i + 1)]
-    setState(newState)
+    const newState = [...experience.slice(0, i), newItems, ...experience.slice(i + 1)]
+    setState({...state, experience: newState});
   }
 
   const handleItemsState = (e: React.ChangeEvent<HTMLInputElement>, i: number, j: number, name: keyof Omit<IExperienceItem, 'id'>) => {
-    const newItems = {...state[i]};
+    const newItems = {...experience[i]};
     newItems.items[j][name] = e.target.value;
-    const newState = [...state.slice(0, i), newItems, ...state.slice(i + 1)]
-    setState(newState)
+    const newState = [...experience.slice(0, i), newItems, ...experience.slice(i + 1)]
+    setState({...state, experience: newState})
   }
 
   const initialItem = {
@@ -101,18 +49,21 @@ const Experience: React.FC = () => {
   }
 
   const addItems = (i: number) => {
-    const newItems = {...state[i]};
-    newItems.items = [...newItems.items, {id: newItems.items.length + 1, ...initialItem}]
-    const newState = [...state.slice(0, i), newItems, ...state.slice(i + 1)]
-    setState(newState)
+    const newItems = {...experience[i]};
+    console.log(newItems, 'newItems')
+    newItems.items = [...newItems.items, {id: newItems.items.length + 1, ...initialItem}];
+    console.log(newItems.items, 'newItems.items')
+    const newState = [...experience.slice(0, i), newItems, ...experience.slice(i + 1)];
+    console.log(newState, 'newState')
+    setState({...state, experience: newState})
   }
 
 
   const removeItem = (i: number, id: number) => {
-    const newItems = {...state[i]};
+    const newItems = {...experience[i]};
     newItems.items = newItems.items.filter(item => item.id !== id);
-    const newState = [...state.slice(0, i), newItems, ...state.slice(i + 1)]
-    setState(newState)
+    const newState = [...experience.slice(0, i), newItems, ...experience.slice(i + 1)]
+    setState({...state, experience: newState})
   }
 
   const addSection = () => {
@@ -121,31 +72,25 @@ const Experience: React.FC = () => {
 
   const onDragEndElements = (result: DropResult) => {
     const {source, destination} = result;
-    const copiedItems = [...state];
+    const copiedItems = [...experience];
     const [removed] = copiedItems.splice(source.index, 1);
     copiedItems.splice(destination!.index, 0, removed);
-    setState(copiedItems)
+    setState({...state, experience: copiedItems})
   }
 
 
   const onDragEndItems = (result: DropResult, i: number) => {
     const {source, destination} = result;
     if(destination){
-      const newItems = {...state[i]};
+      const newItems = {...experience[i]};
       const copiedItems = [...newItems.items];
       const [removed] = copiedItems.splice(source.index, 1);
       copiedItems.splice(destination.index, 0, removed);
       newItems.items = copiedItems;
-      const newState = [...state.slice(0, i), newItems, ...state.slice(i + 1)]
-      setState(newState)
+      const newState = [...experience.slice(0, i), newItems, ...experience.slice(i + 1)]
+      setState({...state, experience: newState})
     }
   }
-
-
-
-
-
-
 
   return (
     <div className='experience'>
@@ -157,6 +102,7 @@ const Experience: React.FC = () => {
             value={general.name}
             onChange={handleGeneral}
             placeholder='Your name'
+            readOnly={!editMode}
           />
         </h1>
         <h6>
@@ -166,6 +112,7 @@ const Experience: React.FC = () => {
             value={general.profession}
             onChange={handleGeneral}
             placeholder='Your profession'
+            readOnly={!editMode}
           />
         </h6>
         <p>
@@ -175,6 +122,7 @@ const Experience: React.FC = () => {
             value={general.summary}
             onChange={handleGeneral}
             placeholder='Summary of Yourself'
+            readOnly={!editMode}
           />
         </p>
       </div>
@@ -188,7 +136,7 @@ const Experience: React.FC = () => {
               {...provided.droppableProps}
               className='elements'
             >
-              {state.map((item: IExperience, i: number) =>
+              {experience.map((item: IExperience, i: number) =>
                 <Draggable
                   draggableId={item.id.toString()}
                   index={i}
@@ -210,6 +158,7 @@ const Experience: React.FC = () => {
                           value={item.title}
                           onChange={(e) => handleElementsState(e, i)}
                           placeholder='Enter value'
+                          readOnly={!editMode}
                         />
                       </h2>
                       <DragDropContext onDragEnd={(result) => onDragEndItems(result, i)}>
@@ -242,6 +191,7 @@ const Experience: React.FC = () => {
                                           value={el.position}
                                           onChange={(e) => handleItemsState(e, i, j, 'position')}
                                           placeholder='Enter value'
+                                          readOnly={!editMode}
                                         />
                                       </h3>
                                       <p>
@@ -258,6 +208,7 @@ const Experience: React.FC = () => {
                                           value={el.description}
                                           onChange={(e) => handleItemsState(e, i, j, 'description')}
                                           placeholder='Enter value'
+                                          readOnly={!editMode}
                                         />
                                       </p>
                                       <div className="remove" onClick={() => removeItem(i, el.id)}>

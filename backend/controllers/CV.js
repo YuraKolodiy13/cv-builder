@@ -3,13 +3,14 @@ const CV = require('../models/CV')
 const createCV = async (req, res) => {
 
   try {
-    const {cvName, cvBody, username, info, experience} = req.body;
+    const {cvName, cvBody, username, info, experience, general} = req.body;
     console.log(cvBody, 'cvBody')
     console.log(req.body, 'req.body')
     const cv = new CV({
       cvName: 'ds',
       info,
       experience,
+      general,
       username: 'dsfd'
     });
     await cv.save();
@@ -53,8 +54,27 @@ const getCV = async (req, res) => {
 
 };
 
+const updateCV = async (req, res) => {
+
+  try {
+    const {id, ...cv} = req.body;
+    console.log(id, 'id')
+    console.log(cv, 'cv')
+    const updatedCV = await CV.findByIdAndUpdate(id, cv, {new: true});
+    console.log(updatedCV, 'updatedCV')
+
+
+    return res.status(200).json(updatedCV);
+  }catch (e) {
+    console.log(e);
+    res.status(400).json({message: 'createCV error'});
+  }
+
+};
+
 module.exports = {
   createCV,
   getCVs,
   getCV,
+  updateCV,
 }

@@ -39,6 +39,7 @@
     h2, h3{
       position: relative;
       .reorder{
+        display: none;
         position: absolute;
         left: -50px;
         top: 2px;
@@ -112,10 +113,22 @@
     box-sizing: border-box;
     transition: .3s;
     &:focus{
-      border-color: #86b7fe;
-      outline: 0;
-      color: #000;
-      background-color: #fff;
+      outline: none;
+    }
+  }
+  .CVBuilder-editMode{
+    .elements{
+      .reorder{
+        display: block;
+      }
+    }
+    input{
+      &:focus{
+        border-color: #86b7fe;
+        outline: 0;
+        color: #000;
+        background-color: #fff;
+      }
     }
   }
 }

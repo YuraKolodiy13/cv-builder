@@ -1,20 +1,17 @@
 import React from 'react';
-import Info from "../../components/Info/Info";
-import Experience from "../../components/Experience/Experience";
 import {useParams} from 'react-router-dom';
 import {useGetCVQuery} from '../../store/cv/cv.api';
+import CvBuilder from "../../components/CVBuilder/CVBuilder";
 
 const ReviewCv = () => {
 
   const {id} = useParams();
-  const {data} = useGetCVQuery(id);
-  console.log(data, 'data')
+  const {data, isLoading} = useGetCVQuery(id);
+
+  if(isLoading) return <p>loading</p>
 
   return (
-    <div className="createCv">
-      <Info/>
-      <Experience/>
-    </div>
+    <CvBuilder canEdit={false} data={data}/>
   );
 };
 
