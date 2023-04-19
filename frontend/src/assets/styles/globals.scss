@@ -3,7 +3,8 @@
 
 body {
   margin: 0;
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Fira Sans', sans-serif;
+  font-size: 14px;
   padding: 20px 0;
   @media (max-width: 479px) {
     background-color: var(--color-neutrals-0);
@@ -111,7 +112,7 @@ body {
   .MuiMenuItem-root,
   .MuiTooltip-tooltip,
   .MuiTypography-body1{
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Fira Sans', sans-serif;
     text-transform: none;
   }
 
@@ -230,4 +231,9 @@ body {
       }
     }
   }
+}
+
+img{
+  max-width: 100%;
+  height: auto;
 }

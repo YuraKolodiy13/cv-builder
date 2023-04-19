@@ -5,12 +5,7 @@ import Info from "../Info/Info";
 import Experience from "../Experience/Experience";
 import {useCreateCVMutation, useUpdateCVMutation} from "../../store/cv/cv.api";
 import {useParams} from "react-router-dom";
-
-
-export interface IAvatar {
-  file: object | FileList;
-  previewFile: string | ArrayBuffer;
-}
+import defaultImg from "../../assets/no-avatar.jpg";
 
 export interface IItem {
   id: number;
@@ -20,15 +15,9 @@ export interface IItem {
 
 export interface IElement {
   id: number;
-  type: number;
+  fieldType: 'text' | 'rating';
   title: string;
   items: IItem[]
-}
-
-
-export const initialItem = {
-  title: 'Info',
-  details: 'Details'
 }
 
 export interface IGeneral {
@@ -53,7 +42,8 @@ export interface IExperience {
 export interface IState {
   info: IElement[],
   experience: IExperience[],
-  general: IGeneral
+  general: IGeneral,
+  avatar: string | ArrayBuffer
 }
 
 interface ICvBuilderProps {
@@ -64,7 +54,6 @@ interface ICvBuilderProps {
 const CvBuilder:React.FC<ICvBuilderProps> = ({canEdit, data}) => {
 
   const {id} = useParams();
-  console.log(id, 'id')
   const ref = useRef<HTMLDivElement>(null);
   const [createCV] = useCreateCVMutation();
   const [updateCV] = useUpdateCVMutation();
@@ -75,7 +64,7 @@ const CvBuilder:React.FC<ICvBuilderProps> = ({canEdit, data}) => {
     info: [
       {
         id: 1,
-        type: 1,
+        fieldType: 'text',
         title: 'Personal Info',
         items: [
           {
@@ -92,7 +81,7 @@ const CvBuilder:React.FC<ICvBuilderProps> = ({canEdit, data}) => {
       },
       {
         id: 2,
-        type: 2,
+        fieldType: 'rating',
         title: 'Skills',
         items: [
           {
@@ -140,13 +129,14 @@ const CvBuilder:React.FC<ICvBuilderProps> = ({canEdit, data}) => {
       name: 'Your name',
       profession: 'Your profession',
       summary: 'Summary of Yourself'
-    }
+    },
+    avatar: defaultImg
   });
 
   useEffect(() => {
     if(data){
-      const {info, experience, general} = data;
-      setState({info, experience, general});
+      const {info, experience, general, avatar} = data;
+      setState({info, experience, general, avatar});
     }
   }, [data])
 
@@ -156,7 +146,7 @@ const CvBuilder:React.FC<ICvBuilderProps> = ({canEdit, data}) => {
     <div className={`CVBuilder ${editMode ? 'CVBuilder-editMode' : ''}`}>
       {editMode && (
         <Pdf targetRef={ref} filename="document.pdf">
-          {({toPdf}) => (
+          {({toPdf} : {toPdf: any}) => (
             <button onClick={toPdf} className="button">
               Generate PDF
             </button>
@@ -183,7 +173,7 @@ const CvBuilder:React.FC<ICvBuilderProps> = ({canEdit, data}) => {
         </Button>
       )}
       <div className="createCv" ref={ref}>
-        <Info/>
+        <Info state={state} setState={setState} editMode={editMode}/>
         <Experience state={state} setState={setState} editMode={editMode}/>
       </div>
     </div>

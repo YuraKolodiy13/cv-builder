@@ -22,7 +22,8 @@
       transition: .3s;
       min-width: 120px;
       background-color: var(--color-neutrals-0);
-      font-size: 10px;
+      font-size: 14px;
+      font-family: 'Fira Sans', sans-serif;
       .table-link {
         position: absolute;
         top: 0;
@@ -68,8 +69,8 @@
     width: 100%;
     display: block;
     min-width: 120px;
-    padding: 10px;
-    font-family: 'Inter', sans-serif;
+    padding: 5px 10px;
+    font-family: 'Fira Sans', sans-serif;
     line-height: 16px;
     letter-spacing: 0.2px;
     color: var(--color-neutrals-1000);
@@ -87,11 +88,12 @@
         padding: 0 8px;
         margin: 20px 0;
         color: var(--color-neutrals-1000);
-        font-family: 'Inter', sans-serif;
+        font-family: 'Fira Sans', sans-serif;
         font-style: normal;
         font-weight: 600;
         font-size: 10px;
         line-height: 12px;
+        text-transform: uppercase;
         svg{
           opacity: 1;
           width: 16px;

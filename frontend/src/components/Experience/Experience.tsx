@@ -15,7 +15,7 @@ import {IElement, IExperience, IExperienceItem, IGeneral, IState} from "../CVBui
 
 interface IExperienceProps {
   state: IState;
-  setState: (p: { general: IGeneral; experience: (IExperience | { id: number; title: string; items: IExperienceItem[] })[]; info: IElement[] }) => void;
+  setState: (p: { general: IGeneral; avatar: string | ArrayBuffer; experience: IExperience[]; info: IElement[] }) => void;
   editMode: boolean;
 }
 
@@ -50,11 +50,8 @@ const Experience: React.FC<IExperienceProps> = ({state, setState, editMode}) => 
 
   const addItems = (i: number) => {
     const newItems = {...experience[i]};
-    console.log(newItems, 'newItems')
     newItems.items = [...newItems.items, {id: newItems.items.length + 1, ...initialItem}];
-    console.log(newItems.items, 'newItems.items')
     const newState = [...experience.slice(0, i), newItems, ...experience.slice(i + 1)];
-    console.log(newState, 'newState')
     setState({...state, experience: newState})
   }
 

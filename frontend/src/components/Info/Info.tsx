@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import './Info.scss';
-import defaultImg from '../../assets/no-avatar.jpg';
 import deleteImg from '../../assets/delete.svg';
 import reorderImg from '../../assets/reorder.svg';
 import {
@@ -18,8 +17,7 @@ import SaveIcon from '@mui/icons-material/Save';
 import PrintIcon from '@mui/icons-material/Print';
 import ShareIcon from '@mui/icons-material/Share';
 import {Rating} from "@mui/material";
-import {useAppSelector} from "../../hooks/redux";
-import {useActions} from "../../hooks/actions";
+import {IElement, IExperience, IGeneral, IItem, IState} from "../CVBuilder/CVBuilder";
 
 const actions = [
   { icon: <SaveIcon />, name: 'Save' },
@@ -27,106 +25,88 @@ const actions = [
   { icon: <ShareIcon />, name: 'Share' },
 ];
 
-interface IAvatar {
-  file: object | FileList;
-  previewFile: string | ArrayBuffer;
-}
-
-interface IItem {
-  id: number;
-  title: string;
-  details: string | number;
-}
-
-interface IElement {
-  id: number;
-  type: number;
-  title: string;
-  items: IItem[]
-}
-
-
 const initialItem = {
   title: 'Info',
   details: 'Details'
 }
 
-const Info: React.FC = () => {
+interface IInfoProps {
+  state: IState;
+  setState: (p: { general: IGeneral; avatar: string | ArrayBuffer; experience: IExperience[]; info: IElement[] }) => void;
+  editMode: boolean;
+}
 
-  const {changeInfo} = useActions();
+const Info: React.FC<IInfoProps> = ({state, setState, editMode}) => {
+
+  const {info, avatar} = state;
   const [open, setOpen] = useState<boolean>(false);
   const [color, setColor] = useState<string>('#8a2be2');
-  const [avatar, setAvatar] = useState<IAvatar>({
-    file: {},
-    previewFile: defaultImg,
-  })
 
-  const state = useAppSelector(state => state.cv.info);
+  console.log(avatar, 'avatar')
+
 
   const handleFileChange = (e:React.ChangeEvent<HTMLInputElement>) => {
     const input = e.target;
     if (input.files && input.files[0]) {
-      setAvatar({...avatar, file: input.files[0]})
       const reader = new FileReader();
       reader.onload = (e) => {
         if(e.target && e.target.result){
-          setAvatar({...avatar, previewFile: e.target.result});
+          setState({...state, avatar: e.target.result});
         }
       };
       reader.readAsDataURL(input.files[0]);
-    }else {
-      setAvatar({...avatar, file: {}});
     }
   };
 
   const handleElementsState = (e: React.ChangeEvent<HTMLInputElement>, i: number) => {
-    const newItems = {...state[i]};
+    const newItems = {...info[i]};
     newItems.title = e.target.value;
-    const newState = [...state.slice(0, i), newItems, ...state.slice(i + 1)];
-    changeInfo(newState);
+    const newState = [...info.slice(0, i), newItems, ...info.slice(i + 1)];
+    setState({...state, info: newState});
   }
 
-  const handleItemsState = (e: React.ChangeEvent<HTMLInputElement>, i: number, j: number, name: keyof Omit<IItem, 'id'>) => {
-    const newItems = JSON.parse(JSON.stringify(state[i]));
-    newItems.items[j][name] = e.target.value;
-    const newState = [...state.slice(0, i), newItems, ...state.slice(i + 1)];
-    changeInfo(newState);
+  const handleItemsState = (e: React.ChangeEvent<HTMLInputElement> | React.SyntheticEvent<Element, Event>, i: number, j: number, name: keyof Omit<IItem, 'id'>) => {
+    const newItems = JSON.parse(JSON.stringify(info[i]));
+    console.log((e.target as HTMLInputElement), 'e.target.value')
+    newItems.items[j][name] = (e.target as HTMLInputElement).value;
+    const newState = [...info.slice(0, i), newItems, ...info.slice(i + 1)];
+    setState({...state, info: newState});
   }
 
   const addItems = (i: number) => {
-    const newItems = JSON.parse(JSON.stringify(state[i]));
+    const newItems = {...info[i]};
     newItems.items = [...newItems.items, {id: newItems.items.length + 1, ...initialItem}]
-    const newState = [...state.slice(0, i), newItems, ...state.slice(i + 1)]
-    changeInfo(newState);
+    const newState = [...info.slice(0, i), newItems, ...info.slice(i + 1)]
+    setState({...state, info: newState});
   }
 
 
   const removeItem = (i: number, id: number) => {
-    const newItems = JSON.parse(JSON.stringify(state[i]));
+    const newItems = {...info[i]};
     newItems.items = newItems.items.filter((item: IItem) => item.id !== id);
-    const newState = [...state.slice(0, i), newItems, ...state.slice(i + 1)]
-    changeInfo(newState);
+    const newState = [...info.slice(0, i), newItems, ...info.slice(i + 1)]
+    setState({...state, info: newState});
   }
 
   const onDragEndElements = (result: DropResult) => {
     const {source, destination} = result;
-    const copiedItems = [...state];
+    const copiedItems = [...info];
     const [removed] = copiedItems.splice(source.index, 1);
     copiedItems.splice(destination!.index, 0, removed);
-    changeInfo(copiedItems);
+    setState({...state, info: copiedItems});
   }
 
 
   const onDragEndItems = (result: DropResult, i: number) => {
     const {source, destination} = result;
     if(destination){
-      const newItems = JSON.parse(JSON.stringify(state[i]));
+      const newItems = {...info[i]};
       const copiedItems = [...newItems.items];
       const [removed] = copiedItems.splice(source.index, 1);
       copiedItems.splice(destination.index, 0, removed);
       newItems.items = copiedItems;
-      const newState = [...state.slice(0, i), newItems, ...state.slice(i + 1)];
-      changeInfo(newState);
+      const newState = [...info.slice(0, i), newItems, ...info.slice(i + 1)];
+      setState({...state, info: newState});
     }
   }
 
@@ -152,14 +132,15 @@ const Info: React.FC = () => {
           />
         ))}
       </SpeedDial>
-      <input type="color" value={color} onChange={e => setColor(e.target.value)} />
-      <div className="info__avatar" style={{backgroundImage: `url(${avatar.previewFile})`}}>
+      <input type="color" value={color} onChange={e => setColor(e.target.value)} readOnly={!editMode}/>
+      <div className="info__avatar" style={{backgroundImage: `url(${avatar})`}}>
         <label>
           <input
             type="file"
             name='file'
             accept="image/*"
             onChange={handleFileChange}
+            readOnly={!editMode}
           />
         </label>
       </div>
@@ -171,7 +152,7 @@ const Info: React.FC = () => {
               {...provided.droppableProps}
               className='elements'
             >
-              {state.map((item: IElement, i: number) =>
+              {info.map((item: IElement, i: number) =>
                 <Draggable
                   draggableId={item.id.toString()}
                   index={i}
@@ -193,6 +174,7 @@ const Info: React.FC = () => {
                           value={item.title}
                           onChange={(e) => handleElementsState(e, i)}
                           placeholder='Enter value'
+                          readOnly={!editMode}
                         />
                       </h2>
                       <DragDropContext onDragEnd={(result) => onDragEndItems(result, i)}>
@@ -225,12 +207,13 @@ const Info: React.FC = () => {
                                           value={el.title}
                                           onChange={(e) => handleItemsState(e, i, j, 'title')}
                                           placeholder='Enter value'
+                                          readOnly={!editMode}
                                         />
                                       </h3>
                                       <p>
-                                        {item.type === 2
+                                        {item.fieldType === 'rating'
                                           ? <Rating
-                                              value={el.details}
+                                              value={+el.details}
                                               onChange={(e) => handleItemsState(e, i, j, 'details')}
                                             />
                                           : <input
@@ -238,6 +221,7 @@ const Info: React.FC = () => {
                                               value={el.details}
                                               onChange={(e) => handleItemsState(e, i, j, 'details')}
                                               placeholder='Enter value'
+                                              readOnly={!editMode}
                                             />
                                         }
 

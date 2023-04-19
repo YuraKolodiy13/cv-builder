@@ -1,0 +1,64 @@
+.ReviewImageBox{
+  user-select: none;
+  position: relative;
+  justify-content: center;
+  transition: .3s;
+
+  img {
+    height: 40px;
+    width: 40px;
+    min-height: 40px;
+    min-width: 40px;
+    border-radius: 4px;
+    object-fit: contain;
+    transition: .3s;
+    cursor: pointer;
+    display: block;
+    &:hover {
+      opacity: .7;
+    }
+  }
+
+  .visitReview__overlay {
+    display: flex;
+    position: absolute;
+    align-items: center;
+    justify-content: center;
+    height: 50px;
+    width: 50px;
+    border-radius: 4px;
+    overflow: hidden;
+    transition: .3s;
+    cursor: pointer;
+    &:hover {
+      opacity: .7;
+    }
+    &::after{
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      left: 0;
+      background: rgba(0, 0, 0, .4);
+    }
+    img {
+      height: 24px;
+      width: 24px;
+      min-height: 24px;
+      min-width: 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    p {
+      font-family: 'Fira Sans', sans-serif;
+      font-size: 14px;
+      line-height: 20px;
+      color: var(--color-white);
+      margin-left: 4px;
+      position: relative;
+      z-index: 1;
+    }
+  }
+}

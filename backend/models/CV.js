@@ -8,7 +8,7 @@ const infoItemsSchema = new Schema({
 
 const infoSchema = new Schema({
   id: Number,
-  type: Number,
+  fieldType: String,
   title: String,
   items: {type: [infoItemsSchema]}
 });
@@ -37,7 +37,10 @@ const CV = new Schema({
     profession: String,
     summary: String,
   },
+  avatar: {type: String, required: true},
   username: {type: String, required: true}
 });
+
+CV.set('timestamps', true);
 
 module.exports = model('CV', CV)

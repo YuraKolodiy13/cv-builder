@@ -1,6 +1,6 @@
 .App{
   margin: 0 auto;
-  font-family: 'Roboto Condensed', sans-serif;
+  font-family: 'Fira Sans', sans-serif;
   font-weight: 300;
   max-width: 1200px;
   .createCv{
@@ -115,6 +115,9 @@
     &:focus{
       outline: none;
     }
+  }
+  input[type=file][readonly] {
+    pointer-events: none;
   }
   .CVBuilder-editMode{
     .elements{

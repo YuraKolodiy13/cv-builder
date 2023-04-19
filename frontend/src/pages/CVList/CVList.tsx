@@ -2,14 +2,17 @@ import React, {useState} from 'react';
 import TableComponent from "../../components/TableComponent/TableComponent";
 import {useGetCVsQuery} from '../../store/cv/cv.api';
 import {IHeadCell} from "../../types";
+import {IState} from "../../components/CVBuilder/CVBuilder";
+import ReviewImageBox from '../../components/ReviewImageBox/ReviewImageBox';
+import defaultImg from "../../assets/no-avatar.jpg";
 
 const columns: IHeadCell[] = [
   {field: '_id', headerName: 'Id'},
-  {field: 'source', headerName: 'Source'},
-  {field: 'created_at', headerName: 'Time Stamp'},
-  {field: 'twitter_username', headerName: 'Twitter'},
-  {field: 'discord_username', headerName: 'Discord'},
-  {field: 'status', headerName: 'Status', withOutSort: true},
+  {field: 'name', headerName: 'Name'},
+  {field: 'profession', headerName: 'Profession'},
+  {field: 'summary', headerName: 'Summary'},
+  {field: 'createdAt', headerName: 'Created'},
+  {field: 'avatar', headerName: 'Avatar', withOutSort: true},
 ];
 
 const CvList = () => {
@@ -18,22 +21,24 @@ const CvList = () => {
   const limit = 5;
   const {data: rows = {}, isFetching} = useGetCVsQuery({limit, page}, {refetchOnMountOrArgChange: true});
 
-  let a = `{"info":[{"id":1,"type":1,"title":"rew Infrewro","items":[{"id":1,"title":"Info 1","details":"Details 1"},{"id":2,"title":"Info 2","details":"Details 2"}]},{"id":2,"type":2,"title":"Skills","items":[{"id":1,"title":"Skill 1","details":4},{"id":2,"title":"Skill 2","details":3}]}],"experience":[{"id":1,"title":"Work Experience","items":[{"id":1,"position":"Your Designation (E.g. Software Engineer)","company":"Company Name","description":"Express your skills and experience you've acquired from this job.","year":"Year"}]},{"id":2,"title":"Education","items":[{"id":1,"position":"Field of Study (E.g. Bachelor of IT)","company":"School or Institution","description":"Description","year":"Year"}]}]}`
-  console.log(JSON.parse(a), 'JSON.parse(JSON.stringify(a))')
-
-
   return (
     <div>
       <TableComponent
         headCells={columns}
         data={rows.data || []}
-        fixedRight={['status']}
+        fixedRight={['avatar']}
         total={rows.total}
         setPage={setPage}
         page={page}
         defaultPaginate={limit}
         loading={isFetching}
         link='/cv-list'
+        transformers={{
+          avatar: (row: { avatar: string | undefined; }) => <ReviewImageBox media={[row.avatar || defaultImg]}/>,
+          name: (row: IState) => <span>{row.general?.name}</span>,
+          profession: (row: IState) => <span>{row.general?.profession}</span>,
+          summary: (row: IState) => <span>{row.general?.summary}</span>,
+        }}
       />
     </div>
   );

@@ -13,7 +13,7 @@ const getTableSkeleton = (rows: number, cells: number) => {
     <tbody>
       {[...Array(rows).keys()].map((i) =>
         <tr className='table-row' key={i}>
-          {[...Array(cells).keys()].map((j) => <td key={j} className='table-cell'><Skeleton height={16}/></td>)}
+          {[...Array(cells).keys()].map((j) => <td key={j} className='table-cell'><Skeleton height={30}/></td>)}
         </tr>
       )}
     </tbody>

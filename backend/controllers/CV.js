@@ -3,14 +3,14 @@ const CV = require('../models/CV')
 const createCV = async (req, res) => {
 
   try {
-    const {cvName, cvBody, username, info, experience, general} = req.body;
-    console.log(cvBody, 'cvBody')
-    console.log(req.body, 'req.body')
+    const {cvName, cvBody, username, info, experience, general, avatar} = req.body;
+
     const cv = new CV({
       cvName: 'ds',
       info,
       experience,
       general,
+      avatar,
       username: 'dsfd'
     });
     await cv.save();
@@ -26,7 +26,7 @@ const getCVs = async (req, res) => {
 
   try {
     const {page, limit} = req.query;
-    const cvs = await CV.find().skip(page * limit).limit(limit);
+    const cvs = await CV.find({}).sort({createdAt: -1}).skip(page * limit).limit(limit);
     const cvsCount = await CV.count()
 
     return res.status(200).json({
@@ -44,6 +44,9 @@ const getCV = async (req, res) => {
 
   try {
     const {id} = req.params;
+    if(!id){
+      return res.status(400).json({message: 'please provide cv id'})
+    }
     const cv = await CV.findById(id);
 
     return res.status(200).json(cv);
@@ -58,12 +61,10 @@ const updateCV = async (req, res) => {
 
   try {
     const {id, ...cv} = req.body;
-    console.log(id, 'id')
-    console.log(cv, 'cv')
+    if(!id){
+      return res.status(400).json({message: 'please provide cv id'})
+    }
     const updatedCV = await CV.findByIdAndUpdate(id, cv, {new: true});
-    console.log(updatedCV, 'updatedCV')
-
-
     return res.status(200).json(updatedCV);
   }catch (e) {
     console.log(e);
