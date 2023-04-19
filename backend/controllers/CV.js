@@ -25,8 +25,10 @@ const createCV = async (req, res) => {
 const getCVs = async (req, res) => {
 
   try {
-    const {page, limit} = req.query;
-    const cvs = await CV.find({}).sort({createdAt: -1}).skip(page * limit).limit(limit);
+    const {page, limit, sort} = req.query;
+
+    const [key, value] = (sort || 'createdAt:-1').split(':');
+    const cvs = await CV.find({}).sort({[key]: [value]}).limit(limit).skip(page * limit);
     const cvsCount = await CV.count()
 
     return res.status(200).json({

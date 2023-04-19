@@ -5,8 +5,7 @@ import './TableComponent.scss';
 import TableHeadComponent from "./TableHeadComponent";
 import TableBodyComponent from "./TableBodyComponent";
 import TablePagination from "@mui/material/TablePagination";
-import {IHeadCell} from '../../types';
-import {getComparator, stableSort} from '../../utils';
+import {IHeadCell} from '../../interfaces';
 
 const getTableSkeleton = (rows: number, cells: number) => {
   return (
@@ -28,14 +27,14 @@ interface ITableComponentProps {
   fixedRight?: string[];
   defaultPaginate?: number;
   total: number;
-  page: number;
-  setPage: (page: number) => void;
   setCheckedItems?: (value: [] | string[]) => void;
   showCheckbox?: boolean;
   checkedItems?: string[];
   handleCheckedItems?: (value: [] | string) => void;
   loading?: boolean;
   link?: string;
+  tableQuery: any;
+  handleRequestSort: (field: string) => void;
 }
 
 const TableComponent: React.FC<ITableComponentProps> = (props) => {
@@ -48,29 +47,20 @@ const TableComponent: React.FC<ITableComponentProps> = (props) => {
     fixedRight = [],
     defaultPaginate = 10,
     total,
-    page,
-    setPage,
     showCheckbox,
     checkedItems,
     setCheckedItems = () => {},
     handleCheckedItems,
     loading,
-    link
+    link,
+    tableQuery: {order, page, setPage, orderBy},
+    handleRequestSort
   } = props;
 
-  const [order, setOrder] = useState<"desc" | "asc">('asc');
-  const [orderBy, setOrderBy] = useState<string>('');
   const [rowsPerPage, setRowsPerPage] = useState<number>(defaultPaginate);
 
-  const handleRequestSort = (property: string) => {
-    const isAsc = orderBy === property && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
-    setOrderBy(property);
-  };
 
-  const tableData = stableSort(data, getComparator(order, orderBy));
-
-  const renderRows = tableData.map((entry: object) => {
+  const renderRows = data.map((entry: object) => {
     const transform = {};
     Object.keys(transformers).forEach((key: string) => {
       // @ts-ignore
@@ -103,7 +93,7 @@ const TableComponent: React.FC<ITableComponentProps> = (props) => {
             handleCheckedItems={handleCheckedItems}
             checkedItems={checkedItems}
             showCheckbox={showCheckbox}
-            tableData={tableData}
+            tableData={data}
           />
           {!loading
             ? <TableBodyComponent

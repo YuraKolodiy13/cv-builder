@@ -17,7 +17,7 @@ import SaveIcon from '@mui/icons-material/Save';
 import PrintIcon from '@mui/icons-material/Print';
 import ShareIcon from '@mui/icons-material/Share';
 import {Rating} from "@mui/material";
-import {IElement, IExperience, IGeneral, IItem, IState} from "../CVBuilder/CVBuilder";
+import {ICvBuilderState, IExperience, IGeneral, IInfo, IInfoItem} from '../../interfaces';
 
 const actions = [
   { icon: <SaveIcon />, name: 'Save' },
@@ -31,8 +31,8 @@ const initialItem = {
 }
 
 interface IInfoProps {
-  state: IState;
-  setState: (p: { general: IGeneral; avatar: string | ArrayBuffer; experience: IExperience[]; info: IElement[] }) => void;
+  state: ICvBuilderState;
+  setState: (p: { general: IGeneral; avatar: string | ArrayBuffer; experience: IExperience[]; info: IInfo[] }) => void;
   editMode: boolean;
 }
 
@@ -65,7 +65,7 @@ const Info: React.FC<IInfoProps> = ({state, setState, editMode}) => {
     setState({...state, info: newState});
   }
 
-  const handleItemsState = (e: React.ChangeEvent<HTMLInputElement> | React.SyntheticEvent<Element, Event>, i: number, j: number, name: keyof Omit<IItem, 'id'>) => {
+  const handleItemsState = (e: React.ChangeEvent<HTMLInputElement> | React.SyntheticEvent<Element, Event>, i: number, j: number, name: keyof Omit<IInfoItem, 'id'>) => {
     const newItems = JSON.parse(JSON.stringify(info[i]));
     console.log((e.target as HTMLInputElement), 'e.target.value')
     newItems.items[j][name] = (e.target as HTMLInputElement).value;
@@ -83,7 +83,7 @@ const Info: React.FC<IInfoProps> = ({state, setState, editMode}) => {
 
   const removeItem = (i: number, id: number) => {
     const newItems = {...info[i]};
-    newItems.items = newItems.items.filter((item: IItem) => item.id !== id);
+    newItems.items = newItems.items.filter((item: IInfoItem) => item.id !== id);
     const newState = [...info.slice(0, i), newItems, ...info.slice(i + 1)]
     setState({...state, info: newState});
   }
@@ -152,7 +152,7 @@ const Info: React.FC<IInfoProps> = ({state, setState, editMode}) => {
               {...provided.droppableProps}
               className='elements'
             >
-              {info.map((item: IElement, i: number) =>
+              {info.map((item: IInfo, i: number) =>
                 <Draggable
                   draggableId={item.id.toString()}
                   index={i}
@@ -184,7 +184,7 @@ const Info: React.FC<IInfoProps> = ({state, setState, editMode}) => {
                               ref={provided.innerRef}
                               {...provided.droppableProps}
                             >
-                              {item.items.map((el: IItem, j: number) =>
+                              {item.items.map((el: IInfoItem, j: number) =>
                                 <Draggable
                                   draggableId={el.id.toString()}
                                   index={j}

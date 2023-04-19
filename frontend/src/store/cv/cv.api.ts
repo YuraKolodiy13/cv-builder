@@ -14,9 +14,9 @@ export const cvApi = createApi({
       }),
     }),
     getCVs: build.query({
-      query: ({page, limit}) => ({
+      query: (params) => ({
         url: 'cv',
-        params: {page, limit}
+        params: params
       }),
     }),
     getCV: build.query({

@@ -1,10 +1,15 @@
-import React, {useState} from 'react';
+import React from 'react';
 import TableComponent from "../../components/TableComponent/TableComponent";
 import {useGetCVsQuery} from '../../store/cv/cv.api';
-import {IHeadCell} from "../../types";
-import {IState} from "../../components/CVBuilder/CVBuilder";
+import {ICvBuilderState, IHeadCell} from "../../interfaces";
 import ReviewImageBox from '../../components/ReviewImageBox/ReviewImageBox';
-import defaultImg from "../../assets/no-avatar.jpg";
+import useTable from '../../hooks/useTable';
+
+interface IQuery {
+  limit: number;
+  page: number;
+  sort?: string;
+}
 
 const columns: IHeadCell[] = [
   {field: '_id', headerName: 'Id'},
@@ -17,9 +22,18 @@ const columns: IHeadCell[] = [
 
 const CvList = () => {
 
-  const [page, setPage] = useState<number>(0);
   const limit = 5;
-  const {data: rows = {}, isFetching} = useGetCVsQuery({limit, page}, {refetchOnMountOrArgChange: true});
+
+  const {tableQuery, handleRequestSort} = useTable();
+  console.log(tableQuery, 'tableQuery')
+  const query: IQuery = {
+    page: tableQuery.page, limit
+  }
+  if(tableQuery.orderBy){
+    query.sort = `${tableQuery.orderBy}:${tableQuery.order === 'asc' ? 1 : -1}`;
+    console.log(query.sort, 'query.sort')
+  }
+  const {data: rows = {}, isFetching} = useGetCVsQuery(query, {refetchOnMountOrArgChange: true});
 
   return (
     <div>
@@ -28,16 +42,16 @@ const CvList = () => {
         data={rows.data || []}
         fixedRight={['avatar']}
         total={rows.total}
-        setPage={setPage}
-        page={page}
         defaultPaginate={limit}
         loading={isFetching}
         link='/cv-list'
+        tableQuery={tableQuery}
+        handleRequestSort={handleRequestSort}
         transformers={{
-          avatar: (row: { avatar: string | undefined; }) => <ReviewImageBox media={[row.avatar || defaultImg]}/>,
-          name: (row: IState) => <span>{row.general?.name}</span>,
-          profession: (row: IState) => <span>{row.general?.profession}</span>,
-          summary: (row: IState) => <span>{row.general?.summary}</span>,
+          avatar: (row: {avatar: string}) => <ReviewImageBox media={[row.avatar]}/>,
+          name: (row: ICvBuilderState) => <span>{row.general?.name}</span>,
+          profession: (row: ICvBuilderState) => <span>{row.general?.profession}</span>,
+          summary: (row: ICvBuilderState) => <span>{row.general?.summary}</span>,
         }}
       />
     </div>

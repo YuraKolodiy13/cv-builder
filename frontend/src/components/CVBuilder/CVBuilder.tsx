@@ -6,49 +6,11 @@ import Experience from "../Experience/Experience";
 import {useCreateCVMutation, useUpdateCVMutation} from "../../store/cv/cv.api";
 import {useParams} from "react-router-dom";
 import defaultImg from "../../assets/no-avatar.jpg";
-
-export interface IItem {
-  id: number;
-  title: string;
-  details: string | number;
-}
-
-export interface IElement {
-  id: number;
-  fieldType: 'text' | 'rating';
-  title: string;
-  items: IItem[]
-}
-
-export interface IGeneral {
-  name: string,
-  profession: string,
-  summary: string,
-}
-export interface IExperienceItem {
-  id: number,
-  position: string,
-  company: string,
-  description: string,
-  year: string,
-}
-export interface IExperience {
-  id: number,
-  title: string,
-  items: IExperienceItem[]
-}
-
-
-export interface IState {
-  info: IElement[],
-  experience: IExperience[],
-  general: IGeneral,
-  avatar: string | ArrayBuffer
-}
+import {ICvBuilderState} from "../../interfaces";
 
 interface ICvBuilderProps {
   canEdit: boolean;
-  data?: IState;
+  data?: ICvBuilderState;
 }
 
 const CvBuilder:React.FC<ICvBuilderProps> = ({canEdit, data}) => {
@@ -60,7 +22,7 @@ const CvBuilder:React.FC<ICvBuilderProps> = ({canEdit, data}) => {
   const [editMode, setEditMode] = useState(canEdit);
 
 
-  const [state, setState] = useState<IState>({
+  const [state, setState] = useState<ICvBuilderState>({
     info: [
       {
         id: 1,

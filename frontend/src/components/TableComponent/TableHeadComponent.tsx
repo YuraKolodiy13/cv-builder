@@ -4,7 +4,7 @@ import TableSortLabel from "@mui/material/TableSortLabel";
 import {ReactComponent as SortDefault} from "../../assets/sort-default.svg";
 import {ReactComponent as SortUp} from "../../assets/sort-up.svg";
 import Checkbox from "@mui/material/Checkbox";
-import {IHeadCell} from "../../types";
+import {IHeadCell} from "../../interfaces";
 
 interface ITableHeadComponentProps {
   headCells: IHeadCell[];

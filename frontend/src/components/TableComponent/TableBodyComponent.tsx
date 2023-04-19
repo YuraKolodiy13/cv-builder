@@ -1,7 +1,7 @@
 import React, {Fragment} from 'react';
 import {TableBody, TableCell, TableRow} from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
-import {IHeadCell} from '../../types';
+import {IHeadCell} from '../../interfaces';
 import {Link} from "react-router-dom";
 
 interface ITableBodyComponentProps {

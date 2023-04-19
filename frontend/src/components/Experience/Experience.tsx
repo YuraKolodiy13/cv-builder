@@ -10,12 +10,11 @@ import {
 } from "react-beautiful-dnd";
 import reorderImg from "../../assets/reorder.svg";
 import deleteImg from "../../assets/delete.svg";
-import {IElement, IExperience, IExperienceItem, IGeneral, IState} from "../CVBuilder/CVBuilder";
-
+import {ICvBuilderState, IExperience, IExperienceItem, IGeneral, IInfo} from '../../interfaces';
 
 interface IExperienceProps {
-  state: IState;
-  setState: (p: { general: IGeneral; avatar: string | ArrayBuffer; experience: IExperience[]; info: IElement[] }) => void;
+  state: ICvBuilderState;
+  setState: (p: { general: IGeneral; avatar: string | ArrayBuffer; experience: IExperience[]; info: IInfo[] }) => void;
   editMode: boolean;
 }
 
