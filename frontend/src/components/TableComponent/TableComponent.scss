@@ -11,6 +11,7 @@
   }
 
   .table-row{
+    position: relative;
     &.hasHover:hover{
       .table-cell{
         background-color: var(--color-neutrals-100);
@@ -31,6 +32,11 @@
         left: 0;
         bottom: 0;
         z-index: 1;
+      }
+    }
+    &:hover{
+      .actions-cell{
+        opacity: 1;
       }
     }
   }
@@ -99,6 +105,24 @@
           width: 16px;
           height: 16px;
         }
+      }
+    }
+  }
+  .table-cell.actions-cell{
+    position: absolute;
+    right: 0;
+    min-width: 0;
+    z-index: 5;
+    cursor: pointer;
+    opacity: 0;
+    transition: .3s;
+    path{
+      fill: var(--color-error-400);
+      transition: .3s;
+    }
+    &:hover{
+      path{
+        fill: var(--color-error-500)
       }
     }
   }

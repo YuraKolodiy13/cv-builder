@@ -1,9 +1,10 @@
 import React from 'react';
 import TableComponent from "../../components/TableComponent/TableComponent";
-import {useGetCVsQuery} from '../../store/cv/cv.api';
+import {useDeleteCVMutation, useGetCVsQuery} from '../../store/cv/cv.api';
 import {ICvBuilderState, IHeadCell} from "../../interfaces";
 import ReviewImageBox from '../../components/ReviewImageBox/ReviewImageBox';
 import useTable from '../../hooks/useTable';
+import {ReactComponent as DeleteIcon} from "../../assets/icons/delete.svg";
 
 interface IQuery {
   limit: number;
@@ -13,27 +14,32 @@ interface IQuery {
 
 const columns: IHeadCell[] = [
   {field: '_id', headerName: 'Id'},
-  {field: 'name', headerName: 'Name'},
-  {field: 'profession', headerName: 'Profession'},
-  {field: 'summary', headerName: 'Summary'},
+  {field: 'general.name', headerName: 'Name'},
+  {field: 'general.profession', headerName: 'Profession'},
+  {field: 'general.summary', headerName: 'Summary'},
   {field: 'createdAt', headerName: 'Created'},
   {field: 'avatar', headerName: 'Avatar', withOutSort: true},
+  {field: 'actions', headerName: '', withOutSort: true},
 ];
 
 const CvList = () => {
 
   const limit = 5;
-
-  const {tableQuery, handleRequestSort} = useTable();
-  console.log(tableQuery, 'tableQuery')
+  const [deleteCV] = useDeleteCVMutation();
+  const {tableQuery, handleRequestSort} = useTable(limit);
+  const {setPage, rowsPerPage, orderBy, order} = tableQuery;
   const query: IQuery = {
-    page: tableQuery.page, limit
+    page: tableQuery.page, limit: rowsPerPage
   }
-  if(tableQuery.orderBy){
-    query.sort = `${tableQuery.orderBy}:${tableQuery.order === 'asc' ? 1 : -1}`;
-    console.log(query.sort, 'query.sort')
+  if(orderBy){
+    query.sort = `${orderBy}:${order === 'asc' ? 1 : -1}`;
   }
   const {data: rows = {}, isFetching} = useGetCVsQuery(query, {refetchOnMountOrArgChange: true});
+
+  const handleRemoveCV = (id: number) => {
+    setPage(Math.ceil((rows.total - 1) / rowsPerPage) - 1);
+    deleteCV(id);
+  }
 
   return (
     <div>
@@ -49,9 +55,15 @@ const CvList = () => {
         handleRequestSort={handleRequestSort}
         transformers={{
           avatar: (row: {avatar: string}) => <ReviewImageBox media={[row.avatar]}/>,
-          name: (row: ICvBuilderState) => <span>{row.general?.name}</span>,
-          profession: (row: ICvBuilderState) => <span>{row.general?.profession}</span>,
-          summary: (row: ICvBuilderState) => <span>{row.general?.summary}</span>,
+          'general.name': (row: ICvBuilderState) => <span>{row.general.name}</span>,
+          'general.profession': (row: ICvBuilderState) => <span>{row.general.profession}</span>,
+          'general.summary': (row: ICvBuilderState) => <span>{row.general.summary}</span>,
+          actions: (row: ICvBuilderState) => <span onClick={() => handleRemoveCV(row._id)}><DeleteIcon/></span>,
+        }}
+        options={{
+          actions: {
+            className: 'actions-cell'
+          },
         }}
       />
     </div>

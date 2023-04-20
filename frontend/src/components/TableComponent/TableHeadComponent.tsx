@@ -1,10 +1,11 @@
 import React, {Fragment} from 'react';
 import {TableCell, TableHead, TableRow} from "@mui/material";
 import TableSortLabel from "@mui/material/TableSortLabel";
-import {ReactComponent as SortDefault} from "../../assets/sort-default.svg";
-import {ReactComponent as SortUp} from "../../assets/sort-up.svg";
+import {ReactComponent as SortDefault} from "../../assets/icons/sort-default.svg";
+import {ReactComponent as SortUp} from "../../assets/icons/sort-up.svg";
 import Checkbox from "@mui/material/Checkbox";
 import {IHeadCell} from "../../interfaces";
+import clsx from "clsx";
 
 interface ITableHeadComponentProps {
   headCells: IHeadCell[];
@@ -17,6 +18,7 @@ interface ITableHeadComponentProps {
   checkedItems?: string[];
   handleCheckedItems?: (value: [] | string) => void;
   tableData: any[];
+  options?: any;
 }
 
 const TableHeadComponent: React.FC<ITableHeadComponentProps> = (props) => {
@@ -30,7 +32,8 @@ const TableHeadComponent: React.FC<ITableHeadComponentProps> = (props) => {
     handleRequestSort, showCheckbox = false,
     checkedItems = [],
     handleCheckedItems = () => {},
-    tableData
+    tableData,
+    options
   } = props;
 
   const renderFixedContent = (arr: string[], position: 'left' | 'right') => (
@@ -74,7 +77,7 @@ const TableHeadComponent: React.FC<ITableHeadComponentProps> = (props) => {
             key={headCell.field}
             padding='none'
             sortDirection={orderBy === headCell.field ? order : false}
-            className='table-cell'
+            className={clsx('table-cell', options[headCell.field]?.className)}
           >
             {!headCell.withOutSort
               ? <TableSortLabel

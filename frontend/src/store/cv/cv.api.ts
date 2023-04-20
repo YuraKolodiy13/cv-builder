@@ -2,6 +2,7 @@ import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
 
 export const cvApi = createApi({
   reducerPath: 'cv/api',
+  tagTypes: ['CVs'],
   baseQuery: fetchBaseQuery({
     baseUrl: 'http://localhost:5222/'
   }),
@@ -18,6 +19,7 @@ export const cvApi = createApi({
         url: 'cv',
         params: params
       }),
+      providesTags: () =>  ['CVs'],
     }),
     getCV: build.query({
       query: (id) => ({
@@ -30,7 +32,14 @@ export const cvApi = createApi({
         method: 'PUT',
         body
       }),
-    })
+    }),
+    deleteCV: build.mutation({
+      query: (id) => ({
+        url: `cv/${id}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['CVs']
+    }),
   }),
 })
 
@@ -39,4 +48,5 @@ export const {
   useGetCVsQuery,
   useGetCVQuery,
   useUpdateCVMutation,
+  useDeleteCVMutation,
 } = cvApi;

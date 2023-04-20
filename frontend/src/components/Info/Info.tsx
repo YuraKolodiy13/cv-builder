@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import './Info.scss';
-import deleteImg from '../../assets/delete.svg';
-import reorderImg from '../../assets/reorder.svg';
+import deleteImg from '../../assets/icons/delete.svg';
+import reorderImg from '../../assets/icons/reorder.svg';
 import {
   DragDropContext,
   Draggable,

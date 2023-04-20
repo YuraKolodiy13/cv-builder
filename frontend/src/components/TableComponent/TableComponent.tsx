@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {Skeleton, TableContainer} from "@mui/material";
 import Table from "@mui/material/Table";
 import './TableComponent.scss';
@@ -35,6 +35,7 @@ interface ITableComponentProps {
   link?: string;
   tableQuery: any;
   handleRequestSort: (field: string) => void;
+  options?: any;
 }
 
 const TableComponent: React.FC<ITableComponentProps> = (props) => {
@@ -53,12 +54,10 @@ const TableComponent: React.FC<ITableComponentProps> = (props) => {
     handleCheckedItems,
     loading,
     link,
-    tableQuery: {order, page, setPage, orderBy},
-    handleRequestSort
+    tableQuery: {order, page, setPage, orderBy, rowsPerPage, setRowsPerPage},
+    handleRequestSort,
+    options
   } = props;
-
-  const [rowsPerPage, setRowsPerPage] = useState<number>(defaultPaginate);
-
 
   const renderRows = data.map((entry: object) => {
     const transform = {};
@@ -94,6 +93,7 @@ const TableComponent: React.FC<ITableComponentProps> = (props) => {
             checkedItems={checkedItems}
             showCheckbox={showCheckbox}
             tableData={data}
+            options={options}
           />
           {!loading
             ? <TableBodyComponent
@@ -105,8 +105,9 @@ const TableComponent: React.FC<ITableComponentProps> = (props) => {
                 checkedItems={checkedItems}
                 showCheckbox={showCheckbox}
                 link={link}
+                options={options}
               />
-            : getTableSkeleton(defaultPaginate, headCells.length)
+            : getTableSkeleton(defaultPaginate, headCells.filter(item => item.headerName).length)
           }
         </Table>
       </TableContainer>

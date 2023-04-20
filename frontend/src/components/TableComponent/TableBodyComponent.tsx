@@ -3,6 +3,7 @@ import {TableBody, TableCell, TableRow} from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import {IHeadCell} from '../../interfaces';
 import {Link} from "react-router-dom";
+import clsx from 'clsx';
 
 interface ITableBodyComponentProps {
   headCells: IHeadCell[];
@@ -13,6 +14,7 @@ interface ITableBodyComponentProps {
   handleCheckedItems?: (value: [] | string) => void;
   tableData: any[];
   link?: string;
+  options?: any;
 }
 
 const TableBodyComponent: React.FC<ITableBodyComponentProps> = (props) => {
@@ -25,7 +27,8 @@ const TableBodyComponent: React.FC<ITableBodyComponentProps> = (props) => {
     showCheckbox,
     checkedItems = [],
     handleCheckedItems = () => {},
-    link
+    link,
+    options
   } = props;
 
   return (
@@ -52,8 +55,8 @@ const TableBodyComponent: React.FC<ITableBodyComponentProps> = (props) => {
               )}
 
               {headCells.map(el => ![...fixedLeft, ...fixedRight].includes(el.field) && (
-                <TableCell key={el.field} className='table-cell'>
-                  {link && (<Link to={`${link}/${item._id}`} className="table-link"/>)}
+                <TableCell key={el.field} className={clsx('table-cell', options[el.field]?.className)}>
+                  {link && !options[el.field]?.className && (<Link to={`${link}/${item._id}`} className="table-link"/>)}
                   {item[el.field] || 'N/A'}
                 </TableCell>
               ))}

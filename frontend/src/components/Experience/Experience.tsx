@@ -8,8 +8,8 @@ import {
   Droppable,
   DroppableProvided, DropResult
 } from "react-beautiful-dnd";
-import reorderImg from "../../assets/reorder.svg";
-import deleteImg from "../../assets/delete.svg";
+import reorderImg from "../../assets/icons/reorder.svg";
+import deleteImg from "../../assets/icons/delete.svg";
 import {ICvBuilderState, IExperience, IExperienceItem, IGeneral, IInfo} from '../../interfaces';
 
 interface IExperienceProps {

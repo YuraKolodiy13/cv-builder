@@ -5,7 +5,7 @@ import Info from "../Info/Info";
 import Experience from "../Experience/Experience";
 import {useCreateCVMutation, useUpdateCVMutation} from "../../store/cv/cv.api";
 import {useParams} from "react-router-dom";
-import defaultImg from "../../assets/no-avatar.jpg";
+import defaultImg from "../../assets/icons/no-avatar.jpg";
 import {ICvBuilderState} from "../../interfaces";
 
 interface ICvBuilderProps {
