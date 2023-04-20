@@ -2,7 +2,7 @@ import React, {Fragment} from 'react';
 import {TableCell, TableHead, TableRow} from "@mui/material";
 import TableSortLabel from "@mui/material/TableSortLabel";
 import {ReactComponent as SortDefault} from "../../assets/icons/sort-default.svg";
-import {ReactComponent as SortUp} from "../../assets/icons/sort-up.svg";
+import {ReactComponent as SortDown} from "../../assets/icons/sort-down.svg";
 import Checkbox from "@mui/material/Checkbox";
 import {IHeadCell} from "../../interfaces";
 import clsx from "clsx";
@@ -45,7 +45,7 @@ const TableHeadComponent: React.FC<ITableHeadComponentProps> = (props) => {
                 active={orderBy === headCell.field}
                 direction={orderBy === headCell.field ? order : 'asc'}
                 onClick={() => handleRequestSort(headCell.field)}
-                IconComponent={orderBy !== headCell.field ? SortDefault : SortUp}
+                IconComponent={orderBy !== headCell.field ? SortDefault : SortDown}
                 className='table-cell-item'
               >
                 {headCell.headerName}
@@ -84,7 +84,7 @@ const TableHeadComponent: React.FC<ITableHeadComponentProps> = (props) => {
                 active={orderBy === headCell.field}
                 direction={orderBy === headCell.field ? order : 'asc'}
                 onClick={() => handleRequestSort(headCell.field)}
-                IconComponent={orderBy !== headCell.field ? SortDefault : SortUp}
+                IconComponent={orderBy !== headCell.field ? SortDefault : SortDown}
               >
                 {headCell.headerName}
               </TableSortLabel>

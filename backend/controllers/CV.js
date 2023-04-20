@@ -11,7 +11,7 @@ const createCV = async (req, res) => {
       experience,
       general,
       avatar,
-      username: 'dsfd'
+      username: 'bfd'
     });
     await cv.save();
     return res.status(200).json({message: 'You have successfully created cv'});
@@ -28,7 +28,7 @@ const getCVs = async (req, res) => {
     const {page, limit, sort} = req.query;
 
     const [key, value] = (sort || 'createdAt:-1').split(':');
-    const cvs = await CV.find({}).sort({[key]: [value]}).skip(page * limit).limit(limit);
+    const cvs = await CV.find().sort({[key]: [value]}).skip(page * limit).limit(limit);
     const cvsCount = await CV.count()
 
     return res.status(200).json({

@@ -13,12 +13,12 @@ interface IQuery {
 }
 
 const columns: IHeadCell[] = [
-  {field: '_id', headerName: 'Id'},
   {field: 'general.name', headerName: 'Name'},
   {field: 'general.profession', headerName: 'Profession'},
   {field: 'general.summary', headerName: 'Summary'},
   {field: 'createdAt', headerName: 'Created'},
   {field: 'avatar', headerName: 'Avatar', withOutSort: true},
+  {field: 'username', headerName: 'username'},
   {field: 'actions', headerName: '', withOutSort: true},
 ];
 
@@ -58,6 +58,7 @@ const CvList = () => {
           'general.name': (row: ICvBuilderState) => <span>{row.general.name}</span>,
           'general.profession': (row: ICvBuilderState) => <span>{row.general.profession}</span>,
           'general.summary': (row: ICvBuilderState) => <span>{row.general.summary}</span>,
+          createdAt: (row: ICvBuilderState) => <span>{new Date(row.createdAt).toLocaleDateString('en-GB')}</span>,
           actions: (row: ICvBuilderState) => <span onClick={() => handleRemoveCV(row._id)}><DeleteIcon/></span>,
         }}
         options={{

@@ -40,7 +40,8 @@ export interface ICvBuilderState {
   experience: IExperience[],
   general: IGeneral,
   avatar: string | ArrayBuffer,
-  _id: number
+  _id: number,
+  createdAt: Date;
 }
 
 export interface ISetState {
