@@ -32,7 +32,7 @@ const initialItem = {
 
 interface IInfoProps {
   state: ICvBuilderState;
-  setState: (p: { general: IGeneral; avatar: string | ArrayBuffer; experience: IExperience[]; info: IInfo[] }) => void;
+  setState: (p: { cvName: string; general: IGeneral; avatar: string | ArrayBuffer; experience: IExperience[]; info: IInfo[] }) => void;
   editMode: boolean;
 }
 
@@ -41,8 +41,6 @@ const Info: React.FC<IInfoProps> = ({state, setState, editMode}) => {
   const {info, avatar} = state;
   const [open, setOpen] = useState<boolean>(false);
   const [color, setColor] = useState<string>('#8a2be2');
-
-  console.log(avatar, 'avatar')
 
 
   const handleFileChange = (e:React.ChangeEvent<HTMLInputElement>) => {
@@ -67,7 +65,6 @@ const Info: React.FC<IInfoProps> = ({state, setState, editMode}) => {
 
   const handleItemsState = (e: React.ChangeEvent<HTMLInputElement> | React.SyntheticEvent<Element, Event>, i: number, j: number, name: keyof Omit<IInfoItem, 'id'>) => {
     const newItems = JSON.parse(JSON.stringify(info[i]));
-    console.log((e.target as HTMLInputElement), 'e.target.value')
     newItems.items[j][name] = (e.target as HTMLInputElement).value;
     const newState = [...info.slice(0, i), newItems, ...info.slice(i + 1)];
     setState({...state, info: newState});

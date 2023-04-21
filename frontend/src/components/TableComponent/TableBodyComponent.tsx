@@ -49,7 +49,10 @@ const TableBodyComponent: React.FC<ITableBodyComponentProps> = (props) => {
               {!!fixedLeft.length && (
                 <TableCell className="table-cell table-cell-fixed left">
                   {headCells.map(el => fixedLeft.includes(el.field) && (
-                    <span className='table-cell-item' key={el.field}>{item[el.field] || 'N/A'}</span>
+                    <span className='table-cell-item' key={el.field}>
+                      {link && !options[el.field]?.className && (<Link to={`${link}/${item._id}`} className="table-link"/>)}
+                      {item[el.field] || 'N/A'}
+                    </span>
                   ))}
                 </TableCell>
               )}
@@ -63,7 +66,10 @@ const TableBodyComponent: React.FC<ITableBodyComponentProps> = (props) => {
               {!!fixedRight.length && (
                 <TableCell className="table-cell table-cell-fixed right">
                   {headCells.map(el => fixedRight.includes(el.field) && (
-                    <span className='table-cell-item' key={el.field}>{item[el.field] || 'N/A'}</span>
+                    <span className='table-cell-item' key={el.field}>
+                      {link && !options[el.field]?.className && (<Link to={`${link}/${item._id}`} className="table-link"/>)}
+                      {item[el.field] || 'N/A'}
+                    </span>
                   ))}
                 </TableCell>
               )}

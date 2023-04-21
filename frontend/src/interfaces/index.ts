@@ -1,7 +1,7 @@
 export interface IHeadCell {
   field: string;
   headerName: string;
-  withOutSort?: boolean
+  withOutSort?: boolean;
 }
 
 export interface IInfoItem {
@@ -14,34 +14,39 @@ export interface IInfo {
   id: number;
   fieldType: 'text' | 'rating';
   title: string;
-  items: IInfoItem[]
+  items: IInfoItem[];
 }
 
 export interface IGeneral {
-  name: string,
-  profession: string,
-  summary: string,
+  name: string;
+  profession: string;
+  summary: string;
 }
 export interface IExperienceItem {
-  id: number,
-  position: string,
-  company: string,
-  description: string,
-  year: string,
+  id: number;
+  position: string;
+  company: string;
+  description: string;
+  year: string;
 }
 export interface IExperience {
-  id: number,
-  title: string,
-  items: IExperienceItem[]
+  id: number;
+  title: string;
+  items: IExperienceItem[];
 }
 
 export interface ICvBuilderState {
-  info: IInfo[],
-  experience: IExperience[],
-  general: IGeneral,
-  avatar: string | ArrayBuffer,
-  _id: number,
-  createdAt: Date;
+  cvName: string;
+  info: IInfo[];
+  experience: IExperience[];
+  general: IGeneral;
+  avatar: string | ArrayBuffer;
+}
+
+export interface ICvBuilder extends ICvBuilderState {
+  _id: number;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface ISetState {

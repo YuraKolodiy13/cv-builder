@@ -39,18 +39,9 @@
     }
     .modal__btns{
       display: flex;
-      justify-content: space-between;
+      justify-content: flex-end;
       align-items: center;
-    }
-    .modal__assignee-btns{
-      display: flex;
-      margin-bottom: 6px;
-      button{
-        margin-left: 8px;
-        &:first-of-type{
-          margin-left: auto;
-        }
-      }
+      gap: 14px;
     }
 
     h5{
@@ -192,20 +183,5 @@
   }
   &.modal__field-grow{
     flex: none;
-  }
-}
-.modal__field--only-child{
-  width: calc(50% - 8px);
-}
-.modal__form.hideErrors{
-  .modal__row:not(.modal__row--assignee){
-    .Mui-error {
-      .MuiOutlinedInput-notchedOutline {
-        border-color: var(--color-neutrals-400);
-      }
-    }
-    .MuiFormLabel-root.Mui-error{
-      color: rgba(0, 0, 0, 0.54);
-    }
   }
 }

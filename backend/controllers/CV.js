@@ -3,10 +3,10 @@ const CV = require('../models/CV')
 const createCV = async (req, res) => {
 
   try {
-    const {cvName, cvBody, username, info, experience, general, avatar} = req.body;
+    const {cvName, username, info, experience, general, avatar} = req.body;
 
     const cv = new CV({
-      cvName: 'ds',
+      cvName,
       info,
       experience,
       general,

@@ -7,6 +7,7 @@ import {useCreateCVMutation, useUpdateCVMutation} from "../../store/cv/cv.api";
 import {useParams} from "react-router-dom";
 import defaultImg from "../../assets/icons/no-avatar.jpg";
 import {ICvBuilderState} from "../../interfaces";
+import ConfirmModal from "../modals/ConfirmModal";
 
 interface ICvBuilderProps {
   canEdit: boolean;
@@ -20,9 +21,10 @@ const CvBuilder:React.FC<ICvBuilderProps> = ({canEdit, data}) => {
   const [createCV] = useCreateCVMutation();
   const [updateCV] = useUpdateCVMutation();
   const [editMode, setEditMode] = useState(canEdit);
-
+  const [isOpenConfirmModal, setIsOpenConfirmModal] = useState(false);
 
   const [state, setState] = useState<ICvBuilderState>({
+    cvName: '',
     info: [
       {
         id: 1,
@@ -97,12 +99,11 @@ const CvBuilder:React.FC<ICvBuilderProps> = ({canEdit, data}) => {
 
   useEffect(() => {
     if(data){
-      const {info, experience, general, avatar} = data;
-      setState({info, experience, general, avatar});
+      console.log(data, 'data')
+      const {info, experience, general, avatar, cvName} = data;
+      setState({info, experience, general, avatar, cvName});
     }
   }, [data])
-
-  console.log(canEdit, 'canEdit')
 
   return (
     <div className={`CVBuilder ${editMode ? 'CVBuilder-editMode' : ''}`}>
@@ -118,7 +119,7 @@ const CvBuilder:React.FC<ICvBuilderProps> = ({canEdit, data}) => {
 
       {editMode && (
         <Button
-          onClick={() => id ? updateCV({...state, id}) : createCV(state)}
+          onClick={() => setIsOpenConfirmModal(true)}
           variant="contained"
           color='primary'
         >
@@ -138,6 +139,17 @@ const CvBuilder:React.FC<ICvBuilderProps> = ({canEdit, data}) => {
         <Info state={state} setState={setState} editMode={editMode}/>
         <Experience state={state} setState={setState} editMode={editMode}/>
       </div>
+
+      {isOpenConfirmModal && (
+        <ConfirmModal
+          open={isOpenConfirmModal}
+          onBackgroundClick={() => setIsOpenConfirmModal(false)}
+          onSubmitClick={() => id ? updateCV({...state, id}) : createCV(state)}
+          modalTitle='Saving cv'
+          cvName={state.cvName}
+          onCvNameChange={(e) => setState({...state, cvName: e.target.value})}
+        />
+      )}
     </div>
   );
 };

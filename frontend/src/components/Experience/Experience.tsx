@@ -14,7 +14,7 @@ import {ICvBuilderState, IExperience, IExperienceItem, IGeneral, IInfo} from '..
 
 interface IExperienceProps {
   state: ICvBuilderState;
-  setState: (p: { general: IGeneral; avatar: string | ArrayBuffer; experience: IExperience[]; info: IInfo[] }) => void;
+  setState: (p: { cvName: string; general: IGeneral; avatar: string | ArrayBuffer; experience: IExperience[]; info: IInfo[] }) => void;
   editMode: boolean;
 }
 

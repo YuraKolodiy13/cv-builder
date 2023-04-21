@@ -87,7 +87,7 @@
   .table-head{
     .table-cell{
       background-color: var(--color-neutrals-0);
-      .MuiButtonBase-root,
+      span,
       .table-cell-item{
         display: flex;
         justify-content: space-between;
@@ -110,6 +110,7 @@
   }
   .table-cell.actions-cell{
     position: absolute;
+    top: 5px;
     right: 0;
     min-width: 0;
     z-index: 5;

@@ -1,7 +1,7 @@
 import React from 'react';
 import TableComponent from "../../components/TableComponent/TableComponent";
 import {useDeleteCVMutation, useGetCVsQuery} from '../../store/cv/cv.api';
-import {ICvBuilderState, IHeadCell} from "../../interfaces";
+import {ICvBuilder, IHeadCell} from "../../interfaces";
 import ReviewImageBox from '../../components/ReviewImageBox/ReviewImageBox';
 import useTable from '../../hooks/useTable';
 import {ReactComponent as DeleteIcon} from "../../assets/icons/delete.svg";
@@ -13,13 +13,14 @@ interface IQuery {
 }
 
 const columns: IHeadCell[] = [
-  {field: 'general.name', headerName: 'Name'},
+  {field: 'cvName', headerName: 'CV Name'},
+  {field: 'general.name', headerName: 'Name in CV'},
   {field: 'general.profession', headerName: 'Profession'},
   {field: 'general.summary', headerName: 'Summary'},
   {field: 'createdAt', headerName: 'Created'},
+  {field: 'updatedAt', headerName: 'Updated'},
   {field: 'avatar', headerName: 'Avatar', withOutSort: true},
-  {field: 'username', headerName: 'username'},
-  {field: 'actions', headerName: '', withOutSort: true},
+  {field: 'actions', headerName: '', withOutSort: true}
 ];
 
 const CvList = () => {
@@ -55,11 +56,12 @@ const CvList = () => {
         handleRequestSort={handleRequestSort}
         transformers={{
           avatar: (row: {avatar: string}) => <ReviewImageBox media={[row.avatar]}/>,
-          'general.name': (row: ICvBuilderState) => <span>{row.general.name}</span>,
-          'general.profession': (row: ICvBuilderState) => <span>{row.general.profession}</span>,
-          'general.summary': (row: ICvBuilderState) => <span>{row.general.summary}</span>,
-          createdAt: (row: ICvBuilderState) => <span>{new Date(row.createdAt).toLocaleDateString('en-GB')}</span>,
-          actions: (row: ICvBuilderState) => <span onClick={() => handleRemoveCV(row._id)}><DeleteIcon/></span>,
+          'general.name': (row: ICvBuilder) => <span>{row.general.name}</span>,
+          'general.profession': (row: ICvBuilder) => <span>{row.general.profession}</span>,
+          'general.summary': (row: ICvBuilder) => <span>{row.general.summary}</span>,
+          createdAt: (row: ICvBuilder) => <span>{new Date(row.createdAt).toLocaleDateString('en-GB')}</span>,
+          updatedAt: (row: ICvBuilder) => <span>{new Date(row.updatedAt).toLocaleDateString('en-GB')}</span>,
+          actions: (row: ICvBuilder) => <span onClick={() => handleRemoveCV(row._id)}><DeleteIcon/></span>,
         }}
         options={{
           actions: {

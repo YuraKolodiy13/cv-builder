@@ -88,7 +88,7 @@ const TableHeadComponent: React.FC<ITableHeadComponentProps> = (props) => {
               >
                 {headCell.headerName}
               </TableSortLabel>
-              : <span>{headCell.headerName}</span>
+              : headCell.headerName && <span>{headCell.headerName}</span>
             }
           </TableCell>
         ))}
