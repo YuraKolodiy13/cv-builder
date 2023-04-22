@@ -1,32 +1,41 @@
 import React, {useState} from 'react';
-import TextField from "@mui/material/TextField";
 import Modal from "@mui/material/Modal";
 import Backdrop from "@mui/material/Backdrop";
 import Slide from "@mui/material/Slide";
 import Button from "@mui/material/Button";
-import {useSignUpMutation} from "../../../../store/auth/auth.api";
+import TextField from "@mui/material/TextField";
+import {useSignInMutation} from "../../../store/auth/auth.api";
+import {useActions} from "../../../hooks/actions";
+import {IAuthProps} from "../../../interfaces";
 
-const RegisterModal = ({open, setIsModalOpen}) => {
+const LoginModal: React.FC<IAuthProps> = ({open, setIsModalOpen}) => {
 
-  const [signUp] = useSignUpMutation();
+  const [signIn] = useSignInMutation();
+  const {setUser} = useActions();
 
-  const [state, setState] = useState({
-    username: '',
-    email: '',
-    password: ''
-  });
+  const [state, setState] = useState({email: '', password: ''});
+  const [error, setError] = useState<string | null>(null);
 
-  const onHandleChange = (e) => {
+  const submitLogin = async () => {
+    const user = await signIn(state);
+    if ('error' in user) {
+      // @ts-ignore
+      const {message} = user.error.data;
+      setError(message);
+    } else {
+      setUser(user.data);
+      closeModal();
+    }
+  };
+
+  const onHandleChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
     setState({...state, [e.target.name]: e.target.value})
   };
 
   const closeModal = () => {
     setIsModalOpen(false);
-    setState({
-      username: '',
-      email: '',
-      password: ''
-    })
+    setState({email: '', password: ''});
+    setError(null);
   };
 
 
@@ -43,19 +52,8 @@ const RegisterModal = ({open, setIsModalOpen}) => {
     >
       <Slide direction="down" in={open}>
         <div className='modal__content'>
-          <h3 className="heading">Створити новий аккаунт</h3>
+          <h3 className="heading">Sign In</h3>
           <div className='login__form'>
-            <div className="modal__row">
-              <div className="login__field modal__field w100">
-                <TextField
-                  label="Name"
-                  name='username'
-                  type="text"
-                  value={state.username}
-                  onChange={onHandleChange}
-                />
-              </div>
-            </div>
             <div className="modal__row">
               <div className="login__field modal__field w100">
                 <TextField
@@ -76,15 +74,16 @@ const RegisterModal = ({open, setIsModalOpen}) => {
                   value={state.password}
                   onChange={onHandleChange}
                 />
+                {error && <p>{error}</p>}
               </div>
             </div>
             <Button
               variant="contained"
               type='submit'
               className='button'
-              onClick={() => signUp(state)}
+              onClick={submitLogin}
             >
-              Увійти
+              Sign In
             </Button>
           </div>
         </div>
@@ -93,4 +92,4 @@ const RegisterModal = ({open, setIsModalOpen}) => {
   )
 };
 
-export default RegisterModal;
+export default LoginModal;

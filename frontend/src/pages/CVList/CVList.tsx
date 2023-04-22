@@ -1,10 +1,11 @@
-import React from 'react';
+import React, {useState} from 'react';
 import TableComponent from "../../components/TableComponent/TableComponent";
 import {useDeleteCVMutation, useGetCVsQuery} from '../../store/cv/cv.api';
 import {ICvBuilder, IHeadCell} from "../../interfaces";
 import ReviewImageBox from '../../components/ReviewImageBox/ReviewImageBox';
 import useTable from '../../hooks/useTable';
 import {ReactComponent as DeleteIcon} from "../../assets/icons/delete.svg";
+import ConfirmModal from "../../components/modals/ConfirmModal";
 
 interface IQuery {
   limit: number;
@@ -27,8 +28,9 @@ const CvList = () => {
 
   const limit = 5;
   const [deleteCV] = useDeleteCVMutation();
+  const [currentRowId, setCurrentRowId] = useState<number | null>(null);
   const {tableQuery, handleRequestSort} = useTable(limit);
-  const {setPage, rowsPerPage, orderBy, order} = tableQuery;
+  const {setPage, rowsPerPage, orderBy, order, page} = tableQuery;
   const query: IQuery = {
     page: tableQuery.page, limit: rowsPerPage
   }
@@ -37,9 +39,11 @@ const CvList = () => {
   }
   const {data: rows = {}, isFetching} = useGetCVsQuery(query, {refetchOnMountOrArgChange: true});
 
-  const handleRemoveCV = (id: number) => {
-    setPage(Math.ceil((rows.total - 1) / rowsPerPage) - 1);
-    deleteCV(id);
+  const handleRemoveCV = () => {
+    if((rows.total - 1) / rowsPerPage === page){
+      setPage(Math.ceil((rows.total - 1) / rowsPerPage) - 1);
+    }
+    deleteCV(currentRowId);
   }
 
   return (
@@ -61,7 +65,7 @@ const CvList = () => {
           'general.summary': (row: ICvBuilder) => <span>{row.general.summary}</span>,
           createdAt: (row: ICvBuilder) => <span>{new Date(row.createdAt).toLocaleDateString('en-GB')}</span>,
           updatedAt: (row: ICvBuilder) => <span>{new Date(row.updatedAt).toLocaleDateString('en-GB')}</span>,
-          actions: (row: ICvBuilder) => <span onClick={() => handleRemoveCV(row._id)}><DeleteIcon/></span>,
+          actions: (row: ICvBuilder) => <span onClick={() => setCurrentRowId(row._id)}><DeleteIcon/></span>,
         }}
         options={{
           actions: {
@@ -69,6 +73,15 @@ const CvList = () => {
           },
         }}
       />
+      {currentRowId && (
+        <ConfirmModal
+          open={Boolean(currentRowId)}
+          onBackgroundClick={() => setCurrentRowId(null)}
+          onSubmitClick={handleRemoveCV}
+          modalTitle='Delete CV?'
+        />
+      )}
+
     </div>
   );
 };

@@ -7,6 +7,11 @@
       width: 920px;
     }
   }
+  &.confirm-modal{
+    .modal__content{
+      width: 300px;
+    }
+  }
   .modal__content{
     background-color: var(--color-neutrals-0);
     width: 485px;

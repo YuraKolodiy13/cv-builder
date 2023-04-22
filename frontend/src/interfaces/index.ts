@@ -49,6 +49,11 @@ export interface ICvBuilder extends ICvBuilderState {
   updatedAt: string;
 }
 
+export interface IAuthProps {
+  open: boolean;
+  setIsModalOpen: (b: boolean) => void;
+}
+
 export interface ISetState {
   setState: (p: { general: IGeneral; avatar: string | ArrayBuffer; experience: IExperience[]; info: IInfo[] }) => void
 }

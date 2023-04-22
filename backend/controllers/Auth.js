@@ -9,59 +9,59 @@ const generateAccessToken = (id, roles) => {
   return jwt.sign(payload, process.env.JWT_SECRET, {expiresIn: 3600} )
 }
 
-
-class auth {
-  async registration(req, res) {
-    try {
-      const errors = validationResult(req);
-      if (!errors.isEmpty()) {
-        return res.status(400).json({errors: errors.array()});
-      }
-      const {username, email, password} = req.body;
-      let user = await User.findOne({email});
-      if (user) {
-        return res.status(400).json({msg: 'User already exists'});
-      }
-      const hashPassword = bcrypt.hashSync(password, 7);
-      const userRoles = await Role.findOne({value: 'USER'});
-      user = new User({username, email, password: hashPassword, roles: [userRoles.value]});
-      await user.save();
-      const token = generateAccessToken(user._id, user.roles);
-      return res.status(200).json({username: user.username, token})
-    } catch (e) {
-      console.log(e);
-      res.status(400).json({message: 'Registration error'});
+const registration = async (req, res) => {
+  try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json(errors.array());
     }
-  }
-
-  async login(req, res) {
-    try {
-      const {email, password} = req.body;
-      let user = await User.findOne({ email });
-      if (!user) {
-        return res.status(404).json({message: "User doesn't exist"});
-      }
-      const isMatch = await bcrypt.compareSync(password, user.password);
-      if (!isMatch) {
-        return res.status(401).json({message: 'Invalid Credentials'});
-      }
-      const token = generateAccessToken(user._id, user.roles);
-      return res.status(200).json({username: user.username, token});
-    } catch (e) {
-      console.log(e);
-      res.status(400).json({message: 'Login error'});
+    const {username, email, password} = req.body;
+    let user = await User.findOne({email});
+    if (user) {
+      return res.status(400).json([{msg: 'User already exists', param: 'email'}]);
     }
-  }
-
-  async getUsers(req, res) {
-    console.log(222222)
-    try {
-      const users = await User.find();
-      return res.status(200).json({users});
-    } catch (e) {
-      console.log(e);
-    }
+    const hashPassword = bcrypt.hashSync(password, 7);
+    const userRoles = await Role.findOne({value: 'USER'});
+    user = new User({username, email, password: hashPassword, roles: [userRoles.value]});
+    await user.save();
+    const token = generateAccessToken(user._id, user.roles);
+    return res.status(200).json({username: user.username, token})
+  } catch (e) {
+    console.log(e);
+    res.status(400).json({message: 'Registration error'});
   }
 }
 
-module.exports = new auth();
+const login = async (req, res) => {
+  try {
+    const {email, password} = req.body;
+    let user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({message: "User doesn't exist"});
+    }
+    const isMatch = await bcrypt.compareSync(password, user.password);
+    if (!isMatch) {
+      return res.status(401).json({message: 'Invalid Credentials'});
+    }
+    const token = generateAccessToken(user._id, user.roles);
+    return res.status(200).json({username: user.username, token});
+  } catch (e) {
+    console.log(e);
+    res.status(400).json({message: 'Login error'});
+  }
+}
+
+const getUsers = async (req, res) => {
+  try {
+    const users = await User.find();
+    return res.status(200).json({users});
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+module.exports = {
+  registration,
+  login,
+  getUsers,
+}

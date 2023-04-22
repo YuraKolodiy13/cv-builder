@@ -8,6 +8,7 @@ import {useParams} from "react-router-dom";
 import defaultImg from "../../assets/icons/no-avatar.jpg";
 import {ICvBuilderState} from "../../interfaces";
 import ConfirmModal from "../modals/ConfirmModal";
+import TextField from "@mui/material/TextField";
 
 interface ICvBuilderProps {
   canEdit: boolean;
@@ -145,10 +146,20 @@ const CvBuilder:React.FC<ICvBuilderProps> = ({canEdit, data}) => {
           open={isOpenConfirmModal}
           onBackgroundClick={() => setIsOpenConfirmModal(false)}
           onSubmitClick={() => id ? updateCV({...state, id}) : createCV(state)}
-          modalTitle='Saving cv'
+          modalTitle='Save CV?'
           cvName={state.cvName}
-          onCvNameChange={(e) => setState({...state, cvName: e.target.value})}
-        />
+        >
+          <div className="modal__row">
+            <div className="login__field modal__field w100">
+              <TextField
+                label="CV name"
+                type="text"
+                value={state.cvName}
+                onChange={(e) => setState({...state, cvName: e.target.value})}
+              />
+            </div>
+          </div>
+        </ConfirmModal>
       )}
     </div>
   );

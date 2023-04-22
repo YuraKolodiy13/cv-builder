@@ -1,15 +1,17 @@
 import React, {useState} from 'react';
 import './Header.scss'
-import LoginModal from "../modals/Auth/LoginModal/LoginModal";
-import RegisterModal from "../modals/Auth/RegisterModal/RegisterModal";
+import LoginModal from "../modals/Auth/LoginModal";
+import RegisterModal from "../modals/Auth/RegisterModal";
 import {useAppSelector} from "../../hooks/redux";
 import {NavLink} from 'react-router-dom';
+import {useActions} from "../../hooks/actions";
 
 const Header = () => {
 
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
   const user = useAppSelector(state => state.auth.user);
+  const {removeUser} = useActions();
 
   return (
     <>
@@ -34,15 +36,15 @@ const Header = () => {
                   <span>{user.username}</span>
                 </li>
                 <li>
-                  <span>Logout</span>
+                  <span onClick={() => removeUser()}>Logout</span>
                 </li>
               </ul>
             : <ul>
                 <li>
-                  <span onClick={() => setIsLoginModalOpen(true)}>Увійти</span>
+                  <span onClick={() => setIsLoginModalOpen(true)}>Sign In</span>
                 </li>
                 <li>
-                  <span onClick={() => setIsRegisterModalOpen(true)}>Реєстрація</span>
+                  <span onClick={() => setIsRegisterModalOpen(true)}>Sign Up</span>
                 </li>
               </ul>
           }
