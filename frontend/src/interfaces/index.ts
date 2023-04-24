@@ -54,9 +54,11 @@ export interface IAuthProps {
   setIsModalOpen: (b: boolean) => void;
 }
 
-export interface ISetState {
-  setState: (p: { general: IGeneral; avatar: string | ArrayBuffer; experience: IExperience[]; info: IInfo[] }) => void
+export interface ISetCvBuilderState {
+  (state: ICvBuilderState): void
 }
-export interface SearchFunc {
-  (source: string, subString: string): boolean;
+export interface ICvQuery {
+  limit: number;
+  page: number;
+  sort?: string;
 }

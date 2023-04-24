@@ -17,7 +17,15 @@ import SaveIcon from '@mui/icons-material/Save';
 import PrintIcon from '@mui/icons-material/Print';
 import ShareIcon from '@mui/icons-material/Share';
 import {Rating} from "@mui/material";
-import {ICvBuilderState, IExperience, IGeneral, IInfo, IInfoItem} from '../../interfaces';
+import {ICvBuilderState, IInfo, IInfoItem, ISetCvBuilderState} from '../../interfaces';
+import {
+  addItems,
+  handleElementsState,
+  handleItemsState,
+  onDragEndElements,
+  onDragEndItems,
+  removeItem
+} from "../../utils";
 
 const actions = [
   { icon: <SaveIcon />, name: 'Save' },
@@ -32,7 +40,7 @@ const initialItem = {
 
 interface IInfoProps {
   state: ICvBuilderState;
-  setState: (p: { cvName: string; general: IGeneral; avatar: string | ArrayBuffer; experience: IExperience[]; info: IInfo[] }) => void;
+  setState:  ISetCvBuilderState;
   editMode: boolean;
 }
 
@@ -41,7 +49,6 @@ const Info: React.FC<IInfoProps> = ({state, setState, editMode}) => {
   const {info, avatar} = state;
   const [open, setOpen] = useState<boolean>(false);
   const [color, setColor] = useState<string>('#8a2be2');
-
 
   const handleFileChange = (e:React.ChangeEvent<HTMLInputElement>) => {
     const input = e.target;
@@ -55,57 +62,6 @@ const Info: React.FC<IInfoProps> = ({state, setState, editMode}) => {
       reader.readAsDataURL(input.files[0]);
     }
   };
-
-  const handleElementsState = (e: React.ChangeEvent<HTMLInputElement>, i: number) => {
-    const newItems = {...info[i]};
-    newItems.title = e.target.value;
-    const newState = [...info.slice(0, i), newItems, ...info.slice(i + 1)];
-    setState({...state, info: newState});
-  }
-
-  const handleItemsState = (e: React.ChangeEvent<HTMLInputElement> | React.SyntheticEvent<Element, Event>, i: number, j: number, name: keyof Omit<IInfoItem, 'id'>) => {
-    const newItems = JSON.parse(JSON.stringify(info[i]));
-    newItems.items[j][name] = (e.target as HTMLInputElement).value;
-    const newState = [...info.slice(0, i), newItems, ...info.slice(i + 1)];
-    setState({...state, info: newState});
-  }
-
-  const addItems = (i: number) => {
-    const newItems = {...info[i]};
-    newItems.items = [...newItems.items, {id: newItems.items.length + 1, ...initialItem}]
-    const newState = [...info.slice(0, i), newItems, ...info.slice(i + 1)]
-    setState({...state, info: newState});
-  }
-
-
-  const removeItem = (i: number, id: number) => {
-    const newItems = {...info[i]};
-    newItems.items = newItems.items.filter((item: IInfoItem) => item.id !== id);
-    const newState = [...info.slice(0, i), newItems, ...info.slice(i + 1)]
-    setState({...state, info: newState});
-  }
-
-  const onDragEndElements = (result: DropResult) => {
-    const {source, destination} = result;
-    const copiedItems = [...info];
-    const [removed] = copiedItems.splice(source.index, 1);
-    copiedItems.splice(destination!.index, 0, removed);
-    setState({...state, info: copiedItems});
-  }
-
-
-  const onDragEndItems = (result: DropResult, i: number) => {
-    const {source, destination} = result;
-    if(destination){
-      const newItems = {...info[i]};
-      const copiedItems = [...newItems.items];
-      const [removed] = copiedItems.splice(source.index, 1);
-      copiedItems.splice(destination.index, 0, removed);
-      newItems.items = copiedItems;
-      const newState = [...info.slice(0, i), newItems, ...info.slice(i + 1)];
-      setState({...state, info: newState});
-    }
-  }
 
 
   return (
@@ -141,7 +97,7 @@ const Info: React.FC<IInfoProps> = ({state, setState, editMode}) => {
           />
         </label>
       </div>
-      <DragDropContext onDragEnd={onDragEndElements}>
+      <DragDropContext onDragEnd={((result: DropResult) => onDragEndElements(result, setState, state, 'info'))}>
         <Droppable droppableId="info">
           {(provided: DroppableProvided) => (
             <div
@@ -169,12 +125,12 @@ const Info: React.FC<IInfoProps> = ({state, setState, editMode}) => {
                         <input
                           type="text"
                           value={item.title}
-                          onChange={(e) => handleElementsState(e, i)}
+                          onChange={(e) => handleElementsState(e, i, setState, state, 'info')}
                           placeholder='Enter value'
                           readOnly={!editMode}
                         />
                       </h2>
-                      <DragDropContext onDragEnd={(result) => onDragEndItems(result, i)}>
+                      <DragDropContext onDragEnd={(result: DropResult) => onDragEndItems(result, i, setState, state, 'info')}>
                         <Droppable droppableId={item.title}>
                           {(provided: DroppableProvided) => (
                             <div
@@ -202,7 +158,7 @@ const Info: React.FC<IInfoProps> = ({state, setState, editMode}) => {
                                         <input
                                           type="text"
                                           value={el.title}
-                                          onChange={(e) => handleItemsState(e, i, j, 'title')}
+                                          onChange={(e) => handleItemsState(e, i, j, 'title', setState, state, 'info')}
                                           placeholder='Enter value'
                                           readOnly={!editMode}
                                         />
@@ -211,19 +167,19 @@ const Info: React.FC<IInfoProps> = ({state, setState, editMode}) => {
                                         {item.fieldType === 'rating'
                                           ? <Rating
                                               value={+el.details}
-                                              onChange={(e) => handleItemsState(e, i, j, 'details')}
+                                              onChange={(e) => handleItemsState(e, i, j, 'details', setState, state, 'info')}
                                             />
                                           : <input
                                               type="text"
                                               value={el.details}
-                                              onChange={(e) => handleItemsState(e, i, j, 'details')}
+                                              onChange={(e) => handleItemsState(e, i, j, 'details', setState, state, 'info')}
                                               placeholder='Enter value'
                                               readOnly={!editMode}
                                             />
                                         }
 
                                       </p>
-                                      <div className="remove" onClick={() => removeItem(i, el.id)}>
+                                      <div className="remove" onClick={() => removeItem(i, el.id, setState, state, 'info')}>
                                         <img src={deleteImg} alt=""/>
                                       </div>
                                     </div>
@@ -235,7 +191,7 @@ const Info: React.FC<IInfoProps> = ({state, setState, editMode}) => {
                           )}
                         </Droppable>
                       </DragDropContext>
-                      <div className="addMore" onClick={() => addItems(i)}>
+                      <div className="addMore" onClick={() => addItems(i, setState, state, 'info', initialItem)}>
                         <span>Add more {item.title} +</span>
                       </div>
                     </div>

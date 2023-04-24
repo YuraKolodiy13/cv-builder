@@ -10,11 +10,19 @@ import {
 } from "react-beautiful-dnd";
 import reorderImg from "../../assets/icons/reorder.svg";
 import deleteImg from "../../assets/icons/delete.svg";
-import {ICvBuilderState, IExperience, IExperienceItem, IGeneral, IInfo} from '../../interfaces';
+import {ICvBuilderState, IExperience, IExperienceItem, ISetCvBuilderState} from '../../interfaces';
+import {
+  addItems,
+  handleElementsState,
+  handleItemsState,
+  onDragEndElements,
+  onDragEndItems,
+  removeItem
+} from "../../utils";
 
 interface IExperienceProps {
   state: ICvBuilderState;
-  setState: (p: { cvName: string; general: IGeneral; avatar: string | ArrayBuffer; experience: IExperience[]; info: IInfo[] }) => void;
+  setState: ISetCvBuilderState;
   editMode: boolean;
 }
 
@@ -26,20 +34,6 @@ const Experience: React.FC<IExperienceProps> = ({state, setState, editMode}) => 
     setState({...state, general: {...general, [e.target.name]: e.target.value}})
   }
 
-  const handleElementsState = (e: React.ChangeEvent<HTMLInputElement>, i: number) => {
-    const newItems = {...experience[i]};
-    newItems.title = e.target.value;
-    const newState = [...experience.slice(0, i), newItems, ...experience.slice(i + 1)]
-    setState({...state, experience: newState});
-  }
-
-  const handleItemsState = (e: React.ChangeEvent<HTMLInputElement>, i: number, j: number, name: keyof Omit<IExperienceItem, 'id'>) => {
-    const newItems = {...experience[i]};
-    newItems.items[j][name] = e.target.value;
-    const newState = [...experience.slice(0, i), newItems, ...experience.slice(i + 1)]
-    setState({...state, experience: newState})
-  }
-
   const initialItem = {
     position: 'Your Designation (E.g. Software Engineer)',
     company: 'Company Name',
@@ -47,46 +41,6 @@ const Experience: React.FC<IExperienceProps> = ({state, setState, editMode}) => 
     year: 'Year'
   }
 
-  const addItems = (i: number) => {
-    const newItems = {...experience[i]};
-    newItems.items = [...newItems.items, {id: newItems.items.length + 1, ...initialItem}];
-    const newState = [...experience.slice(0, i), newItems, ...experience.slice(i + 1)];
-    setState({...state, experience: newState})
-  }
-
-
-  const removeItem = (i: number, id: number) => {
-    const newItems = {...experience[i]};
-    newItems.items = newItems.items.filter(item => item.id !== id);
-    const newState = [...experience.slice(0, i), newItems, ...experience.slice(i + 1)]
-    setState({...state, experience: newState})
-  }
-
-  const addSection = () => {
-
-  }
-
-  const onDragEndElements = (result: DropResult) => {
-    const {source, destination} = result;
-    const copiedItems = [...experience];
-    const [removed] = copiedItems.splice(source.index, 1);
-    copiedItems.splice(destination!.index, 0, removed);
-    setState({...state, experience: copiedItems})
-  }
-
-
-  const onDragEndItems = (result: DropResult, i: number) => {
-    const {source, destination} = result;
-    if(destination){
-      const newItems = {...experience[i]};
-      const copiedItems = [...newItems.items];
-      const [removed] = copiedItems.splice(source.index, 1);
-      copiedItems.splice(destination.index, 0, removed);
-      newItems.items = copiedItems;
-      const newState = [...experience.slice(0, i), newItems, ...experience.slice(i + 1)]
-      setState({...state, experience: newState})
-    }
-  }
 
   return (
     <div className='experience'>
@@ -124,7 +78,7 @@ const Experience: React.FC<IExperienceProps> = ({state, setState, editMode}) => 
       </div>
 
 
-      <DragDropContext onDragEnd={onDragEndElements}>
+      <DragDropContext onDragEnd={((result: DropResult) => onDragEndElements(result, setState, state, 'experience'))}>
         <Droppable droppableId="experience">
           {(provided: DroppableProvided) => (
             <div
@@ -152,12 +106,12 @@ const Experience: React.FC<IExperienceProps> = ({state, setState, editMode}) => 
                         <input
                           type="text"
                           value={item.title}
-                          onChange={(e) => handleElementsState(e, i)}
+                          onChange={(e) => handleElementsState(e, i, setState, state, 'experience')}
                           placeholder='Enter value'
                           readOnly={!editMode}
                         />
                       </h2>
-                      <DragDropContext onDragEnd={(result) => onDragEndItems(result, i)}>
+                      <DragDropContext onDragEnd={(result: DropResult) => onDragEndItems(result, i, setState, state, 'experience')}>
                         <Droppable droppableId={item.title}>
                           {(provided: DroppableProvided) => (
                             <div
@@ -185,7 +139,7 @@ const Experience: React.FC<IExperienceProps> = ({state, setState, editMode}) => 
                                         <input
                                           type="text"
                                           value={el.position}
-                                          onChange={(e) => handleItemsState(e, i, j, 'position')}
+                                          onChange={(e) => handleItemsState(e, i, j, 'position', setState, state, 'experience')}
                                           placeholder='Enter value'
                                           readOnly={!editMode}
                                         />
@@ -194,7 +148,7 @@ const Experience: React.FC<IExperienceProps> = ({state, setState, editMode}) => 
                                         <input
                                           type="text"
                                           value={el.company}
-                                          onChange={(e) => handleItemsState(e, i, j, 'company')}
+                                          onChange={(e) => handleItemsState(e, i, j, 'company', setState, state, 'experience')}
                                           placeholder='Enter value'
                                         />
                                       </p>
@@ -202,12 +156,12 @@ const Experience: React.FC<IExperienceProps> = ({state, setState, editMode}) => 
                                         <input
                                           type="text"
                                           value={el.description}
-                                          onChange={(e) => handleItemsState(e, i, j, 'description')}
+                                          onChange={(e) => handleItemsState(e, i, j, 'description', setState, state, 'experience')}
                                           placeholder='Enter value'
                                           readOnly={!editMode}
                                         />
                                       </p>
-                                      <div className="remove" onClick={() => removeItem(i, el.id)}>
+                                      <div className="remove" onClick={() => removeItem(i, el.id, setState, state, 'experience')}>
                                         <img src={deleteImg} alt=""/>
                                       </div>
                                     </div>
@@ -219,7 +173,7 @@ const Experience: React.FC<IExperienceProps> = ({state, setState, editMode}) => 
                           )}
                         </Droppable>
                       </DragDropContext>
-                      <div className="addMore" onClick={() => addItems(i)}>
+                      <div className="addMore" onClick={() => addItems(i, setState, state, 'experience', initialItem)}>
                         <span>Add more {item.title} +</span>
                       </div>
                     </div>

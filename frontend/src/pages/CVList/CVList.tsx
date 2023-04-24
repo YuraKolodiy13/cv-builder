@@ -1,17 +1,11 @@
 import React, {useState} from 'react';
 import TableComponent from "../../components/TableComponent/TableComponent";
 import {useDeleteCVMutation, useGetCVsQuery} from '../../store/cv/cv.api';
-import {ICvBuilder, IHeadCell} from "../../interfaces";
+import {ICvBuilder, ICvQuery, IHeadCell} from "../../interfaces";
 import ReviewImageBox from '../../components/ReviewImageBox/ReviewImageBox';
 import useTable from '../../hooks/useTable';
 import {ReactComponent as DeleteIcon} from "../../assets/icons/delete.svg";
 import ConfirmModal from "../../components/modals/ConfirmModal";
-
-interface IQuery {
-  limit: number;
-  page: number;
-  sort?: string;
-}
 
 const columns: IHeadCell[] = [
   {field: 'cvName', headerName: 'CV Name'},
@@ -31,13 +25,13 @@ const CvList = () => {
   const [currentRowId, setCurrentRowId] = useState<number | null>(null);
   const {tableQuery, handleRequestSort} = useTable(limit);
   const {setPage, rowsPerPage, orderBy, order, page} = tableQuery;
-  const query: IQuery = {
+  const query: ICvQuery = {
     page: tableQuery.page, limit: rowsPerPage
   }
   if(orderBy){
     query.sort = `${orderBy}:${order === 'asc' ? 1 : -1}`;
   }
-  const {data: rows = {}, isFetching} = useGetCVsQuery(query, {refetchOnMountOrArgChange: true});
+  const {data: rows = {total: 0, data: []}, isFetching} = useGetCVsQuery(query, {refetchOnMountOrArgChange: true});
 
   const handleRemoveCV = () => {
     if((rows.total - 1) / rowsPerPage === page){
@@ -50,7 +44,7 @@ const CvList = () => {
     <div>
       <TableComponent
         headCells={columns}
-        data={rows.data || []}
+        data={rows.data}
         fixedRight={['avatar']}
         total={rows.total}
         defaultPaginate={limit}

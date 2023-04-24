@@ -1,4 +1,10 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
+import {ICvBuilder, ICvBuilderState, ICvQuery} from "../../interfaces";
+
+interface ICvBuilderRes {
+  data: ICvBuilder[];
+  total: number;
+}
 
 export const cvApi = createApi({
   reducerPath: 'cv/api',
@@ -7,21 +13,21 @@ export const cvApi = createApi({
     baseUrl: 'http://localhost:5222/'
   }),
   endpoints: (build) => ({
-    createCV: build.mutation({
+    createCV: build.mutation<ICvBuilderState, ICvBuilderState>({
       query: (body) => ({
         url: 'cv',
         method: 'POST',
         body
       }),
     }),
-    getCVs: build.query({
+    getCVs: build.query<ICvBuilderRes, ICvQuery>({
       query: (params) => ({
         url: 'cv',
         params: params
       }),
       providesTags: () =>  ['CVs'],
     }),
-    getCV: build.query({
+    getCV: build.query<ICvBuilder, string>({
       query: (id) => ({
         url: `cv/${id}`,
       }),

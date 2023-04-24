@@ -6,7 +6,7 @@ import CvBuilder from "../../components/CVBuilder/CVBuilder";
 const ReviewCv = () => {
 
   const {id} = useParams();
-  const {data, isFetching} = useGetCVQuery(id, {refetchOnMountOrArgChange: true});
+  const {data, isFetching} = useGetCVQuery(id!, {refetchOnMountOrArgChange: true});
 
   if(isFetching) return <p>loading</p>
 
