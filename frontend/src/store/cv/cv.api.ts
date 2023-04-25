@@ -32,14 +32,14 @@ export const cvApi = createApi({
         url: `cv/${id}`,
       }),
     }),
-    updateCV: build.mutation({
+    updateCV: build.mutation<ICvBuilderState, ICvBuilder>({
       query: (body) => ({
-        url: `cv/${body.id}`,
+        url: `cv/${body._id}`,
         method: 'PUT',
         body
       }),
     }),
-    deleteCV: build.mutation({
+    deleteCV: build.mutation<ICvBuilderState, number>({
       query: (id) => ({
         url: `cv/${id}`,
         method: 'DELETE',

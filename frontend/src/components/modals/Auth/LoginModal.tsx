@@ -6,18 +6,19 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import {useSignInMutation} from "../../../store/auth/auth.api";
 import {useActions} from "../../../hooks/actions";
-import {IAuthProps} from "../../../interfaces";
+import {IAuthProps, ISignIn} from "../../../interfaces";
 
 const LoginModal: React.FC<IAuthProps> = ({open, setIsModalOpen}) => {
 
   const [signIn] = useSignInMutation();
   const {setUser} = useActions();
 
-  const [state, setState] = useState({email: '', password: ''});
+  const [state, setState] = useState<ISignIn>({email: '', password: ''});
   const [error, setError] = useState<string | null>(null);
 
   const submitLogin = async () => {
     const user = await signIn(state);
+    console.log(user, 'user')
     if ('error' in user) {
       // @ts-ignore
       const {message} = user.error.data;

@@ -37,7 +37,7 @@ const CvList = () => {
     if((rows.total - 1) / rowsPerPage === page){
       setPage(Math.ceil((rows.total - 1) / rowsPerPage) - 1);
     }
-    deleteCV(currentRowId);
+    deleteCV(currentRowId!);
   }
 
   return (
@@ -57,8 +57,8 @@ const CvList = () => {
           'general.name': (row: ICvBuilder) => <span>{row.general.name}</span>,
           'general.profession': (row: ICvBuilder) => <span>{row.general.profession}</span>,
           'general.summary': (row: ICvBuilder) => <span>{row.general.summary}</span>,
-          createdAt: (row: ICvBuilder) => <span>{new Date(row.createdAt).toLocaleDateString('en-GB')}</span>,
-          updatedAt: (row: ICvBuilder) => <span>{new Date(row.updatedAt).toLocaleDateString('en-GB')}</span>,
+          createdAt: (row: ICvBuilder) => <span>{new Date(row.createdAt!).toLocaleDateString('en-GB')}</span>,
+          updatedAt: (row: ICvBuilder) => <span>{new Date(row.updatedAt!).toLocaleDateString('en-GB')}</span>,
           actions: (row: ICvBuilder) => <span onClick={() => setCurrentRowId(row._id)}><DeleteIcon/></span>,
         }}
         options={{

@@ -145,7 +145,7 @@ const CvBuilder:React.FC<ICvBuilderProps> = ({canEdit, data}) => {
         <ConfirmModal
           open={isOpenConfirmModal}
           onBackgroundClick={() => setIsOpenConfirmModal(false)}
-          onSubmitClick={() => id ? updateCV({...state, id}) : createCV(state)}
+          onSubmitClick={() => id ? updateCV({...state, _id: +id}) : createCV(state)}
           modalTitle='Save CV?'
           cvName={state.cvName}
         >

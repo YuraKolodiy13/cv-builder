@@ -35,7 +35,6 @@ const RegisterModal: React.FC<IAuthProps> = ({open, setIsModalOpen}) => {
 
   const onHandleSubmit = async () => {
     const user = await signUp(state);
-    console.log(user, 'user')
     if ('error' in user) {
       // @ts-ignore
       setError(user.error.data.reduce((acc, item) => {

@@ -1,4 +1,5 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
+import {IAuthResponse, ISignIn, ISignUp} from "../../interfaces";
 
 export const authApi = createApi({
   reducerPath: 'auth/api',
@@ -7,7 +8,7 @@ export const authApi = createApi({
     baseUrl: 'http://localhost:5222/auth/'
   }),
   endpoints: (build) => ({
-    signIn: build.mutation({
+    signIn: build.mutation<IAuthResponse, ISignIn>({
       query: (body) => ({
         url: 'login',
         method: 'POST',
@@ -15,7 +16,7 @@ export const authApi = createApi({
       }),
       invalidatesTags: ['Users']
     }),
-    signUp: build.mutation({
+    signUp: build.mutation<IAuthResponse, ISignUp>({
       query: (body) => ({
         url: 'registration',
         method: 'POST',

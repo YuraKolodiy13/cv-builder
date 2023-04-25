@@ -45,8 +45,8 @@ export interface ICvBuilderState {
 
 export interface ICvBuilder extends ICvBuilderState {
   _id: number;
-  createdAt: string;
-  updatedAt: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface IAuthProps {
@@ -61,4 +61,18 @@ export interface ICvQuery {
   limit: number;
   page: number;
   sort?: string;
+}
+
+export interface ISignIn {
+  email: string;
+  password: string;
+}
+
+export interface ISignUp extends ISignIn {
+  username: string;
+}
+
+export interface IAuthResponse {
+  username: string;
+  token: string;
 }
