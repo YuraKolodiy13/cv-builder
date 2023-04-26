@@ -1,3 +1,11 @@
 {
-  "buildCommand": "cd frontend"
+  "buildCommand": "cd client && npm install && ./node_modules/vite/bin/vite.js build",
+  "outputDirectory": "client/dist",
+  "framework": "vite",
+  "redirects": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/api/index.js"
+    }
+  ]
 }
