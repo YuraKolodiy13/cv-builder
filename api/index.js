@@ -19,8 +19,8 @@ app.use(express.urlencoded({limit: '5mb'}));
 app.use(cors(corsSettings));
 app.use(express.json());
 
-app.use("/auth", authRouter);
-app.use("/cv", cvRouter);
+app.use("/api/auth", authRouter);
+app.use("/api/cv", cvRouter);
 
 
 const start = async () => {
