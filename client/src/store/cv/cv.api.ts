@@ -6,11 +6,13 @@ interface ICvBuilderRes {
   total: number;
 }
 
+const API = import.meta.env.VITE_API_BASE_URL;
+
 export const cvApi = createApi({
   reducerPath: 'cv/api',
   tagTypes: ['CVs'],
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:5222/'
+    baseUrl: API
   }),
   endpoints: (build) => ({
     createCV: build.mutation<ICvBuilderState, ICvBuilderState>({
