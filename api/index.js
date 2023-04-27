@@ -25,7 +25,7 @@ app.use("/api/cv", cvRouter);
 
 const start = async () => {
   try {
-    await mongoose.connect(`mongodb+srv://yukolodiy:ATgySrv7rIy0NnYI@cluster0.aumx1dw.mongodb.net/?retryWrites=true&w=majority`);
+    await mongoose.connect(process.env.MONGO_URL);
     app.listen(PORT, () => console.log(`server started on port ${PORT}`));
   } catch (e) {
     console.log(e)
