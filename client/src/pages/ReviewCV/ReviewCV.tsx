@@ -11,7 +11,7 @@ const ReviewCv = () => {
   if(isFetching) return <p>loading</p>
 
   return (
-    <CvBuilder canEdit={false} data={data}/>
+    <CvBuilder canEdit={false} data={data!}/>
   );
 };
 
