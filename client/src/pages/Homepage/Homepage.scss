@@ -1,0 +1,183 @@
+.Homepage{
+  .hero{
+    display: flex;
+  }
+  .section__steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 4em;
+
+    @media (max-width: 868px) {
+      display: grid;
+      grid-template-columns: repeat(1, 1fr);
+      grid-gap: 0;
+      width: 60vw;
+      margin: 0 auto;
+    }
+  }
+  .card {
+    text-align: center;
+    padding: 3em 1em;
+
+    &--dark {
+      background: var(--color-primary-500);
+      color: #fff;
+    }
+
+    &--withShadow {
+      border-radius: 9px;
+      box-shadow: 0 1.7px 3.6px rgba(0, 0, 0, 0.02),
+      0 0.8px 10px rgba(0, 0, 0, 0.031),
+      0 3.1px 24.1px rgba(0, 0, 0, 0.043),
+      0 100px 80px rgba(0, 0, 0, 0.07);
+    }
+
+    &__iconContainer {
+      position: relative;
+    }
+
+    &__iconAttribution {
+      display: none;
+      position: absolute;
+      z-index: 2;
+      top: -69px;
+      background-color: #000;
+      color: #fff;
+      width: 17rem;
+      padding: .5rem;
+      border-radius: 6px;
+    }
+
+    &__icon {
+      position: absolute;
+      width: 3.5rem;
+
+      &:hover ~ .card__iconAttribution {
+        display: block;
+      }
+    }
+
+    &__iconShape {
+      background: var(--color-primary-500);
+      width: 8.5rem;
+      height: 8.5rem;
+      box-shadow: 0 6px 20px 0 rgba(16, 39, 112,.3);
+      animation: border-transform 6s linear infinite;
+      margin: 0 auto;
+    }
+
+    @keyframes border-transform{
+      0%,100% { border-radius: 59% 41% 56% 44% / 60% 58% 42% 40%; }
+      14% { border-radius: 59% 41% 56% 44% / 45% 40% 60% 55%; }
+      28% { border-radius: 66% 34% 66% 34% / 52% 44% 56% 48%; }
+      42% { border-radius: 53% 47% 57% 43% / 39% 40% 60% 61%; }
+      56% { border-radius: 56% 44% 60% 40% / 54% 39% 61% 46%; }
+      70% { border-radius: 55% 45% 37% 63% / 45% 57% 43% 55%; }
+      84% { border-radius: 59% 41% 56% 44% / 45% 41% 59% 55%; }
+    }
+
+    &__iconShape2 {
+      background: var(--color-primary-500);
+      width: 8.5rem;
+      height: 8.5rem;
+      box-shadow: 0 6px 20px 0 rgba(16, 39, 112,.3);
+      animation: border-transform2 6s linear infinite;
+    }
+
+    @keyframes border-transform2{
+      0%,100% { border-radius: 63% 37% 54% 46% / 55% 48% 52% 45%; }
+      14% { border-radius: 40% 60% 54% 46% / 49% 60% 40% 51%; }
+      28% { border-radius: 54% 46% 38% 62% / 49% 70% 30% 51%; }
+      42% { border-radius: 61% 39% 55% 45% / 61% 38% 62% 39%; }
+      56% { border-radius: 61% 39% 67% 33% / 70% 50% 50% 30%; }
+      70% { border-radius: 50% 50% 34% 66% / 56% 68% 32% 44%; }
+      84% { border-radius: 46% 54% 50% 50% / 35% 61% 39% 65%; }
+    }
+
+    &__iconShape3 {
+      background: var(--color-primary-500);
+      width: 8.5rem;
+      height: 8.5rem;
+      box-shadow: 0 6px 20px 0 rgba(16, 39, 112,.3);
+      animation: border-transform3 6s linear infinite;
+    }
+
+    @keyframes border-transform3{
+      0%,100% { border-radius: 58% 42% 61% 39% / 41% 33% 67% 59%; }
+      14% { border-radius: 58% 42% 46% 54% / 61% 44% 56% 39%; }
+      28% { border-radius: 58% 42% 46% 54% / 42% 34% 66% 58%; }
+      42% { border-radius: 58% 42% 34% 66% / 49% 50% 50% 51%; }
+      56% { border-radius: 58% 42% 41% 59% / 40% 45% 55% 60%; }
+      70% { border-radius: 64% 36% 41% 59% / 59% 51% 49% 41%; }
+      84% { border-radius: 46% 54% 50% 50% / 35% 61% 39% 65%; }
+    }
+
+    &__title {
+      font-weight: bold;
+      font-size: 1.5em;
+      margin: 1em 0;
+    }
+
+    &__title {
+      font-weight: bold;
+      font-size: 1.5em;
+    }
+
+    &__body {
+      margin: 1rem 0;
+    }
+
+    &__iconBox {
+      position: relative;
+      box-shadow: 0 1.2px 2.9px rgba(0, 0, 0, 0.018),
+      0 2.7px 6.6px rgba(0, 0, 0, 0.026),
+      0 4.9px 11.9px rgba(0, 0, 0, 0.032),
+      0 8.2px 19.8px rgba(0, 0, 0, 0.038),
+      0 13.5px 32.5px rgba(0, 0, 0, 0.044),
+      0 23.6px 56.9px rgba(0, 0, 0, 0.052),
+      0 51px 123px rgba(0, 0, 0, 0.07);
+      width: 5rem;
+      height: 5rem;
+      border-radius: 5px;
+      margin: .5rem auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    &__planIcon {
+      width: 2.5rem;
+
+      &:hover ~ .card__iconAttribution {
+        display: block;
+      }
+    }
+
+    &__price {
+      font-size: 3rem;
+      font-weight: 500;
+    }
+
+    &__list {
+      list-style-type: none;
+      display: inline-block;
+      margin-bottom: .5rem;
+    }
+
+    &__listItem {
+      text-align: left;
+
+      i {
+        color: var(--color-primary-500);
+      }
+    }
+
+    &__listItem--light {
+      text-align: left;
+
+      i {
+        color: #fff;
+      }
+    }
+  }
+}

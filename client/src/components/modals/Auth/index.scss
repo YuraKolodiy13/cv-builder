@@ -4,6 +4,20 @@
   max-width: 300px;
   margin: 0 auto;
   width: 100%;
+  .auth__caption{
+    font-weight: 600;
+    text-align: center;
+    margin: 1rem 0;
+    a{
+      color: #9a0f98;
+      text-decoration: underline;
+      cursor: pointer;
+      transition: .3s;
+      &:hover{
+        text-decoration: none;
+      }
+    }
+  }
   .form__field{
     position: relative;
     margin: 0 0 40px;

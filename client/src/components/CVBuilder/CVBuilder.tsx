@@ -8,6 +8,8 @@ import {useParams} from "react-router-dom";
 import {ICvBuilderState} from "../../interfaces";
 import ConfirmModal from "../modals/ConfirmModal";
 import TextField from "@mui/material/TextField";
+import {useAppSelector} from "../../hooks/redux";
+import {useActions} from "../../hooks/actions";
 
 interface ICvBuilderProps {
   canEdit: boolean;
@@ -23,6 +25,12 @@ const CvBuilder:React.FC<ICvBuilderProps> = ({canEdit, data}) => {
   const [editMode, setEditMode] = useState(canEdit);
   const [isOpenConfirmModal, setIsOpenConfirmModal] = useState(false);
   const [state, setState] = useState<ICvBuilderState>(data);
+  const user = useAppSelector(state => state.auth.user);
+  const {setIsAuthModalOpen} = useActions();
+
+  const handleConfirm = () => {
+    user ? setIsOpenConfirmModal(true) : setIsAuthModalOpen(true);
+  }
 
   return (
     <div className={`CVBuilder ${editMode ? 'CVBuilder-editMode' : ''}`}>
@@ -38,7 +46,7 @@ const CvBuilder:React.FC<ICvBuilderProps> = ({canEdit, data}) => {
 
       {editMode && (
         <Button
-          onClick={() => setIsOpenConfirmModal(true)}
+          onClick={handleConfirm}
           variant="contained"
           color='primary'
         >

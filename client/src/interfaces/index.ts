@@ -50,7 +50,7 @@ export interface ICvBuilder extends ICvBuilderState {
 }
 
 export interface IAuthProps {
-  open: boolean;
+  open?: boolean;
   setIsModalOpen: (b: boolean) => void;
 }
 

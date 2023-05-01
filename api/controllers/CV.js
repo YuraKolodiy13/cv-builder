@@ -3,7 +3,7 @@ const CV = require('../models/CV')
 const createCV = async (req, res) => {
 
   try {
-    const {cvName, username, info, experience, general, avatar} = req.body;
+    const {cvName, info, experience, general, avatar} = req.body;
 
     const cv = new CV({
       cvName,
@@ -11,10 +11,10 @@ const createCV = async (req, res) => {
       experience,
       general,
       avatar,
-      username: 'Your'
+      account: req.user.id
     });
-    await cv.save();
-    return res.status(200).json({message: 'You have successfully created cv'});
+    const createdCv = await cv.save();
+    return res.status(200).json(createdCv);
   }catch (e) {
     console.log(e);
     res.status(400).json({message: 'createCV error'});
@@ -26,10 +26,11 @@ const getCVs = async (req, res) => {
 
   try {
     const {page, limit, sort} = req.query;
+    const filters = req.user.roles.includes('ADMIN') ? {} : {account: req.user.id};
 
     const [key, value] = (sort || 'createdAt:-1').split(':');
-    const cvs = await CV.find().collation({'locale':'en'}).sort({[key]: [value]}).skip(page * limit).limit(limit);
-    const cvsCount = await CV.count()
+    const cvs = await CV.find(filters).collation({'locale':'en'}).sort({[key]: [value]}).skip(page * limit).limit(limit);
+    const cvsCount = await CV.count(filters);
 
     return res.status(200).json({
       data: cvs,

@@ -2,6 +2,7 @@ import {createSlice} from "@reduxjs/toolkit";
 
 const initialState = {
   user: JSON.parse(localStorage.getItem('user') || 'null'),
+  isAuthModalOpen: false
 };
 
 export const authSlice = createSlice({
@@ -15,6 +16,9 @@ export const authSlice = createSlice({
     removeUser(state, action){
       state.user = action.payload;
       localStorage.removeItem('user');
+    },
+    setIsAuthModalOpen(state, action){
+      state.isAuthModalOpen = action.payload;
     }
   }
 })

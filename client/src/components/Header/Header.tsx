@@ -1,18 +1,17 @@
-import React, {useState} from 'react';
+import React from 'react';
 import './Header.scss'
-import LoginModal from "../modals/Auth/LoginModal";
-import RegisterModal from "../modals/Auth/RegisterModal";
 import {useAppSelector} from "../../hooks/redux";
 import {NavLink, useNavigate} from 'react-router-dom';
 import {useActions} from "../../hooks/actions";
+import Auth from "../modals/Auth/Auth";
+import Button from '@mui/material/Button/Button';
 
 const Header = () => {
 
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
-  const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
+  const isAuthModalOpen = useAppSelector(state => state.auth.isAuthModalOpen);
   const user = useAppSelector(state => state.auth.user);
   const navigate = useNavigate();
-  const {removeUser} = useActions();
+  const {removeUser, setIsAuthModalOpen} = useActions();
 
   const logoutUser = async () => {
     await removeUser();
@@ -30,9 +29,11 @@ const Header = () => {
             <li>
               <NavLink to='/create-cv'>Create CV</NavLink>
             </li>
-            <li>
-              <NavLink to='/cv-list'>Cv List</NavLink>
-            </li>
+            {user && (
+              <li>
+                <NavLink to='/cv-list'>Cv List</NavLink>
+              </li>
+            )}
             <li>
               <NavLink to='/faq'>FAQ</NavLink>
             </li>
@@ -47,27 +48,20 @@ const Header = () => {
                   <span onClick={logoutUser}>Logout</span>
                 </li>
               </ul>
-            : <ul>
-                <li>
-                  <span onClick={() => setIsLoginModalOpen(true)}>Sign In</span>
-                </li>
-                <li>
-                  <span onClick={() => setIsRegisterModalOpen(true)}>Sign Up</span>
-                </li>
-              </ul>
+            : <Button onClick={() => setIsAuthModalOpen(true)} variant='outlined'>
+                Sign In
+              </Button>
           }
         </div>
       </nav>
 
+      {isAuthModalOpen && (
+        <Auth
+          open={isAuthModalOpen}
+          setIsModalOpen={setIsAuthModalOpen}
+        />
+      )}
 
-      <LoginModal
-        open={isLoginModalOpen}
-        setIsModalOpen={setIsLoginModalOpen}
-      />
-      <RegisterModal
-        open={isRegisterModalOpen}
-        setIsModalOpen={setIsRegisterModalOpen}
-      />
     </>
   )
 };
