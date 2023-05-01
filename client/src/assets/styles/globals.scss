@@ -5,9 +5,6 @@ body {
   margin: 0;
   font-family: 'Fira Sans', sans-serif;
   font-size: 14px;
-  @media (max-width: 479px) {
-    background-color: var(--color-neutrals-0);
-  }
 
   .container {
     padding: 0 16px;
@@ -21,22 +18,23 @@ body {
 
   .App{
     background-color: var(--color-neutrals-0);
-    padding-top: 80px;
+    padding: 80px 0 40px;
+    margin: 0 auto;
+    font-family: 'Fira Sans', sans-serif;
+    font-weight: 400;
+    max-width: 1200px;
+  }
+
+  h1{
+    font-size: 32px;
+    margin: 0 0 24px;
+    font-weight: 700;
   }
 
   p{
     font-size: 14px;
     line-height: 20px;
     margin: 0;
-  }
-
-  .text{
-    font-size: 16px;
-    line-height: 24px;
-    @media (max-width: 991px) {
-      font-size: 14px;
-      line-height: 22px;
-    }
   }
 
   .heading{
@@ -72,26 +70,6 @@ body {
     }
   }
 
-  .border{
-    border: 1px solid var(--color-neutrals-400);
-    box-sizing: border-box;
-  }
-  .border-b{
-    border-bottom: 1px solid var(--color-neutrals-400);
-  }
-  .MuiTooltip-arrow{
-    color: var(--color-neutrals-1000);
-  }
-
-  .MuiTooltip-tooltip{
-    background-color: var(--color-neutrals-1000);
-    font-size: 14px;
-    line-height: 20px;
-    padding: 8px 16px;
-    b{
-      margin-left: 5px;
-    }
-  }
 
   .MuiList-root {
     overflow: inherit;
@@ -100,12 +78,6 @@ body {
       color: var(--color-neutrals-1000);
     }
   }
-
-  .MuiSelect-selectMenu{
-    display: flex;
-    align-items: center;
-  }
-
   .MuiButton-root,
   .MuiInputBase-root,
   .MuiMenuItem-root,
@@ -113,16 +85,6 @@ body {
   .MuiTypography-body1{
     font-family: 'Fira Sans', sans-serif;
     text-transform: none;
-  }
-
-  .heading-wrap{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 12px;
-    @media (max-width: 767px) {
-      display: block;
-    }
   }
 
   .w-50{
@@ -144,24 +106,6 @@ body {
     align-items: center;
   }
 
-  .arrow{
-    width: 7px;
-    height: 7px;
-    border-right: 2px solid var(--color-primary-500);
-    border-bottom: 2px solid var(--color-primary-500);
-    transform: rotate(45deg);
-    transition: .3s;
-    @media (max-width: 479px) {
-      width: 5px;
-      height: 5px;
-    }
-  }
-  .Mui-expanded > .MuiTreeItem-content{
-    .arrow{
-      transform: rotate(-135deg);
-      border-color: var(--color-neutrals-1000);
-    }
-  }
   .MuiButton-textPrimary,
   .MuiTypography-colorPrimary,
   .MuiPickersDay-current{
@@ -177,57 +121,6 @@ body {
     color: initial;
     &:hover{
       background-color: transparent;
-    }
-  }
-
-  .remove-icon{
-    color: darkred;
-    padding: 0 5px;
-    margin-left: 5px;
-    cursor: pointer;
-    transition: .3s;
-    &:hover{
-      font-weight: bold;
-    }
-  }
-
-  .breadcrumbs{
-    padding: 0;
-    margin: 0 0 24px;
-    list-style: none;
-    display: flex;
-    li{
-      white-space: nowrap;
-      max-width: 275px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      &:not(:last-of-type){
-        padding-right: 25px;
-        margin-right: 16px;
-        position: relative;
-        &::after{
-          content: '';
-          position: absolute;
-          right: 2px;
-          top: 50%;
-          transform: translateY(-50%) rotate(45deg);
-          border-top: 2px solid #000;
-          border-right: 2px solid #000;
-          width: 7px;
-          height: 7px;
-        }
-      }
-      a{
-        text-decoration: none;
-        color: var(--color-primary-500);
-      }
-    }
-    @media (max-width: 767px) {
-      flex-wrap: wrap;
-      li{
-        font-size: 12px;
-        margin-bottom: 5px;
-      }
     }
   }
 }

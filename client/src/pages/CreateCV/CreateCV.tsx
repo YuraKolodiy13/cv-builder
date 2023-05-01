@@ -39,6 +39,23 @@ const data: ICvBuilderState = {
           details: 3
         },
       ]
+    },
+    {
+      id: 3,
+      fieldType: 'rating',
+      title: 'Languages',
+      items: [
+        {
+          id: 1,
+          title: 'English',
+          details: 4
+        },
+        {
+          id: 2,
+          title: 'Ukrainian',
+          details: 5
+        },
+      ]
     }
   ],
   experience: [
@@ -80,7 +97,10 @@ const data: ICvBuilderState = {
 const CreateCv = () => {
 
   return (
-    <CvBuilder canEdit={true} data={data}/>
+    <>
+      <h1>Create CV</h1>
+      <CvBuilder canEdit={true} data={data}/>
+    </>
   );
 };
 

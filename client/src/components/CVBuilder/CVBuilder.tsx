@@ -10,6 +10,8 @@ import ConfirmModal from "../modals/ConfirmModal";
 import TextField from "@mui/material/TextField";
 import {useAppSelector} from "../../hooks/redux";
 import {useActions} from "../../hooks/actions";
+import clsx from "clsx";
+import './CVBuilder.scss';
 
 interface ICvBuilderProps {
   canEdit: boolean;
@@ -33,16 +35,7 @@ const CvBuilder:React.FC<ICvBuilderProps> = ({canEdit, data}) => {
   }
 
   return (
-    <div className={`CVBuilder ${editMode ? 'CVBuilder-editMode' : ''}`}>
-      {editMode && (
-        <Pdf targetRef={ref} filename="document.pdf">
-          {({toPdf} : {toPdf: any}) => (
-            <button onClick={toPdf} className="button">
-              Generate PDF
-            </button>
-          )}
-        </Pdf>
-      )}
+    <div className={clsx('CVBuilder', {'CVBuilder-editMode': editMode})}>
 
       {editMode && (
         <Button
@@ -57,14 +50,27 @@ const CvBuilder:React.FC<ICvBuilderProps> = ({canEdit, data}) => {
         <Button
           onClick={() => setEditMode(!editMode)}
           variant="contained"
-          color='primary'
+          color='secondary'
         >
           {editMode ? 'Review' : 'Edit'} Mode
         </Button>
       )}
-      <div className="createCv" ref={ref}>
-        <Info state={state} setState={setState} editMode={editMode}/>
-        <Experience state={state} setState={setState} editMode={editMode}/>
+      <div className='createCv-wrapper'>
+        <div className="createCv" ref={ref}>
+          <Info state={state} setState={setState} editMode={editMode}/>
+          <Experience state={state} setState={setState} editMode={editMode}/>
+        </div>
+        <div className="createCv-tools">
+          {editMode && (
+            <Pdf targetRef={ref} filename="document.pdf">
+              {({toPdf} : {toPdf: any}) => (
+                <Button variant="contained" onClick={toPdf} className="button">
+                  Generate PDF
+                </Button>
+              )}
+            </Pdf>
+          )}
+        </div>
       </div>
 
       {isOpenConfirmModal && (

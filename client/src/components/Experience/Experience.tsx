@@ -133,9 +133,11 @@ const Experience: React.FC<IExperienceProps> = ({state, setState, editMode}) => 
                                       className={`item ${snapshot.isDragging ? 'active' : ''}`}
                                     >
                                       <h3>
-                                        <div className="reorder">
-                                          <img src={reorderImg} alt=""/>
-                                        </div>
+                                        {item.items.length > 1 && (
+                                          <div className="reorder">
+                                            <img src={reorderImg} alt=""/>
+                                          </div>
+                                        )}
                                         <input
                                           type="text"
                                           value={el.position}

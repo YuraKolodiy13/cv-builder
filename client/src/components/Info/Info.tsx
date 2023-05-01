@@ -10,12 +10,6 @@ import {
   DroppableProvided,
   DropResult
 } from "react-beautiful-dnd";
-import SpeedDial from '@mui/material/SpeedDial';
-import SpeedDialIcon from '@mui/material/SpeedDialIcon';
-import SpeedDialAction from '@mui/material/SpeedDialAction';
-import SaveIcon from '@mui/icons-material/Save';
-import PrintIcon from '@mui/icons-material/Print';
-import ShareIcon from '@mui/icons-material/Share';
 import {Rating} from "@mui/material";
 import {ICvBuilderState, IInfo, IInfoItem, ISetCvBuilderState} from '../../interfaces';
 import {
@@ -26,12 +20,7 @@ import {
   onDragEndItems,
   removeItem
 } from "../../utils";
-
-const actions = [
-  { icon: <SaveIcon />, name: 'Save' },
-  { icon: <PrintIcon />, name: 'Preview' },
-  { icon: <ShareIcon />, name: 'Share' },
-];
+import clsx from "clsx";
 
 const initialItem = {
   title: 'Info',
@@ -47,8 +36,7 @@ interface IInfoProps {
 const Info: React.FC<IInfoProps> = ({state, setState, editMode}) => {
 
   const {info, avatar} = state;
-  const [open, setOpen] = useState<boolean>(false);
-  const [color, setColor] = useState<string>('#8a2be2');
+  const [color, setColor] = useState<string>('#030303');
 
   const handleFileChange = (e:React.ChangeEvent<HTMLInputElement>) => {
     const input = e.target;
@@ -66,25 +54,6 @@ const Info: React.FC<IInfoProps> = ({state, setState, editMode}) => {
 
   return (
     <div className="info" style={{backgroundColor: color}}>
-      <SpeedDial
-        ariaLabel="SpeedDial"
-        icon={<SpeedDialIcon />}
-        onClose={() => setOpen(false)}
-        onOpen={() => setOpen(true)}
-        direction='down'
-        style={{position: 'absolute', top: 16, left: -100}}
-        open={open}
-      >
-        {actions.map((action) => (
-          <SpeedDialAction
-            key={action.name}
-            icon={action.icon}
-            tooltipTitle={action.name}
-            onClick={() => setOpen(false)}
-            title=''
-          />
-        ))}
-      </SpeedDial>
       <input type="color" value={color} onChange={e => setColor(e.target.value)} readOnly={!editMode}/>
       <div className="info__avatar" style={{backgroundImage: `url(${avatar})`}}>
         <label>
@@ -149,12 +118,17 @@ const Info: React.FC<IInfoProps> = ({state, setState, editMode}) => {
                                       {...provided.dragHandleProps}
                                       key={el.id}
                                       ref={provided.innerRef}
-                                      className={`item ${snapshot.isDragging ? 'active' : ''}`}
+                                      className={clsx('item', {
+                                        active: snapshot.isDragging,
+                                        'item--rating': item.fieldType === 'rating'
+                                      })}
                                     >
                                       <h3>
-                                        <div className="reorder">
-                                          <img src={reorderImg} alt=""/>
-                                        </div>
+                                        {item.items.length > 1 && (
+                                          <div className="reorder">
+                                            <img src={reorderImg} alt=""/>
+                                          </div>
+                                        )}
                                         <input
                                           type="text"
                                           value={el.title}
@@ -167,6 +141,7 @@ const Info: React.FC<IInfoProps> = ({state, setState, editMode}) => {
                                         {item.fieldType === 'rating'
                                           ? <Rating
                                               value={+el.details}
+                                              size='small'
                                               onChange={(e) => handleItemsState(e, i, j, 'details', setState, state, 'info')}
                                             />
                                           : <input

@@ -1,17 +1,21 @@
-.App{
-  margin: 0 auto;
-  font-family: 'Fira Sans', sans-serif;
-  font-weight: 300;
-  max-width: 1200px;
-  .createCv{
+.CVBuilder{
+  .createCv-wrapper{
     display: flex;
-    min-height: 1200px;
-    max-width: 800px;
-    margin: 0 auto;
-    h1, h2, h3, h4, h5, h6{
-      font-weight: 400;
-      margin: 0;
+    justify-content: space-between;
+    .createCv{
+      display: flex;
+      min-height: 1200px;
+      width: 75%;
+      flex: none;
+      h1, h2, h3, h4, h5, h6{
+        font-weight: 500;
+        margin: 0;
+      }
     }
+    .createCv-tools{
+
+    }
+
   }
   .MuiRating-icon{
     mix-blend-mode: difference;
@@ -38,6 +42,7 @@
       margin: 0 0 10px;
       color: #fff;
       mix-blend-mode: difference;
+      font-weight: 600;
     }
 
     h2, h3{
@@ -64,6 +69,7 @@
         margin: 0;
         color: #fff;
         mix-blend-mode: difference;
+        font-size: 16px;
       }
       p{
         margin: 0;
@@ -86,6 +92,10 @@
             opacity: 1;
           }
         }
+      }
+      &.item--rating{
+        display: flex;
+        align-items: center;
       }
     }
     .addMore{
@@ -137,10 +147,11 @@
         background-color: #fff;
       }
     }
+    .experience{
+      .reorder{
+        left: auto;
+        right: -50px;
+      }
+    }
   }
-}
-h1{
-  font-size: 32px;
-  margin: 0 0 24px;
-  font-weight: 700;
 }
