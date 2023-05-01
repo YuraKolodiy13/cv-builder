@@ -6,6 +6,7 @@ import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
 import CreateCv from "./pages/CreateCV/CreateCV";
 import CvList from "./pages/CVList/CVList";
 import ReviewCv from "./pages/ReviewCV/ReviewCV";
+import Faq from "./pages/Faq/Faq";
 
 const App: React.FC = () => {
 
@@ -18,6 +19,7 @@ const App: React.FC = () => {
           <Route path="/create-cv" element={<CreateCv />} />
           <Route path="/cv-list" element={<CvList />} />
           <Route path="/cv-list/:id" element={<ReviewCv />} />
+          <Route path="/faq" element={<Faq />} />
         </Routes>
       </Router>
     </div>

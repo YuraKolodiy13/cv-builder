@@ -1,13 +1,13 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
 import {IAuthResponse, ISignIn, ISignUp} from "../../interfaces";
 
-const API = import.meta.env.VITE_API_BASE_URL;
+const API_URL = import.meta.env.VITE_API_BASE_URL;
 
 export const authApi = createApi({
   reducerPath: 'auth/api',
   tagTypes: ['Users', 'Posts'],
   baseQuery: fetchBaseQuery({
-    baseUrl: `${API}auth/`
+    baseUrl: `${API_URL}auth/`
   }),
   endpoints: (build) => ({
     signIn: build.mutation<IAuthResponse, ISignIn>({

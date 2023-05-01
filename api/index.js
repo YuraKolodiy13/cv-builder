@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const authRouter = require('./routers/auth');
 const cvRouter = require('./routers/cv');
 const cors = require("cors");
+const authMiddleware = require('./middlewares/Auth')
 
 require('dotenv').config();
 
@@ -20,7 +21,7 @@ app.use(cors(corsSettings));
 app.use(express.json());
 
 app.use("/api/auth", authRouter);
-app.use("/api/cv", cvRouter);
+app.use("/api/cv", authMiddleware, cvRouter);
 
 
 const start = async () => {

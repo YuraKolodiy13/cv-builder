@@ -8,6 +8,10 @@
     min-height: 1200px;
     max-width: 800px;
     margin: 0 auto;
+    h1, h2, h3, h4, h5, h6{
+      font-weight: 400;
+      margin: 0;
+    }
   }
   .MuiRating-icon{
     mix-blend-mode: difference;
@@ -135,7 +139,8 @@
     }
   }
 }
-h1, h2, h3, h4, h5, h6{
-  font-weight: 400;
-  margin: 0;
+h1{
+  font-size: 32px;
+  margin-bottom: 24px;
+  font-weight: 700;
 }

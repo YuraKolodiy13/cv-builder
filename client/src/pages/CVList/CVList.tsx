@@ -42,6 +42,7 @@ const CvList = () => {
 
   return (
     <div>
+      <h1>Your CV's list</h1>
       <TableComponent
         headCells={columns}
         data={rows.data}

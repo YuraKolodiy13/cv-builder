@@ -1,0 +1,19 @@
+.Faq{
+  .MuiAccordion-root{
+    margin-bottom: 16px;
+    border-radius: 5px;
+    border-left: 5px solid #39065a;
+    box-shadow: 0 1.7px 3.6px rgba(0, 0, 0, 0.02), 0 0.8px 10px rgba(0, 0, 0, 0.031), 0 3.1px 24.1px rgba(0, 0, 0, 0.043), 0 100px 80px rgba(0, 0, 0, 0.07);
+    .MuiAccordionSummary-root{
+      min-height: auto;
+    }
+    .MuiAccordionSummary-content{
+      margin: 12px 0;
+    }
+  }
+  h4{
+    font-size: 18px;
+    line-height: 24px;
+    font-weight: 600;
+  }
+}

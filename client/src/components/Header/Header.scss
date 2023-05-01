@@ -1,9 +1,11 @@
 .header__wrapper{
   position: absolute;
-  left: 0;
+  left: 50%;
   top: 0;
+  transform: translateX(-50%);
   width: 100%;
   padding: 15px 0;
+  max-width: 1200px;
   &.fixed{
     position: fixed;
     z-index: 1400;
@@ -14,14 +16,16 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    h1{
+    .header__homepage{
       margin: 0;
       a{
         text-decoration: none;
         transition: .3s;
+        font-size: 20px;
+        font-weight: 600;
         &.active,
         &:hover{
-          color: #a0cc50;
+          color: #39065a;
         }
       }
     }
@@ -40,13 +44,14 @@
           cursor: pointer;
           &.active,
           &:hover{
-            color: #a0cc50;
+            color: #39065a;
           }
         }
       }
     }
     a, span{
       color: #000;
+      font-size: 16px;
     }
   }
 }
