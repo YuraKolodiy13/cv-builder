@@ -1,19 +1,22 @@
 .CVBuilder{
+  h1, h2, h3, h4, h5, h6{
+    font-weight: 500;
+    margin: 0;
+  }
   .createCv-wrapper{
     display: flex;
     justify-content: space-between;
+    align-items: flex-start;
     .createCv{
       display: flex;
       min-height: 1200px;
       width: 75%;
       flex: none;
-      h1, h2, h3, h4, h5, h6{
-        font-weight: 500;
-        margin: 0;
-      }
     }
     .createCv-tools{
-
+      border: 1px solid ;
+      position: sticky;
+      top: 20px;
     }
 
   }
