@@ -14,6 +14,7 @@
     position: sticky;
     top: 20px;
     width: 25%;
+    flex: none;
     padding: 16px;
   }
   &.CVBuilder-editMode{
@@ -35,9 +36,9 @@
 }
 .createCv{
   display: flex;
-  min-height: 1200px;
-  width: 75%;
-  flex: none;
+  min-height: 1055px;
+  width: 100%;
+  max-width: 900px;
   margin: 0 auto;
   .MuiRating-icon{
     mix-blend-mode: difference;
@@ -117,6 +118,7 @@
       &.item--rating{
         display: flex;
         align-items: center;
+        justify-content: space-between;
       }
     }
     .addMore{

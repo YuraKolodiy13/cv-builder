@@ -151,16 +151,17 @@ const Info: React.FC<IInfoProps> = ({state, setState, editMode}) => {
                                               value={+el.details}
                                               size='small'
                                               onChange={(e) => handleItemsState(e, i, j, 'details', setState, state, 'info')}
-                                            />
-                                          : <input
-                                              type="text"
-                                              value={el.details}
-                                              onChange={(e) => handleItemsState(e, i, j, 'details', setState, state, 'info')}
-                                              placeholder='Enter value'
                                               readOnly={!editMode}
                                             />
+                                          : editMode
+                                            ? <input
+                                                type="text"
+                                                value={el.details}
+                                                onChange={(e) => handleItemsState(e, i, j, 'details', setState, state, 'info')}
+                                                placeholder='Enter value'
+                                              />
+                                            : el.details
                                         }
-
                                       </p>
                                       {editMode && (
                                         <div className="remove" onClick={() => removeItem(i, el.id, setState, state, 'info')}>
