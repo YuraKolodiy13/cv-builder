@@ -38,6 +38,10 @@ const CV = new Schema({
     summary: String,
   },
   avatar: {type: String, required: true},
+  font: {
+    name: String,
+    src: String
+  },
   account: {
     type: Schema.Types.ObjectId,
     required: true,

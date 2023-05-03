@@ -91,7 +91,8 @@ const data: ICvBuilderState = {
     profession: 'Your profession',
     summary: 'Summary of Yourself'
   },
-  avatar: defaultImg
+  avatar: defaultImg,
+  font: {name: 'Poppins', src: 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap'}
 }
 
 const CreateCv = () => {

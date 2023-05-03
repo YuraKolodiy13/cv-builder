@@ -7,19 +7,38 @@
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    .createCv{
-      display: flex;
-      min-height: 1200px;
-      width: 75%;
-      flex: none;
-    }
-    .createCv-tools{
-      border: 1px solid ;
-      position: sticky;
-      top: 20px;
-    }
-
+    gap: 24px;
   }
+  .createCv-tools{
+    border: 1px solid ;
+    position: sticky;
+    top: 20px;
+    width: 25%;
+    padding: 16px;
+  }
+  &.CVBuilder-editMode{
+    input{
+      &:focus{
+        border-color: #86b7fe;
+        outline: 0;
+        color: #000;
+        background-color: #fff;
+      }
+    }
+    .experience{
+      .reorder{
+        left: auto;
+        right: -50px;
+      }
+    }
+  }
+}
+.createCv{
+  display: flex;
+  min-height: 1200px;
+  width: 75%;
+  flex: none;
+  margin: 0 auto;
   .MuiRating-icon{
     mix-blend-mode: difference;
     color: inherit;
@@ -51,7 +70,6 @@
     h2, h3{
       position: relative;
       .reorder{
-        display: none;
         position: absolute;
         left: -50px;
         top: 2px;
@@ -135,26 +153,5 @@
   }
   input[type=file][readonly] {
     pointer-events: none;
-  }
-  .CVBuilder-editMode{
-    .elements{
-      .reorder{
-        display: block;
-      }
-    }
-    input{
-      &:focus{
-        border-color: #86b7fe;
-        outline: 0;
-        color: #000;
-        background-color: #fff;
-      }
-    }
-    .experience{
-      .reorder{
-        left: auto;
-        right: -50px;
-      }
-    }
   }
 }

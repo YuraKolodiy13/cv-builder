@@ -34,6 +34,10 @@ export interface IExperience {
   title: string;
   items: IExperienceItem[];
 }
+export interface IFonts {
+  name: string;
+  src: string;
+}
 
 export interface ICvBuilderState {
   cvName: string;
@@ -41,6 +45,7 @@ export interface ICvBuilderState {
   experience: IExperience[];
   general: IGeneral;
   avatar: string | ArrayBuffer;
+  font: IFonts;
 }
 
 export interface ICvBuilder extends ICvBuilderState {

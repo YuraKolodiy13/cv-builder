@@ -79,6 +79,7 @@ const Info: React.FC<IInfoProps> = ({state, setState, editMode}) => {
                   draggableId={item.id.toString()}
                   index={i}
                   key={item.id}
+                  isDragDisabled={!editMode}
                 >
                   {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => (
                     <div
@@ -88,16 +89,20 @@ const Info: React.FC<IInfoProps> = ({state, setState, editMode}) => {
                       className={`element ${snapshot.isDragging ? 'active' : ''}`}
                     >
                       <h2>
-                        <div className="reorder">
-                          <img src={reorderImg} alt=""/>
-                        </div>
-                        <input
-                          type="text"
-                          value={item.title}
-                          onChange={(e) => handleElementsState(e, i, setState, state, 'info')}
-                          placeholder='Enter value'
-                          readOnly={!editMode}
-                        />
+                        {editMode && (
+                          <div className="reorder">
+                            <img src={reorderImg} alt=""/>
+                          </div>
+                        )}
+                        {editMode
+                          ? <input
+                              type="text"
+                              value={item.title}
+                              onChange={(e) => handleElementsState(e, i, setState, state, 'info')}
+                              placeholder='Enter value'
+                            />
+                          : item.title
+                        }
                       </h2>
                       <DragDropContext onDragEnd={(result: DropResult) => onDragEndItems(result, i, setState, state, 'info')}>
                         <Droppable droppableId={item.title}>
@@ -111,6 +116,7 @@ const Info: React.FC<IInfoProps> = ({state, setState, editMode}) => {
                                   draggableId={el.id.toString()}
                                   index={j}
                                   key={el.id}
+                                  isDragDisabled={!editMode}
                                 >
                                   {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => (
                                     <div
@@ -124,18 +130,20 @@ const Info: React.FC<IInfoProps> = ({state, setState, editMode}) => {
                                       })}
                                     >
                                       <h3>
-                                        {item.items.length > 1 && (
+                                        {editMode && item.items.length > 1 && (
                                           <div className="reorder">
                                             <img src={reorderImg} alt=""/>
                                           </div>
                                         )}
-                                        <input
-                                          type="text"
-                                          value={el.title}
-                                          onChange={(e) => handleItemsState(e, i, j, 'title', setState, state, 'info')}
-                                          placeholder='Enter value'
-                                          readOnly={!editMode}
-                                        />
+                                        {editMode
+                                          ? <input
+                                              type="text"
+                                              value={el.title}
+                                              onChange={(e) => handleItemsState(e, i, j, 'title', setState, state, 'info')}
+                                              placeholder='Enter value'
+                                            />
+                                          : el.title
+                                        }
                                       </h3>
                                       <p>
                                         {item.fieldType === 'rating'
@@ -154,9 +162,11 @@ const Info: React.FC<IInfoProps> = ({state, setState, editMode}) => {
                                         }
 
                                       </p>
-                                      <div className="remove" onClick={() => removeItem(i, el.id, setState, state, 'info')}>
-                                        <img src={deleteImg} alt=""/>
-                                      </div>
+                                      {editMode && (
+                                        <div className="remove" onClick={() => removeItem(i, el.id, setState, state, 'info')}>
+                                          <img src={deleteImg} alt=""/>
+                                        </div>
+                                      )}
                                     </div>
                                     )}
                                 </Draggable>
@@ -166,9 +176,11 @@ const Info: React.FC<IInfoProps> = ({state, setState, editMode}) => {
                           )}
                         </Droppable>
                       </DragDropContext>
-                      <div className="addMore" onClick={() => addItems(i, setState, state, 'info', initialItem)}>
-                        <span>Add more {item.title} +</span>
-                      </div>
+                      {editMode && (
+                        <div className="addMore" onClick={() => addItems(i, setState, state, 'info', initialItem)}>
+                          <span>Add more {item.title} +</span>
+                        </div>
+                      )}
                     </div>
                   )}
                 </Draggable>

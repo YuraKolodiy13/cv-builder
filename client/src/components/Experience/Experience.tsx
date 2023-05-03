@@ -37,7 +37,7 @@ const Experience: React.FC<IExperienceProps> = ({state, setState, editMode}) => 
   const initialItem = {
     position: 'Your Designation (E.g. Software Engineer)',
     company: 'Company Name',
-    description: 'Express your skills and experience you\'ve acquired from this job.',
+    description: "Express your skills and experience you've acquired from this job.",
     year: 'Year'
   }
 
@@ -46,34 +46,41 @@ const Experience: React.FC<IExperienceProps> = ({state, setState, editMode}) => 
     <div className='experience'>
       <div className="experience__header">
         <h1>
-          <input
-            type="text"
-            name='name'
-            value={general.name}
-            onChange={handleGeneral}
-            placeholder='Your name'
-            readOnly={!editMode}
-          />
+          {editMode
+            ? <input
+                type="text"
+                name='name'
+                value={general.name}
+                onChange={handleGeneral}
+                placeholder='Your name'
+              />
+            : general.name
+          }
         </h1>
         <h6>
-          <input
-            type="text"
-            name='profession'
-            value={general.profession}
-            onChange={handleGeneral}
-            placeholder='Your profession'
-            readOnly={!editMode}
-          />
+          {editMode
+            ? <input
+                type="text"
+                name='profession'
+                value={general.profession}
+                onChange={handleGeneral}
+                placeholder='Your profession'
+              />
+            : general.profession
+          }
         </h6>
         <p>
-          <input
-            type="text"
-            name='summary'
-            value={general.summary}
-            onChange={handleGeneral}
-            placeholder='Summary of Yourself'
-            readOnly={!editMode}
-          />
+          {editMode
+            ? <input
+                type="text"
+                name='summary'
+                value={general.summary}
+                onChange={handleGeneral}
+                placeholder='Summary of Yourself'
+                readOnly={!editMode}
+              />
+            : general.summary
+          }
         </p>
       </div>
 
@@ -91,6 +98,7 @@ const Experience: React.FC<IExperienceProps> = ({state, setState, editMode}) => 
                   draggableId={item.id.toString()}
                   index={i}
                   key={item.id}
+                  isDragDisabled={!editMode}
                 >
                   {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => (
                     <div
@@ -100,16 +108,20 @@ const Experience: React.FC<IExperienceProps> = ({state, setState, editMode}) => 
                       className={`element ${snapshot.isDragging ? 'active' : ''}`}
                     >
                       <h2>
-                        <div className="reorder">
-                          <img src={reorderImg} alt=""/>
-                        </div>
-                        <input
-                          type="text"
-                          value={item.title}
-                          onChange={(e) => handleElementsState(e, i, setState, state, 'experience')}
-                          placeholder='Enter value'
-                          readOnly={!editMode}
-                        />
+                        {editMode && (
+                          <div className="reorder">
+                            <img src={reorderImg} alt=""/>
+                          </div>
+                        )}
+                        {editMode
+                          ? <input
+                              type="text"
+                              value={item.title}
+                              onChange={(e) => handleElementsState(e, i, setState, state, 'experience')}
+                              placeholder='Enter value'
+                            />
+                          : item.title
+                        }
                       </h2>
                       <DragDropContext onDragEnd={(result: DropResult) => onDragEndItems(result, i, setState, state, 'experience')}>
                         <Droppable droppableId={item.title}>
@@ -123,6 +135,7 @@ const Experience: React.FC<IExperienceProps> = ({state, setState, editMode}) => 
                                   draggableId={el.id.toString()}
                                   index={j}
                                   key={el.id}
+                                  isDragDisabled={!editMode}
                                 >
                                   {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => (
                                     <div
@@ -133,39 +146,48 @@ const Experience: React.FC<IExperienceProps> = ({state, setState, editMode}) => 
                                       className={`item ${snapshot.isDragging ? 'active' : ''}`}
                                     >
                                       <h3>
-                                        {item.items.length > 1 && (
+                                        {editMode && item.items.length > 1 && (
                                           <div className="reorder">
                                             <img src={reorderImg} alt=""/>
                                           </div>
                                         )}
-                                        <input
-                                          type="text"
-                                          value={el.position}
-                                          onChange={(e) => handleItemsState(e, i, j, 'position', setState, state, 'experience')}
-                                          placeholder='Enter value'
-                                          readOnly={!editMode}
-                                        />
+                                        {editMode
+                                          ? <input
+                                              type="text"
+                                              value={el.position}
+                                              onChange={(e) => handleItemsState(e, i, j, 'position', setState, state, 'experience')}
+                                              placeholder='Enter value'
+                                            />
+                                          : el.position
+                                        }
                                       </h3>
                                       <p>
-                                        <input
-                                          type="text"
-                                          value={el.company}
-                                          onChange={(e) => handleItemsState(e, i, j, 'company', setState, state, 'experience')}
-                                          placeholder='Enter value'
-                                        />
+                                        {editMode
+                                          ? <input
+                                              type="text"
+                                              value={el.company}
+                                              onChange={(e) => handleItemsState(e, i, j, 'company', setState, state, 'experience')}
+                                              placeholder='Enter value'
+                                            />
+                                          : el.company
+                                        }
                                       </p>
                                       <p>
-                                        <input
-                                          type="text"
-                                          value={el.description}
-                                          onChange={(e) => handleItemsState(e, i, j, 'description', setState, state, 'experience')}
-                                          placeholder='Enter value'
-                                          readOnly={!editMode}
-                                        />
+                                        {editMode
+                                          ? <input
+                                              type="text"
+                                              value={el.description}
+                                              onChange={(e) => handleItemsState(e, i, j, 'description', setState, state, 'experience')}
+                                              placeholder='Enter value'
+                                            />
+                                          : el.description
+                                        }
                                       </p>
-                                      <div className="remove" onClick={() => removeItem(i, el.id, setState, state, 'experience')}>
-                                        <img src={deleteImg} alt=""/>
-                                      </div>
+                                      {editMode && (
+                                        <div className="remove" onClick={() => removeItem(i, el.id, setState, state, 'experience')}>
+                                          <img src={deleteImg} alt=""/>
+                                        </div>
+                                      )}
                                     </div>
                                   )}
                                 </Draggable>
@@ -175,9 +197,11 @@ const Experience: React.FC<IExperienceProps> = ({state, setState, editMode}) => 
                           )}
                         </Droppable>
                       </DragDropContext>
-                      <div className="addMore" onClick={() => addItems(i, setState, state, 'experience', initialItem)}>
-                        <span>Add more {item.title} +</span>
-                      </div>
+                      {editMode && (
+                        <div className="addMore" onClick={() => addItems(i, setState, state, 'experience', initialItem)}>
+                          <span>Add more {item.title} +</span>
+                        </div>
+                      )}
                     </div>
                   )}
                 </Draggable>
