@@ -2,6 +2,10 @@ import React, {useState} from 'react';
 import './Info.scss';
 import deleteImg from '../../assets/icons/delete.svg';
 import reorderImg from '../../assets/icons/reorder.svg';
+import {ReactComponent as StarIcon} from "../../assets/icons/star.svg";
+import {ReactComponent as StarFilledIcon} from "../../assets/icons/star-filled.svg";
+const star = 'PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iI2ZhYWYwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxwYXRoIGQ9Ik0yMiA5LjI0bC03LjE5LS42MkwxMiAyIDkuMTkgOC42MyAyIDkuMjRsNS40NiA0LjczTDUuODIgMjEgMTIgMTcuMjcgMTguMTggMjFsLTEuNjMtNy4wM0wyMiA5LjI0ek0xMiAxNS40bC0zLjc2IDIuMjcgMS00LjI4LTMuMzItMi44OCA0LjM4LS4zOEwxMiA2LjFsMS43MSA0LjA0IDQuMzguMzgtMy4zMiAyLjg4IDEgNC4yOEwxMiAxNS40eiIvPgo8L3N2Zz4=';
+const starFilled = 'PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iI2ZhYWYwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDE3LjI3TDE4LjE4IDIxbC0xLjY0LTcuMDNMMjIgOS4yNGwtNy4xOS0uNjFMMTIgMiA5LjE5IDguNjMgMiA5LjI0bDUuNDYgNC43M0w1LjgyIDIxeiIgLz4KPC9zdmc+';
 import {
   DragDropContext,
   Draggable,
@@ -147,12 +151,18 @@ const Info: React.FC<IInfoProps> = ({state, setState, editMode}) => {
                                       </h3>
                                       <p>
                                         {item.fieldType === 'rating'
-                                          ? <Rating
-                                              value={+el.details}
-                                              size='small'
-                                              onChange={(e) => handleItemsState(e, i, j, 'details', setState, state, 'info')}
-                                              readOnly={!editMode}
-                                            />
+                                          ? editMode
+                                            ? <Rating
+                                                value={+el.details}
+                                                size='small'
+                                                onChange={(e) => handleItemsState(e, i, j, 'details', setState, state, 'info')}
+                                              />
+                                            : <span className='rating__wrapper'>
+                                                {[...Array(5).keys()].map((item, i) =>
+                                                    // <img src={`data:image/svg+xml;base64, ${i < +el.details ?  starFilled : star}`} alt=""/>
+                                                  <img src='https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Gold_Star.svg/240px-Gold_Star.svg.png?20140420092753' alt=""/>
+                                                )}
+                                              </span>
                                           : editMode
                                             ? <input
                                                 type="text"

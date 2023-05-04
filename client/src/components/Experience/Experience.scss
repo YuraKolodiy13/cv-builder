@@ -11,10 +11,17 @@
     margin: 50px -16px;
     padding: 16px;
   }
+  h2, h3, p {
+    color: #030303;
+  }
+  .elements div.element{
+    border-color: #030303;
+  }
   .experience__block{
     padding: 0 16px;
-    mix-blend-mode: difference;
+    //mix-blend-mode: difference;
     h2, h3 {
+      color: #030303;
       .reorder {
         left: auto;
         right: -50px;
