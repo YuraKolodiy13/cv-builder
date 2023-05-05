@@ -46,8 +46,6 @@ const CvBuilder:React.FC<ICvBuilderProps> = ({canEdit, data}) => {
   const generatePDF = () => {
     setSavingToPdf(true);
     const pdf = new jsPDF({orientation: 'p', format: 'letter'});
-    // pdf.addImage(state.avatar, 'PNG', 15, 40, 180, 180);
-
     pdf.html((pdfRef.current!), {
       callback: () => {
         pdf.save("print.pdf");

@@ -2,10 +2,8 @@ import React, {useState} from 'react';
 import './Info.scss';
 import deleteImg from '../../assets/icons/delete.svg';
 import reorderImg from '../../assets/icons/reorder.svg';
-import {ReactComponent as StarIcon} from "../../assets/icons/star.svg";
-import {ReactComponent as StarFilledIcon} from "../../assets/icons/star-filled.svg";
-const star = 'PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iI2ZhYWYwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxwYXRoIGQ9Ik0yMiA5LjI0bC03LjE5LS42MkwxMiAyIDkuMTkgOC42MyAyIDkuMjRsNS40NiA0LjczTDUuODIgMjEgMTIgMTcuMjcgMTguMTggMjFsLTEuNjMtNy4wM0wyMiA5LjI0ek0xMiAxNS40bC0zLjc2IDIuMjcgMS00LjI4LTMuMzItMi44OCA0LjM4LS4zOEwxMiA2LjFsMS43MSA0LjA0IDQuMzguMzgtMy4zMiAyLjg4IDEgNC4yOEwxMiAxNS40eiIvPgo8L3N2Zz4=';
-const starFilled = 'PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iI2ZhYWYwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDE3LjI3TDE4LjE4IDIxbC0xLjY0LTcuMDNMMjIgOS4yNGwtNy4xOS0uNjFMMTIgMiA5LjE5IDguNjMgMiA5LjI0bDUuNDYgNC43M0w1LjgyIDIxeiIgLz4KPC9zdmc+';
+const star = 'https://firebasestorage.googleapis.com/v0/b/editor-789ee.appspot.com/o/images%2Fstar.png?alt=media&token=7a4b5c8c-740a-42a1-a35b-6cfd7073e019';
+const starFilled = 'https://firebasestorage.googleapis.com/v0/b/editor-789ee.appspot.com/o/images%2Fstar-filled.png?alt=media&token=812be657-bbd7-4072-be00-60384353f1c4';
 import {
   DragDropContext,
   Draggable,
@@ -25,6 +23,9 @@ import {
   removeItem
 } from "../../utils";
 import clsx from "clsx";
+import {storage} from "../../firebase";
+import {getDownloadURL, ref, uploadBytes} from 'firebase/storage';
+
 
 const initialItem = {
   title: 'Info',
@@ -41,14 +42,29 @@ const Info: React.FC<IInfoProps> = ({state, setState, editMode}) => {
 
   const {info, avatar} = state;
   const [color, setColor] = useState<string>('#030303');
+  const [avatarBase64, setAvatarBase64] = useState(avatar);
+
+  const uploadFileToStorage = (file: File) => {
+    if (!file) return;
+    const imageRef = ref(storage, `images/${file.name}`);
+    uploadBytes(imageRef, file).then((snapshot) => {
+      getDownloadURL(snapshot.ref).then((url) => {
+        console.log(url, 'url');
+        setState({...state, avatar: url})
+      });
+    });
+  };
+
 
   const handleFileChange = (e:React.ChangeEvent<HTMLInputElement>) => {
     const input = e.target;
+    const file = e.target.files![0];
+    uploadFileToStorage(file)
     if (input.files && input.files[0]) {
       const reader = new FileReader();
       reader.onload = (e) => {
         if(e.target && e.target.result){
-          setState({...state, avatar: e.target.result});
+          setAvatarBase64(e.target.result);
         }
       };
       reader.readAsDataURL(input.files[0]);
@@ -59,7 +75,7 @@ const Info: React.FC<IInfoProps> = ({state, setState, editMode}) => {
   return (
     <div className="info" style={{backgroundColor: color}}>
       <input type="color" value={color} onChange={e => setColor(e.target.value)} readOnly={!editMode}/>
-      <div className="info__avatar" style={{backgroundImage: `url(${avatar})`}}>
+      <div className="info__avatar" style={{backgroundImage: `url(${editMode ? avatarBase64 : avatar})`}}>
         <label>
           <input
             type="file"
@@ -159,8 +175,7 @@ const Info: React.FC<IInfoProps> = ({state, setState, editMode}) => {
                                               />
                                             : <span className='rating__wrapper'>
                                                 {[...Array(5).keys()].map((item, i) =>
-                                                    // <img src={`data:image/svg+xml;base64, ${i < +el.details ?  starFilled : star}`} alt=""/>
-                                                  <img src='https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Gold_Star.svg/240px-Gold_Star.svg.png?20140420092753' alt=""/>
+                                                  <img src={`${i < +el.details ?  starFilled : star}`} alt="" key={i}/>
                                                 )}
                                               </span>
                                           : editMode
