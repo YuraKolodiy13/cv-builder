@@ -19,6 +19,7 @@ import {
   onDragEndItems,
   removeItem
 } from "../../utils";
+import {Button} from "@mui/material";
 
 interface IExperienceProps {
   state: ICvBuilderState;
@@ -198,9 +199,9 @@ const Experience: React.FC<IExperienceProps> = ({state, setState, editMode}) => 
                         </Droppable>
                       </DragDropContext>
                       {editMode && (
-                        <div className="addMore" onClick={() => addItems(i, setState, state, 'experience', initialItem)}>
-                          <span>Add more {item.title} +</span>
-                        </div>
+                        <Button className="addMore" variant='outlined' onClick={() => addItems(i, setState, state, 'experience', initialItem)}>
+                          Add more {item.title}
+                        </Button>
                       )}
                     </div>
                   )}

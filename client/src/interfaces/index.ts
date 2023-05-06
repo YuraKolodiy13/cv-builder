@@ -44,7 +44,7 @@ export interface ICvBuilderState {
   info: IInfo[];
   experience: IExperience[];
   general: IGeneral;
-  avatar: string | ArrayBuffer;
+  avatar: string;
   font: IFonts;
 }
 

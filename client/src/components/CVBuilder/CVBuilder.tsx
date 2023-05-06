@@ -98,24 +98,23 @@ const CvBuilder:React.FC<ICvBuilderProps> = ({canEdit, data}) => {
           <Info state={state} setState={setState} editMode={editMode && !savingToPdf}/>
           <Experience state={state} setState={setState} editMode={editMode && !savingToPdf}/>
         </div>
-        {editMode && (
-          <div className="createCv-tools">
-            <Button variant="contained" onClick={generatePDF}>Export PDF</Button>
-            <FormControl fullWidth>
-              <InputLabel id="select-font">Font</InputLabel>
-              <Select
-                labelId="select-font"
-                value={JSON.stringify(state.font)}
-                label="Font"
-                onChange={e => setState({...state, font: JSON.parse(e.target.value)})}
-              >
-                {fonts.map((item: IFonts) =>
-                  <MenuItem value={JSON.stringify(item)} key={item.name}>{item.name}</MenuItem>
-                )}
-              </Select>
-            </FormControl>
-          </div>
-        )}
+        <div className="createCv-tools">
+          <Button variant="contained" onClick={generatePDF}>Export PDF</Button>
+          <FormControl fullWidth>
+            <InputLabel id="select-font">Font</InputLabel>
+            <Select
+              labelId="select-font"
+              value={JSON.stringify(state.font)}
+              label="Font"
+              onChange={e => setState({...state, font: JSON.parse(e.target.value)})}
+              readOnly={!editMode}
+            >
+              {fonts.map((item: IFonts) =>
+                <MenuItem value={JSON.stringify(item)} key={item.name}>{item.name}</MenuItem>
+              )}
+            </Select>
+          </FormControl>
+        </div>
       </div>
 
       {isOpenConfirmModal && (

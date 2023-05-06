@@ -1,6 +1,5 @@
 import React from 'react';
 import CvBuilder from "../../components/CVBuilder/CVBuilder";
-import defaultImg from "../../assets/icons/no-avatar.jpg";
 import {ICvBuilderState} from "../../interfaces";
 
 const data: ICvBuilderState = {
@@ -91,7 +90,7 @@ const data: ICvBuilderState = {
     profession: 'Your profession',
     summary: 'Summary of Yourself'
   },
-  avatar: defaultImg,
+  avatar: 'https://firebasestorage.googleapis.com/v0/b/editor-789ee.appspot.com/o/assets%2Fno-avatar.jpg?alt=media&token=9cb9dc17-6256-4ed4-be55-e78af9d16f05',
   font: {name: 'Poppins', src: 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap'},
 }
 

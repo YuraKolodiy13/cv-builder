@@ -8,7 +8,9 @@ const ReviewCv = () => {
   const {id} = useParams();
   const {data, isFetching} = useGetCVQuery(id!, {refetchOnMountOrArgChange: true});
 
-  if(isFetching) return <p>loading</p>
+  if(isFetching) return <p>loading</p>;
+
+  if(!data) return <h3>You don't have right to see this page</h3>
 
   return (
     <CvBuilder canEdit={false} data={data!}/>

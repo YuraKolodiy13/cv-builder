@@ -10,7 +10,7 @@
     gap: 24px;
   }
   .createCv-tools{
-    border: 1px solid ;
+    border: 1px solid gray;
     position: sticky;
     top: 20px;
     width: 25%;
@@ -22,7 +22,7 @@
       &:focus{
         border-color: #86b7fe;
         outline: 0;
-        color: #000;
+        color: #030303;
         background-color: #fff;
       }
     }
@@ -50,7 +50,6 @@
       padding-bottom: 20px;
       margin-bottom: 20px;
       border-bottom: 1px solid #fff;
-      //mix-blend-mode: difference;
       &:last-of-type{
         border-color: transparent;
 
@@ -64,8 +63,6 @@
     }
     h2{
       margin: 0 0 10px;
-      //color: #fff;
-      //mix-blend-mode: difference;
       font-weight: 600;
     }
 
@@ -89,15 +86,7 @@
         background: red;
       }
       h3{
-        //margin: 0;
-        //color: #fff;
-        //mix-blend-mode: difference;
         font-size: 16px;
-      }
-      p{
-        //margin: 0;
-        //color: #fff;
-        //mix-blend-mode: difference;
       }
       .remove{
         opacity: 0;
@@ -120,23 +109,15 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
+        h3{
+          width: 60%;
+          word-break: break-word;
+        }
       }
     }
     .addMore{
       display: flex;
-      align-items: center;
-      justify-content: center;
-      span{
-        cursor: pointer;
-        padding: 4px;
-        background-color: red;
-        border-radius: 4px;
-        color: white;
-        //mix-blend-mode: difference;
-        &:hover{
-          opacity: .7;
-        }
-      }
+      margin: 0 auto;
     }
   }
   input{
