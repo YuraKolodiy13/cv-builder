@@ -9,7 +9,7 @@ import {
   DroppableProvided, DropResult
 } from "react-beautiful-dnd";
 import reorderImg from "../../assets/icons/reorder.svg";
-import deleteImg from "../../assets/icons/delete.svg";
+import {ReactComponent as DeleteIcon} from "../../assets/icons/delete.svg";
 import {ICvBuilderState, IExperience, IExperienceItem, ISetCvBuilderState} from '../../interfaces';
 import {
   addItems,
@@ -186,7 +186,7 @@ const Experience: React.FC<IExperienceProps> = ({state, setState, editMode}) => 
                                       </p>
                                       {editMode && (
                                         <div className="remove" onClick={() => removeItem(i, el.id, setState, state, 'experience')}>
-                                          <img src={deleteImg} alt=""/>
+                                          <DeleteIcon/>
                                         </div>
                                       )}
                                     </div>

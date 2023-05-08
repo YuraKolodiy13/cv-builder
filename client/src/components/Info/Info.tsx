@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import './Info.scss';
-import deleteImg from '../../assets/icons/delete.svg';
+import {ReactComponent as DeleteIcon} from "../../assets/icons/delete.svg";
 import reorderImg from '../../assets/icons/reorder.svg';
 import {
   DragDropContext,
@@ -167,7 +167,6 @@ const Info: React.FC<IInfoProps> = ({state, setState, editMode}) => {
                                           : el.title
                                         }
                                       </h3>
-                                      {console.log(el.details, 'el.details')}
                                       <p>
                                         {item.fieldType === 'rating'
                                           ? editMode
@@ -191,7 +190,7 @@ const Info: React.FC<IInfoProps> = ({state, setState, editMode}) => {
                                       </p>
                                       {editMode && (
                                         <div className="remove" onClick={() => removeItem(i, el.id, setState, state, 'info')}>
-                                          <img src={deleteImg} alt=""/>
+                                          <DeleteIcon/>
                                         </div>
                                       )}
                                     </div>

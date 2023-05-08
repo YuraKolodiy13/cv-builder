@@ -20,16 +20,40 @@
   &.CVBuilder-editMode{
     input{
       &:focus{
-        border-color: #86b7fe;
         outline: 0;
         color: #030303;
         background-color: #fff;
       }
     }
-    .experience{
+    .experience .element{
+      padding-right: 50px;
+      .remove{
+        right: -50px;
+        path{
+          fill: #030303;
+        }
+      }
       .reorder{
         left: auto;
-        right: -50px;
+        right: -100px;
+      }
+      input{
+        &:focus{
+          background-color: #030303;
+          color: white;
+        }
+      }
+    }
+    .info{
+      .item{
+        &:not(.item--rating){
+          h3, p{
+            width: 90%;
+          }
+        }
+        &.item--rating{
+          padding-right: 25px;
+        }
       }
     }
   }
@@ -87,6 +111,8 @@
       }
       h3{
         font-size: 16px;
+        line-height: 20px;
+        margin-bottom: 5px;
       }
       .remove{
         opacity: 0;
@@ -96,6 +122,7 @@
         transform: translateY(-50%);
         cursor: pointer;
         transition: .3s;
+        display: flex;
       }
       &:hover{
         .remove{
@@ -114,6 +141,10 @@
           word-break: break-word;
         }
       }
+      a{
+        text-decoration: none;
+        color: inherit;
+      }
     }
     .addMore{
       display: flex;
@@ -131,6 +162,7 @@
     width: 100%;
     box-sizing: border-box;
     transition: .3s;
+    padding: 0;
     &:focus{
       outline: none;
     }
@@ -148,5 +180,6 @@
   }
   p, h1, h3, h5, h6{
     margin: 0;
+    display: flex;
   }
 }

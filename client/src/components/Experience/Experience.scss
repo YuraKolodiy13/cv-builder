@@ -1,8 +1,6 @@
 .experience{
   width: 100%;
   border: 1px solid gray;
-  //border-top-right-radius: 8px;
-  //border-bottom-right-radius: 8px;
   border-left: none;
   background-color: #fff;
   padding: 0 16px;
@@ -14,18 +12,7 @@
   h2, h3, p {
     color: #030303;
   }
-  .elements div.element{
+  .elements div.element {
     border-color: #030303;
-  }
-  .experience__block{
-    padding: 0 16px;
-    //mix-blend-mode: difference;
-    h2, h3 {
-      color: #030303;
-      .reorder {
-        left: auto;
-        right: -50px;
-      }
-    }
   }
 }
