@@ -12,6 +12,7 @@ import {useActions} from "../../hooks/actions";
 import clsx from "clsx";
 import './CVBuilder.scss';
 import { jsPDF } from "jspdf";
+import {NunitoRegular, NunitoBold} from "../../assets/fonts/Nunito";
 
 interface ICvBuilderProps {
   canEdit: boolean;
@@ -19,10 +20,10 @@ interface ICvBuilderProps {
 }
 
 const fonts = [
-  {name: 'Poppins', src: 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap'},
-  {name: 'Fira Sans', src: 'https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;500;600&display=swap'},
-  {name: 'Roboto Condensed', src: 'https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;500;600&display=swap'},
-  {name: 'Nunito', src: 'https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600&display=swap'},
+  {name: 'Poppins', src: 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap'},
+  {name: 'Fira Sans', src: 'https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;700&display=swap'},
+  {name: 'Roboto Condensed', src: 'https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap'},
+  {name: 'Nunito', src: 'https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap'},
 ];
 
 
@@ -46,6 +47,13 @@ const CvBuilder:React.FC<ICvBuilderProps> = ({canEdit, data}) => {
   const generatePDF = () => {
     setSavingToPdf(true);
     const pdf = new jsPDF({orientation: 'p', format: 'letter'});
+
+    pdf.addFileToVFS(`${state.font.name}-Regular-normal.ttf`, `${state.font.name}Regular`);
+    pdf.addFileToVFS(`${state.font.name}-Bold.ttf`, `${state.font.name}Bold`);
+    pdf.addFont(`${state.font.name}-Regular-normal.ttf`, state.font.name, "normal");
+    pdf.addFont(`${state.font.name}-Bold.ttf`, state.font.name, "bold");
+    pdf.setFont(state.font.name);
+
     pdf.html((pdfRef.current!), {
       callback: () => {
         pdf.save("print.pdf");
@@ -68,12 +76,7 @@ const CvBuilder:React.FC<ICvBuilderProps> = ({canEdit, data}) => {
     <div className={clsx('CVBuilder', {'CVBuilder-editMode': editMode})}>
       {state.font && state.font.name !== 'Fira Sans' && (
         <style>
-          {`
-            @import url(${state.font.src});
-            .CVBuilder{
-              font-family: ${state.font.name}, sans-serif;
-            }
-          `}
+          {`@import url(${state.font.src})`}
         </style>
       )}
 
@@ -94,7 +97,7 @@ const CvBuilder:React.FC<ICvBuilderProps> = ({canEdit, data}) => {
         {editMode ? 'Review' : 'Edit'} Mode
       </Button>
       <div className='createCv-wrapper'>
-        <div className="createCv" ref={pdfRef}>
+        <div className="createCv" ref={pdfRef} style={{fontFamily: `${state.font.name}, sans-serif`}}>
           <Info state={state} setState={setState} editMode={editMode && !savingToPdf}/>
           <Experience state={state} setState={setState} editMode={editMode && !savingToPdf}/>
         </div>
