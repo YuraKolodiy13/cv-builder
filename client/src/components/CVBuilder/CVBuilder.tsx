@@ -13,6 +13,7 @@ import clsx from "clsx";
 import './CVBuilder.scss';
 import { jsPDF } from "jspdf";
 import {NunitoRegular, NunitoBold} from "../../assets/fonts/Nunito";
+import {FiraSansBold, FiraSansRegular} from "../../assets/fonts/FiraSans";
 
 interface ICvBuilderProps {
   canEdit: boolean;
@@ -25,6 +26,11 @@ const fonts = [
   {name: 'Roboto Condensed', src: 'https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap'},
   {name: 'Nunito', src: 'https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap'},
 ];
+
+const jsPdfFonts: {[index: string]: any} = {
+  'Nunito': [NunitoRegular, NunitoBold],
+  'Fira Sans': [FiraSansRegular, FiraSansBold]
+}
 
 
 const CvBuilder:React.FC<ICvBuilderProps> = ({canEdit, data}) => {
@@ -48,8 +54,8 @@ const CvBuilder:React.FC<ICvBuilderProps> = ({canEdit, data}) => {
     setSavingToPdf(true);
     const pdf = new jsPDF({orientation: 'p', format: 'letter'});
 
-    pdf.addFileToVFS(`${state.font.name}-Regular-normal.ttf`, `${state.font.name}Regular`);
-    pdf.addFileToVFS(`${state.font.name}-Bold.ttf`, `${state.font.name}Bold`);
+    pdf.addFileToVFS(`${state.font.name}-Regular-normal.ttf`, jsPdfFonts[state.font.name][0]);
+    pdf.addFileToVFS(`${state.font.name}-Bold.ttf`, jsPdfFonts[state.font.name][1]);
     pdf.addFont(`${state.font.name}-Regular-normal.ttf`, state.font.name, "normal");
     pdf.addFont(`${state.font.name}-Bold.ttf`, state.font.name, "bold");
     pdf.setFont(state.font.name);
