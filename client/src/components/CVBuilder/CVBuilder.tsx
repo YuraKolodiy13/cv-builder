@@ -13,6 +13,7 @@ import clsx from "clsx";
 import './CVBuilder.scss';
 import { jsPDF } from "jspdf";
 import {useLazyGetFontQuery} from '../../store/common/common.api';
+import Switcher from '../Switcher/Switcher';
 
 interface ICvBuilderProps {
   canEdit: boolean;
@@ -41,6 +42,8 @@ const CvBuilder:React.FC<ICvBuilderProps> = ({canEdit, data}) => {
   const user = useAppSelector(state => state.auth.user);
   const {setIsAuthModalOpen} = useActions();
 
+  const {options: {font, showAvatar, changeColumnsOrder}} = state;
+
   const handleConfirm = () => {
     user ? setIsOpenConfirmModal(true) : setIsAuthModalOpen(true);
   }
@@ -49,30 +52,39 @@ const CvBuilder:React.FC<ICvBuilderProps> = ({canEdit, data}) => {
     setSavingToPdf(true);
     const pdf = new jsPDF({orientation: 'p', format: 'letter'});
 
-    const res = await getFont(state.font.name);
+    const res = await getFont(font.name);
 
-    pdf.addFileToVFS(`${state.font.name}-Regular-normal.ttf`, res.data.value[0]);
-    pdf.addFileToVFS(`${state.font.name}-Bold.ttf`, res.data.value[1]);
-    pdf.addFont(`${state.font.name}-Regular-normal.ttf`, state.font.name, "normal");
-    pdf.addFont(`${state.font.name}-Bold.ttf`, state.font.name, "bold");
-    pdf.setFont(state.font.name);
+    pdf.addFileToVFS(`${font.name}-Regular-normal.ttf`, res.data.value[0]);
+    pdf.addFileToVFS(`${font.name}-Bold.ttf`, res.data.value[1]);
+    pdf.addFont(`${font.name}-Regular-normal.ttf`, font.name, "normal");
+    pdf.addFont(`${font.name}-Bold.ttf`, font.name, "bold");
+    pdf.setFont(font.name);
 
 
     pdf.html((pdfRef.current!), {
       callback: () => {
-        console.log(pdfRef.current, 'pdfRef.current')
+        // console.log(pdfRef.current, 'pdfRef.current')
         pdf.save("print.pdf");
         setSavingToPdf(false);
       },
+      x: 0,
+      y: 0,
+      margin: [0, 0, 0, 0], // mm
+      width: 216, // 216 = letter paper width in mm, 208 = less the 8mm margin
+      windowWidth: 816,  // 816 = letter paper pixel width at 96dpi (web), 786 = less the 30px margin
 
+      // html2canvas: {
+      //   logging: false,
+      //   windowWidth: 816 // 816 = letter paper pixel width at 96dpi (web), 786 = less the 30px margin
+      // }
     });
   }
 
   return (
     <div className={clsx('CVBuilder', {'CVBuilder-editMode': editMode})}>
-      {state.font && state.font.name !== 'Fira Sans' && (
+      {font && font.name !== 'Fira Sans' && (
         <style>
-          {`@import url(${state.font.src})`}
+          {`@import url(${font.src})`}
         </style>
       )}
 
@@ -93,7 +105,11 @@ const CvBuilder:React.FC<ICvBuilderProps> = ({canEdit, data}) => {
         {editMode ? 'Review' : 'Edit'} Mode
       </Button>
       <div className='createCv-wrapper'>
-        <div className="createCv" ref={pdfRef} style={{fontFamily: `${state.font.name}, sans-serif`}}>
+        <div
+          className={clsx('createCv', {'changeColumnsOrder': changeColumnsOrder})}
+          ref={pdfRef}
+          style={{fontFamily: `${font.name}, sans-serif`}}
+        >
           <Info state={state} setState={setState} editMode={editMode && !savingToPdf}/>
           <Experience state={state} setState={setState} editMode={editMode && !savingToPdf}/>
         </div>
@@ -103,9 +119,9 @@ const CvBuilder:React.FC<ICvBuilderProps> = ({canEdit, data}) => {
             <InputLabel id="select-font">Font</InputLabel>
             <Select
               labelId="select-font"
-              value={JSON.stringify(state.font)}
+              value={JSON.stringify(font)}
               label="Font"
-              onChange={e => setState({...state, font: JSON.parse(e.target.value)})}
+              onChange={e => setState({...state, options: {...state.options, font: JSON.parse(e.target.value)}})}
               readOnly={!editMode}
             >
               {fonts.map((item: IFonts) =>
@@ -113,6 +129,16 @@ const CvBuilder:React.FC<ICvBuilderProps> = ({canEdit, data}) => {
               )}
             </Select>
           </FormControl>
+          <Switcher
+            checked={showAvatar}
+            label='Show avatar'
+            onChange={() => setState({...state, options: {...state.options, showAvatar: !showAvatar}})}
+          />
+          <Switcher
+            checked={changeColumnsOrder}
+            label='Change columns order'
+            onChange={() => setState({...state, options: {...state.options, changeColumnsOrder: !changeColumnsOrder}})}
+          />
         </div>
       </div>
 

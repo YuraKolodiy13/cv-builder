@@ -45,7 +45,11 @@ export interface ICvBuilderState {
   experience: IExperience[];
   general: IGeneral;
   avatar: string;
-  font: IFonts;
+  options: {
+    font: IFonts;
+    showAvatar: boolean;
+    changeColumnsOrder: boolean;
+  }
 }
 
 export interface ICvBuilder extends ICvBuilderState {

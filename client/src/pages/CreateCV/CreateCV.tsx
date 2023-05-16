@@ -91,7 +91,11 @@ const data: ICvBuilderState = {
     summary: 'Summary of Yourself'
   },
   avatar: 'https://firebasestorage.googleapis.com/v0/b/editor-789ee.appspot.com/o/assets%2Fno-avatar.jpg?alt=media&token=9cb9dc17-6256-4ed4-be55-e78af9d16f05',
-  font: {name: 'Nunito', src: 'https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap'},
+  options: {
+    font: {name: 'Nunito', src: 'https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap'},
+    showAvatar: true,
+    changeColumnsOrder: false,
+  }
 }
 
 const CreateCv = () => {

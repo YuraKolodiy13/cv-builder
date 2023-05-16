@@ -39,7 +39,7 @@ interface IInfoProps {
 
 const Info: React.FC<IInfoProps> = ({state, setState, editMode}) => {
 
-  const {info, avatar} = state;
+  const {info, avatar, options: {showAvatar}} = state;
   const [avatarBase64, setAvatarBase64] = useState<string>(avatar);
 
   const uploadFileToStorage = (file: File) => {
@@ -76,18 +76,20 @@ const Info: React.FC<IInfoProps> = ({state, setState, editMode}) => {
 
   return (
     <div className="info">
-      <div className="info__avatar">
-        <img src={editMode ? avatarBase64 : avatar} alt=""/>
-        <label>
-          <input
-            type="file"
-            name='file'
-            accept="image/png, image/jpeg, image/jpg"
-            onChange={handleFileChange}
-            readOnly={!editMode}
-          />
-        </label>
-      </div>
+      {showAvatar && (
+        <div className="info__avatar">
+          <img src={editMode ? avatarBase64 : avatar} alt=""/>
+          <label>
+            <input
+              type="file"
+              name='file'
+              accept="image/png, image/jpeg, image/jpg"
+              onChange={handleFileChange}
+              readOnly={!editMode}
+            />
+          </label>
+        </div>
+      )}
       <DragDropContext onDragEnd={((result: DropResult) => onDragEndElements(result, setState, state, 'info'))}>
         <Droppable droppableId="info">
           {(provided: DroppableProvided) => (
