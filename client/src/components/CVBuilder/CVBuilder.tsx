@@ -12,8 +12,7 @@ import {useActions} from "../../hooks/actions";
 import clsx from "clsx";
 import './CVBuilder.scss';
 import { jsPDF } from "jspdf";
-import {NunitoRegular, NunitoBold} from "../../assets/fonts/Nunito";
-import {FiraSansBold, FiraSansRegular} from "../../assets/fonts/FiraSans";
+import {useLazyGetFontQuery} from '../../store/common/common.api';
 
 interface ICvBuilderProps {
   canEdit: boolean;
@@ -27,11 +26,6 @@ const fonts = [
   {name: 'Nunito', src: 'https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap'},
 ];
 
-const jsPdfFonts: {[index: string]: any} = {
-  'Nunito': [NunitoRegular, NunitoBold],
-  'Fira Sans': [FiraSansRegular, FiraSansBold]
-}
-
 
 const CvBuilder:React.FC<ICvBuilderProps> = ({canEdit, data}) => {
 
@@ -39,6 +33,7 @@ const CvBuilder:React.FC<ICvBuilderProps> = ({canEdit, data}) => {
   const pdfRef = useRef<HTMLDivElement>(null);
   const [createCV] = useCreateCVMutation();
   const [updateCV] = useUpdateCVMutation();
+  const [getFont] = useLazyGetFontQuery();
   const [editMode, setEditMode] = useState(canEdit);
   const [savingToPdf, setSavingToPdf] = useState(false);
   const [isOpenConfirmModal, setIsOpenConfirmModal] = useState(false);
@@ -50,31 +45,26 @@ const CvBuilder:React.FC<ICvBuilderProps> = ({canEdit, data}) => {
     user ? setIsOpenConfirmModal(true) : setIsAuthModalOpen(true);
   }
 
-  const generatePDF = () => {
+  const generatePDF = async () => {
     setSavingToPdf(true);
     const pdf = new jsPDF({orientation: 'p', format: 'letter'});
 
-    pdf.addFileToVFS(`${state.font.name}-Regular-normal.ttf`, jsPdfFonts[state.font.name][0]);
-    pdf.addFileToVFS(`${state.font.name}-Bold.ttf`, jsPdfFonts[state.font.name][1]);
+    const res = await getFont(state.font.name);
+
+    pdf.addFileToVFS(`${state.font.name}-Regular-normal.ttf`, res.data.value[0]);
+    pdf.addFileToVFS(`${state.font.name}-Bold.ttf`, res.data.value[1]);
     pdf.addFont(`${state.font.name}-Regular-normal.ttf`, state.font.name, "normal");
     pdf.addFont(`${state.font.name}-Bold.ttf`, state.font.name, "bold");
     pdf.setFont(state.font.name);
 
+
     pdf.html((pdfRef.current!), {
       callback: () => {
+        console.log(pdfRef.current, 'pdfRef.current')
         pdf.save("print.pdf");
         setSavingToPdf(false);
       },
-      x: 0,
-      y: 0,
-      margin: [0, 0, 0, 0], // mm
-      width: 216, // 216 = letter paper width in mm, 208 = less the 8mm margin
-      windowWidth: 816,  // 816 = letter paper pixel width at 96dpi (web), 786 = less the 30px margin
 
-      // html2canvas: {
-      //   logging: false,
-      //   windowWidth: 816 // 816 = letter paper pixel width at 96dpi (web), 786 = less the 30px margin
-      // }
     });
   }
 

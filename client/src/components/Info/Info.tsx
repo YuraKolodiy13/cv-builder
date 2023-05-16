@@ -126,82 +126,82 @@ const Info: React.FC<IInfoProps> = ({state, setState, editMode}) => {
                           : item.title
                         }
                       </h2>
-                      {/*<DragDropContext onDragEnd={(result: DropResult) => onDragEndItems(result, i, setState, state, 'info')}>*/}
-                      {/*  <Droppable droppableId={item.title}>*/}
-                      {/*    {(provided: DroppableProvided) => (*/}
-                      {/*      <div*/}
-                      {/*        ref={provided.innerRef}*/}
-                      {/*        {...provided.droppableProps}*/}
-                      {/*      >*/}
-                      {/*        {item.items.map((el: IInfoItem, j: number) =>*/}
-                      {/*          <Draggable*/}
-                      {/*            draggableId={el.id.toString()}*/}
-                      {/*            index={j}*/}
-                      {/*            key={el.id}*/}
-                      {/*            isDragDisabled={!editMode}*/}
-                      {/*          >*/}
-                      {/*            {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => (*/}
-                      {/*              <div*/}
-                      {/*                {...provided.draggableProps}*/}
-                      {/*                {...provided.dragHandleProps}*/}
-                      {/*                key={el.id}*/}
-                      {/*                ref={provided.innerRef}*/}
-                      {/*                className={clsx('item', {*/}
-                      {/*                  active: snapshot.isDragging,*/}
-                      {/*                  'item--rating': item.fieldType === 'rating'*/}
-                      {/*                })}*/}
-                      {/*              >*/}
-                      {/*                <h3>*/}
-                      {/*                  {editMode && item.items.length > 1 && (*/}
-                      {/*                    <div className="reorder">*/}
-                      {/*                      <img src={reorderImg} alt=""/>*/}
-                      {/*                    </div>*/}
-                      {/*                  )}*/}
-                      {/*                  {editMode*/}
-                      {/*                    ? <input*/}
-                      {/*                        type="text"*/}
-                      {/*                        value={el.title}*/}
-                      {/*                        onChange={(e) => handleItemsState(e, i, j, 'title', setState, state, 'info')}*/}
-                      {/*                        placeholder='Enter value'*/}
-                      {/*                      />*/}
-                      {/*                    : el.title*/}
-                      {/*                  }*/}
-                      {/*                </h3>*/}
-                      {/*                <p>*/}
-                      {/*                  {item.fieldType === 'rating'*/}
-                      {/*                    ? editMode*/}
-                      {/*                      ? <Rating*/}
-                      {/*                          value={+el.details}*/}
-                      {/*                          size='small'*/}
-                      {/*                          onChange={(e) => handleItemsState(e, i, j, 'details', setState, state, 'info')}*/}
-                      {/*                        />*/}
-                      {/*                      : <span className='rating__wrapper'>*/}
-                      {/*                          <img src={starsImg[+el.details || 0]} alt="" key={i}/>*/}
-                      {/*                        </span>*/}
-                      {/*                    : editMode*/}
-                      {/*                      ? <input*/}
-                      {/*                          type="text"*/}
-                      {/*                          value={el.details}*/}
-                      {/*                          onChange={(e) => handleItemsState(e, i, j, 'details', setState, state, 'info')}*/}
-                      {/*                          placeholder='Enter value'*/}
-                      {/*                        />*/}
-                      {/*                      : el.details*/}
-                      {/*                  }*/}
-                      {/*                </p>*/}
-                      {/*                {editMode && (*/}
-                      {/*                  <div className="remove" onClick={() => removeItem(i, el.id, setState, state, 'info')}>*/}
-                      {/*                    <DeleteIcon/>*/}
-                      {/*                  </div>*/}
-                      {/*                )}*/}
-                      {/*              </div>*/}
-                      {/*              )}*/}
-                      {/*          </Draggable>*/}
-                      {/*        )}*/}
-                      {/*        {provided.placeholder}*/}
-                      {/*      </div>*/}
-                      {/*    )}*/}
-                      {/*  </Droppable>*/}
-                      {/*</DragDropContext>*/}
+                      <DragDropContext onDragEnd={(result: DropResult) => onDragEndItems(result, i, setState, state, 'info')}>
+                        <Droppable droppableId={item.title}>
+                          {(provided: DroppableProvided) => (
+                            <div
+                              ref={provided.innerRef}
+                              {...provided.droppableProps}
+                            >
+                              {item.items.map((el: IInfoItem, j: number) =>
+                                <Draggable
+                                  draggableId={el.id.toString()}
+                                  index={j}
+                                  key={el.id}
+                                  isDragDisabled={!editMode}
+                                >
+                                  {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => (
+                                    <div
+                                      {...provided.draggableProps}
+                                      {...provided.dragHandleProps}
+                                      key={el.id}
+                                      ref={provided.innerRef}
+                                      className={clsx('item', {
+                                        active: snapshot.isDragging,
+                                        'item--rating': item.fieldType === 'rating'
+                                      })}
+                                    >
+                                      <h3>
+                                        {editMode && item.items.length > 1 && (
+                                          <div className="reorder">
+                                            <img src={reorderImg} alt=""/>
+                                          </div>
+                                        )}
+                                        {editMode
+                                          ? <input
+                                              type="text"
+                                              value={el.title}
+                                              onChange={(e) => handleItemsState(e, i, j, 'title', setState, state, 'info')}
+                                              placeholder='Enter value'
+                                            />
+                                          : el.title
+                                        }
+                                      </h3>
+                                      <p>
+                                        {item.fieldType === 'rating'
+                                          ? editMode
+                                            ? <Rating
+                                                value={+el.details}
+                                                size='small'
+                                                onChange={(e) => handleItemsState(e, i, j, 'details', setState, state, 'info')}
+                                              />
+                                            : <span className='rating__wrapper'>
+                                                <img src={starsImg[+el.details || 0]} alt="" key={i}/>
+                                              </span>
+                                          : editMode
+                                            ? <input
+                                                type="text"
+                                                value={el.details}
+                                                onChange={(e) => handleItemsState(e, i, j, 'details', setState, state, 'info')}
+                                                placeholder='Enter value'
+                                              />
+                                            : el.details
+                                        }
+                                      </p>
+                                      {editMode && (
+                                        <div className="remove" onClick={() => removeItem(i, el.id, setState, state, 'info')}>
+                                          <DeleteIcon/>
+                                        </div>
+                                      )}
+                                    </div>
+                                    )}
+                                </Draggable>
+                              )}
+                              {provided.placeholder}
+                            </div>
+                          )}
+                        </Droppable>
+                      </DragDropContext>
                       {editMode && (
                         <Button className="addMore" variant='outlined' onClick={() => addItems(i, setState, state, 'info', initialItem)}>
                           Add more {item.title}
