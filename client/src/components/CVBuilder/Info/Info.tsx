@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import './Info.scss';
-import {ReactComponent as DeleteIcon} from "../../assets/icons/delete.svg";
-import reorderImg from '../../assets/icons/reorder.svg';
+import {ReactComponent as DeleteIcon} from "../../../assets/icons/delete.svg";
+import reorderImg from '../../../assets/icons/reorder.svg';
 import {
   DragDropContext,
   Draggable,
@@ -11,7 +11,7 @@ import {
   DropResult
 } from "react-beautiful-dnd";
 import {Button, Rating} from "@mui/material";
-import {ICvBuilderState, IInfo, IInfoItem, ISetCvBuilderState} from '../../interfaces';
+import {ICvBuilderState, IInfo, IInfoItem, ISetCvBuilderState} from '../../../interfaces';
 import {
   addItems,
   handleElementsState,
@@ -19,12 +19,12 @@ import {
   onDragEndElements,
   onDragEndItems,
   removeItem
-} from "../../utils";
+} from "../../../utils";
 import clsx from "clsx";
-import {storage} from "../../firebase";
+import {storage} from "../../../firebase";
 import {getDownloadURL, ref, uploadBytes} from 'firebase/storage';
 import {v4 as uuidv4} from 'uuid';
-import {starsImg} from "../../constants";
+import {starsImg} from "../../../constants";
 
 const initialItem = {
   title: 'Info',
@@ -35,21 +35,18 @@ interface IInfoProps {
   state: ICvBuilderState;
   setState:  ISetCvBuilderState;
   editMode: boolean;
+  className: string;
 }
 
-const Info: React.FC<IInfoProps> = ({state, setState, editMode}) => {
+const Info: React.FC<IInfoProps> = ({state, setState, editMode, className}) => {
 
   const {info, avatar, options: {showAvatar}} = state;
   const [avatarBase64, setAvatarBase64] = useState<string>(avatar);
 
   const uploadFileToStorage = (file: File) => {
     if (!file) return;
-    const metadata = {
-      contentType: file.type,
-      firebaseStorageDownloadTokens: '6950a665-b6c8-4dd7-a5e4-16b883b6fa89'
-    }
     const imageRef = ref(storage, `images/${uuidv4()}-${file.name}`);
-    uploadBytes(imageRef, file, metadata).then((snapshot) => {
+    uploadBytes(imageRef, file).then((snapshot) => {
       getDownloadURL(snapshot.ref).then((url) => {
         setState({...state, avatar: url})
       });
@@ -75,7 +72,7 @@ const Info: React.FC<IInfoProps> = ({state, setState, editMode}) => {
 
 
   return (
-    <div className="info">
+    <div className={clsx("info", className)}>
       {showAvatar && (
         <div className="info__avatar">
           <img src={editMode ? avatarBase64 : avatar} alt=""/>

@@ -5,14 +5,6 @@
     align-items: flex-start;
     gap: 30px;
   }
-  .createCv-tools{
-    border: 1px solid gray;
-    position: sticky;
-    top: 20px;
-    width: 25%;
-    flex: none;
-    padding: 16px;
-  }
   &.CVBuilder-editMode{
     input{
       &:focus{
@@ -22,16 +14,11 @@
       }
     }
     .experience .element{
-      padding-right: 50px;
       .remove{
-        right: -50px;
+        right: 0;
         path{
           fill: #030303;
         }
-      }
-      .reorder{
-        left: auto;
-        right: -95px;
       }
       input{
         &:focus{
@@ -42,14 +29,15 @@
     }
     .info{
       .item{
-        &:not(.item--rating){
-          h3, p{
-            width: 90%;
-          }
-        }
         &.item--rating{
           padding-right: 25px;
         }
+      }
+    }
+    .rightColumn{
+      .reorder{
+        left: auto;
+        right: -45px;
       }
     }
   }
@@ -60,8 +48,8 @@
   width: 100%;
   max-width: 900px;
   margin: 0 auto;
-  &.changeColumnsOrder{
-    flex-direction: row-reverse;
+  .rightColumn{
+    order: 1;
   }
   h1, h2, h3, h4, h5, h6{
     font-weight: 700;
@@ -132,6 +120,11 @@
           &:hover{
             opacity: 1;
           }
+        }
+      }
+      &:not(.item--rating){
+        h3, p{
+          padding-right: 30px;
         }
       }
       &.item--rating{

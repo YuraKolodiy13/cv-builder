@@ -8,9 +8,9 @@ import {
   Droppable,
   DroppableProvided, DropResult
 } from "react-beautiful-dnd";
-import reorderImg from "../../assets/icons/reorder.svg";
-import {ReactComponent as DeleteIcon} from "../../assets/icons/delete.svg";
-import {ICvBuilderState, IExperience, IExperienceItem, ISetCvBuilderState} from '../../interfaces';
+import reorderImg from "../../../assets/icons/reorder.svg";
+import {ReactComponent as DeleteIcon} from "../../../assets/icons/delete.svg";
+import {ICvBuilderState, IExperience, IExperienceItem, ISetCvBuilderState} from '../../../interfaces';
 import {
   addItems,
   handleElementsState,
@@ -18,16 +18,18 @@ import {
   onDragEndElements,
   onDragEndItems,
   removeItem
-} from "../../utils";
+} from "../../../utils";
 import {Button} from "@mui/material";
+import clsx from "clsx";
 
 interface IExperienceProps {
   state: ICvBuilderState;
   setState: ISetCvBuilderState;
   editMode: boolean;
+  className: string;
 }
 
-const Experience: React.FC<IExperienceProps> = ({state, setState, editMode}) => {
+const Experience: React.FC<IExperienceProps> = ({state, setState, editMode, className}) => {
 
   const {general, experience} = state;
 
@@ -44,7 +46,7 @@ const Experience: React.FC<IExperienceProps> = ({state, setState, editMode}) => 
 
 
   return (
-    <div className='experience'>
+    <div className={clsx("experience", className)}>
       <div className="experience__header">
         <h1>
           {editMode
