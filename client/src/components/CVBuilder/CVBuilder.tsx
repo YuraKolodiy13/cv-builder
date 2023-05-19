@@ -38,7 +38,7 @@ const CvBuilder:React.FC<ICvBuilderProps> = ({canEdit, data}) => {
   }
 
   return (
-    <div className={clsx('CVBuilder', {'CVBuilder-editMode': editMode})}>
+    <div className={clsx('CVBuilder', {'CVBuilder-editMode': editMode && !savingToPdf})}>
       {font && font.name !== 'Fira Sans' && (
         <style>
           {`@import url(${font.src})`}

@@ -3,6 +3,7 @@ import {Button, FormControl, FormControlLabel, InputLabel, MenuItem, Select, Swi
 import {ICvBuilderState, IFonts, ISetCvBuilderState} from "../../../interfaces";
 import './Tools.scss';
 import {jsPDF} from "jspdf";
+import html2canvas from 'html2canvas';
 import {useLazyGetFontQuery} from '../../../store/common/common.api';
 import ConfirmModal from "../../modals/ConfirmModal";
 import {ReactComponent as SnapshotIcon} from "../../../assets/icons/snapshot.svg";
@@ -52,7 +53,6 @@ const Tools: React.FC<IToolsProps> = ({pdfRef, setSavingToPdf, state, setState, 
   const {options: {font, showAvatar, changeColumnsOrder}} = state;
 
   const generatePDF = async () => {
-    setSavingToPdf(true);
     const pdf = new jsPDF({orientation: 'p', format: 'letter'});
 
     const res = await getFont(font.name);
@@ -66,8 +66,7 @@ const Tools: React.FC<IToolsProps> = ({pdfRef, setSavingToPdf, state, setState, 
 
     pdf.html((pdfRef.current!), {
       callback: () => {
-        // console.log(pdfRef.current, 'pdfRef.current')
-        pdf.save("print.pdf");
+        pdf.save("cv.pdf");
         setSavingToPdf(false);
       },
       x: 0,
@@ -83,10 +82,26 @@ const Tools: React.FC<IToolsProps> = ({pdfRef, setSavingToPdf, state, setState, 
     });
   }
 
+  const printDocument = () => {
+    html2canvas(pdfRef.current!, {scale:4, logging: true, allowTaint: false, useCORS: true}).then(canvas => {
+      const data = canvas.toDataURL("image/png");
+      const pdf = new jsPDF("portrait", "px", 'letter');
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+      pdf.addImage(data, "PNG", 0, 0, pdfWidth, pdfHeight);
+      pdf.save("cv.pdf");
+      setSavingToPdf(false);
+    });
+  };
+
+  const openConfirmModal = () => {
+    setIsOpenConfirmModal(true);
+    setSavingToPdf(true);
+  }
 
   return (
     <div className="tools">
-      <Button variant="contained" onClick={() => setIsOpenConfirmModal(true)}>Export PDF</Button>
+      <Button variant="contained" onClick={openConfirmModal}>Export PDF</Button>
       <FormControl fullWidth>
         <InputLabel id="select-font">Font</InputLabel>
         <Select
