@@ -59,7 +59,7 @@ const CvList = () => {
           'general.name': (row: ICvBuilder) => <span>{row.general.name}</span>,
           'general.profession': (row: ICvBuilder) => <span>{row.general.profession}</span>,
           'general.summary': (row: ICvBuilder) => <span>{row.general.summary}</span>,
-          'options.font.name': (row: ICvBuilder) => <span>{row.options.font?.name}</span>,
+          'options.font.name': (row: ICvBuilder) => <span>{row.options?.font?.name}</span>,
           createdAt: (row: ICvBuilder) => <span>{new Date(row.createdAt!).toLocaleDateString('en-GB')}</span>,
           updatedAt: (row: ICvBuilder) => <span>{new Date(row.updatedAt!).toLocaleDateString('en-GB')}</span>,
           actions: (row: ICvBuilder) => <span onClick={() => setCurrentRowId(row._id)}><DeleteIcon/></span>,
