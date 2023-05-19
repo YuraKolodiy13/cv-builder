@@ -6,3 +6,32 @@
   flex: none;
   padding: 16px;
 }
+.choosePdfType-modal{
+  .choosePdfType{
+    .choosePdfType__item{
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+      gap: 24px;
+      cursor: pointer;
+      transition: .3s;
+      &:hover{
+        background-color: var(--color-neutrals-400);
+      }
+      .choosePdfType__img{
+        width: 30%;
+        background-color: #5DB64E;
+        padding: 12px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        border-radius: 4px;
+        svg{
+          width: 30px;
+          height: 30px;
+        }
+      }
+    }
+  }
+}

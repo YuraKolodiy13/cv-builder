@@ -76,6 +76,7 @@ const CvBuilder:React.FC<ICvBuilderProps> = ({canEdit, data}) => {
           onSubmitClick={() => id ? updateCV({...state, _id: +id}) : createCV(state)}
           modalTitle={`${id ? 'Update' : 'Save'} CV?`}
           cvName={state.cvName}
+          className='confirm-modal'
         >
           <div className="modal__row">
             <div className="login__field modal__field w100">

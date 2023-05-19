@@ -1,9 +1,13 @@
-import React, {RefObject} from 'react';
+import React, {RefObject, useState} from 'react';
 import {Button, FormControl, FormControlLabel, InputLabel, MenuItem, Select, Switch} from "@mui/material";
 import {ICvBuilderState, IFonts, ISetCvBuilderState} from "../../../interfaces";
 import './Tools.scss';
 import {jsPDF} from "jspdf";
 import {useLazyGetFontQuery} from '../../../store/common/common.api';
+import ConfirmModal from "../../modals/ConfirmModal";
+import {ReactComponent as SnapshotIcon} from "../../../assets/icons/snapshot.svg";
+import {ReactComponent as StandardIcon} from "../../../assets/icons/magic.svg";
+import clsx from "clsx";
 
 const fonts = [
   {name: 'Poppins', src: 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap'},
@@ -11,6 +15,27 @@ const fonts = [
   {name: 'Roboto Condensed', src: 'https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap'},
   {name: 'Nunito', src: 'https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap'},
 ];
+
+const choosePdfType = [
+  {
+    type: 'Snapshot',
+    icon: SnapshotIcon,
+    info: [
+      {title: 'Friendly resume'},
+      {title: 'Output does not change'},
+      {title: 'Unselectable text', error: true},
+    ]
+  },
+  {
+    type: 'Standard',
+    icon: StandardIcon,
+    info: [
+      {title: 'Friendly resume'},
+      {title: 'Selectable text'},
+      {title: 'Single page', error: true},
+    ]
+  }
+]
 
 interface IToolsProps {
   pdfRef: RefObject<HTMLDivElement>;
@@ -22,6 +47,7 @@ interface IToolsProps {
 
 const Tools: React.FC<IToolsProps> = ({pdfRef, setSavingToPdf, state, setState, editMode}) => {
 
+  const [isOpenConfirmModal, setIsOpenConfirmModal] = useState(false);
   const [getFont] = useLazyGetFontQuery();
   const {options: {font, showAvatar, changeColumnsOrder}} = state;
 
@@ -60,7 +86,7 @@ const Tools: React.FC<IToolsProps> = ({pdfRef, setSavingToPdf, state, setState, 
 
   return (
     <div className="tools">
-      <Button variant="contained" onClick={generatePDF}>Export PDF</Button>
+      <Button variant="contained" onClick={() => setIsOpenConfirmModal(true)}>Export PDF</Button>
       <FormControl fullWidth>
         <InputLabel id="select-font">Font</InputLabel>
         <Select
@@ -97,6 +123,33 @@ const Tools: React.FC<IToolsProps> = ({pdfRef, setSavingToPdf, state, setState, 
         label="Change columns order"
         labelPlacement="start"
       />
+
+      {isOpenConfirmModal && (
+        <ConfirmModal
+          open={isOpenConfirmModal}
+          onBackgroundClick={() => setIsOpenConfirmModal(false)}
+          onSubmitClick={generatePDF}
+          modalTitle='Choose Your PDF Type'
+          className='choosePdfType-modal'
+        >
+          <ul className='choosePdfType'>
+            {choosePdfType.map((item, i) =>
+              <li key={i} className='choosePdfType__item'>
+                <div className='choosePdfType__img'>
+                  <item.icon/>
+                  <p>{item.type}</p>
+                </div>
+                <ul className='choosePdfType__info'>
+                  {item.info.map((el, j) =>
+                    <li key={j} className={clsx({error: el.error})}>{el.title}</li>
+                  )}
+                </ul>
+              </li>
+            )}
+          </ul>
+        </ConfirmModal>
+      )}
+
     </div>
   );
 };

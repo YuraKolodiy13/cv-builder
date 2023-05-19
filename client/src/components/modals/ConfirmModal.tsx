@@ -11,11 +11,12 @@ interface IConfirmModalProps {
   modalTitle: string;
   cvName?: string;
   children?: React.ReactNode;
+  className?: string;
 }
 
 const ConfirmModal: React.FC<IConfirmModalProps> = (props) => {
 
-  const {open, onBackgroundClick, onSubmitClick, modalTitle, cvName, children} = props;
+  const {open, onBackgroundClick, onSubmitClick, modalTitle, cvName, children, className} = props;
 
   const handleSubmit = () => {
     onSubmitClick();
@@ -26,7 +27,7 @@ const ConfirmModal: React.FC<IConfirmModalProps> = (props) => {
     <Modal
       open={open}
       onClose={onBackgroundClick}
-      className='modal confirm-modal'
+      className={`modal ${className}`}
       closeAfterTransition
       BackdropComponent={Backdrop}
       BackdropProps={{
