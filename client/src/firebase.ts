@@ -2,7 +2,7 @@ import { initializeApp } from "firebase/app";
 import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAq0z361e2RGzD4F2H1x1QeMCu7FubJbbE",
+  apiKey: import.meta.env.VITE_API_FIREBASE_KEY,
   authDomain: "editor-789ee.firebaseapp.com",
   databaseURL: "https://editor-789ee.firebaseio.com",
   projectId: "editor-789ee",
