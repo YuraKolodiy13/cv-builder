@@ -4,6 +4,7 @@ import {authApi} from "./auth/auth.api";
 import {authReducer} from "./auth/auth.slice";
 import {cvApi} from "./cv/cv.api";
 import {commonApi} from "./common/common.api";
+import {commonReducer} from './common/common.slice';
 
 export const store = configureStore({
   reducer: {
@@ -11,6 +12,7 @@ export const store = configureStore({
     [cvApi.reducerPath]: cvApi.reducer,
     [commonApi.reducerPath]: commonApi.reducer,
     auth: authReducer,
+    common: commonReducer,
   },
   middleware: getDefaultMiddleware => getDefaultMiddleware().concat(
     authApi.middleware,

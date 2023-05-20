@@ -64,7 +64,7 @@ const getCV = async (req, res) => {
 const updateCV = async (req, res) => {
 
   try {
-    const {id, ...cv} = req.body;
+    const {_id: id, ...cv} = req.body;
     if(!id){
       return res.status(400).json({message: 'please provide cv id'})
     }

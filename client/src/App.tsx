@@ -8,6 +8,7 @@ import ReviewCv from "./pages/ReviewCV/ReviewCV";
 import Faq from "./pages/Faq/Faq";
 import {useAppSelector} from "./hooks/redux";
 import Homepage from "./pages/Homepage/Homepage";
+import Notification from "./components/Notification/Notification";
 
 export interface IProtectedRouteProps {
   token: string;
@@ -35,6 +36,7 @@ const App: React.FC = () => {
           <Route path="/faq" element={<Faq />} />
         </Routes>
       </Router>
+      <Notification/>
     </div>
   )
 }

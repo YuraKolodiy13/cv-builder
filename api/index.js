@@ -1,11 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const authRouter = require('./routers/auth');
-const cvRouter = require('./routers/cv');
-const commonRouter = require('./routers/common');
 const cors = require("cors");
-const authMiddleware = require('./middlewares/Auth')
 const cookieParser = require('cookie-parser')
+const router = require('./routers/index');
 
 require('dotenv').config();
 
@@ -23,14 +20,14 @@ app.use(cors(corsSettings));
 app.use(express.json());
 app.use(cookieParser());
 
-app.use("/api/auth", authRouter);
-app.use("/api/cv", authMiddleware, cvRouter);
-app.use("/api/common", commonRouter);
-
+app.use("/api", router);
 
 const start = async () => {
   try {
-    await mongoose.connect(process.env.MONGO_URL);
+    await mongoose.connect(process.env.MONGO_URL, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    });
     app.listen(PORT, () => console.log(`server started on port ${PORT}`));
   } catch (e) {
     console.log(e)

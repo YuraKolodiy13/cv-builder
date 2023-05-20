@@ -29,13 +29,27 @@ const CvBuilder:React.FC<ICvBuilderProps> = ({canEdit, data}) => {
   const [isOpenConfirmModal, setIsOpenConfirmModal] = useState(false);
   const [state, setState] = useState<ICvBuilderState>(data);
   const user = useAppSelector(state => state.auth.user);
-  const {setIsAuthModalOpen} = useActions();
+  const {setIsAuthModalOpen, setNotificationMessage} = useActions();
 
   const {options: {font, changeColumnsOrder}} = state;
 
   const handleConfirm = () => {
     user ? setIsOpenConfirmModal(true) : setIsAuthModalOpen(true);
   }
+
+  const submitCV = async () => {
+    try {
+      id ? await updateCV({...state, _id: id}) : await createCV(state);
+      setNotificationMessage({snackbarMessage: `You've successfully ${id ? 'updated' : 'saved'} your CV`, snackbarSeverity: 'info', openSnackbar: true})
+    }catch (err) {
+      if (err instanceof Error) {
+        setNotificationMessage({snackbarMessage: err.error.data.message, snackbarSeverity: 'error', openSnackbar: true})
+      } else {
+        console.log('Unexpected error', err);
+      }
+    }
+  }
+
 
   return (
     <div className={clsx('CVBuilder', {'CVBuilder-editMode': editMode && !savingToPdf})}>
@@ -73,7 +87,7 @@ const CvBuilder:React.FC<ICvBuilderProps> = ({canEdit, data}) => {
         <ConfirmModal
           open={isOpenConfirmModal}
           onBackgroundClick={() => setIsOpenConfirmModal(false)}
-          onSubmitClick={() => id ? updateCV({...state, _id: +id}) : createCV(state)}
+          onSubmitClick={submitCV}
           modalTitle={`${id ? 'Update' : 'Save'} CV?`}
           cvName={state.cvName}
           className='confirm-modal'

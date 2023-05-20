@@ -10,7 +10,7 @@ const ReviewCv = () => {
 
   if(isFetching) return <p>loading</p>;
 
-  if(!data) return <h3>You don't have right to see this page</h3>
+  if(!data) return <h3>You don't have rights to see this page</h3>
 
   return (
     <CvBuilder canEdit={false} data={data!}/>

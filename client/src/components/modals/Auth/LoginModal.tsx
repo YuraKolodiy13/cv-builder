@@ -15,7 +15,6 @@ const LoginModal: React.FC<IAuthProps> = ({setIsModalOpen}) => {
 
   const submitLogin = async () => {
     const user = await signIn(state);
-    console.log(user, 'user')
     if ('error' in user) {
       // @ts-ignore
       const {message} = user.error.data;

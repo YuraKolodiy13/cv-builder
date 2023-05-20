@@ -53,7 +53,7 @@ export interface ICvBuilderState {
 }
 
 export interface ICvBuilder extends ICvBuilderState {
-  _id: number;
+  _id: string;
   createdAt?: string;
   updatedAt?: string;
 }
