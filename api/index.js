@@ -30,10 +30,7 @@ app.use("/api/common", commonRouter);
 
 const start = async () => {
   try {
-    await mongoose.connect(process.env.MONGO_URL, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true
-    });
+    await mongoose.connect(process.env.MONGO_URL);
     app.listen(PORT, () => console.log(`server started on port ${PORT}`));
   } catch (e) {
     console.log(e)
