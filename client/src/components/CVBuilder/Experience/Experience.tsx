@@ -8,12 +8,10 @@ import {
   Droppable,
   DroppableProvided, DropResult
 } from "react-beautiful-dnd";
-import reorderImg from "../../../assets/icons/reorder.svg";
 import {ReactComponent as DeleteIcon} from "../../../assets/icons/delete.svg";
 import {ICvBuilderState, IExperience, IExperienceItem, ISetCvBuilderState} from '../../../interfaces';
 import {
   addItems,
-  handleElementsState,
   handleItemsState,
   onDragEndElements,
   onDragEndItems,
@@ -21,6 +19,8 @@ import {
 } from "../../../utils";
 import {Button} from "@mui/material";
 import clsx from "clsx";
+import BlockTitle from "../ui/BlockTitle";
+import ItemTitle from "../ui/ItemTitle";
 
 interface IExperienceProps {
   state: ICvBuilderState;
@@ -110,22 +110,14 @@ const Experience: React.FC<IExperienceProps> = ({state, setState, editMode, clas
                       ref={provided.innerRef}
                       className={`element ${snapshot.isDragging ? 'active' : ''}`}
                     >
-                      <h2>
-                        {editMode && (
-                          <div className="reorder">
-                            <img src={reorderImg} alt=""/>
-                          </div>
-                        )}
-                        {editMode
-                          ? <input
-                              type="text"
-                              value={item.title}
-                              onChange={(e) => handleElementsState(e, i, setState, state, 'experience')}
-                              placeholder='Enter value'
-                            />
-                          : item.title
-                        }
-                      </h2>
+                      <BlockTitle
+                        title={item.title}
+                        editMode={editMode}
+                        field='experience'
+                        i={i}
+                        setState={setState}
+                        state={state}
+                      />
                       <DragDropContext onDragEnd={(result: DropResult) => onDragEndItems(result, i, setState, state, 'experience')}>
                         <Droppable droppableId={item.title}>
                           {(provided: DroppableProvided) => (
@@ -148,22 +140,17 @@ const Experience: React.FC<IExperienceProps> = ({state, setState, editMode, clas
                                       ref={provided.innerRef}
                                       className={`item ${snapshot.isDragging ? 'active' : ''}`}
                                     >
-                                      <h3>
-                                        {editMode && item.items.length > 1 && (
-                                          <div className="reorder">
-                                            <img src={reorderImg} alt=""/>
-                                          </div>
-                                        )}
-                                        {editMode
-                                          ? <input
-                                              type="text"
-                                              value={el.position}
-                                              onChange={(e) => handleItemsState(e, i, j, 'position', setState, state, 'experience')}
-                                              placeholder='Enter value'
-                                            />
-                                          : el.position
-                                        }
-                                      </h3>
+                                      <ItemTitle
+                                        state={state}
+                                        setState={setState}
+                                        i={i}
+                                        j={j}
+                                        editMode={editMode}
+                                        title={el.position}
+                                        name='position'
+                                        length={item.items.length}
+                                        field='experience'
+                                      />
                                       <p>
                                         {editMode
                                           ? <input

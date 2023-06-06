@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import './Info.scss';
 import {ReactComponent as DeleteIcon} from "../../../assets/icons/delete.svg";
-import reorderImg from '../../../assets/icons/reorder.svg';
 import {
   DragDropContext,
   Draggable,
@@ -14,7 +13,6 @@ import {Button, Rating} from "@mui/material";
 import {ICvBuilderState, IInfo, IInfoItem, ISetCvBuilderState} from '../../../interfaces';
 import {
   addItems,
-  handleElementsState,
   handleItemsState,
   onDragEndElements,
   onDragEndItems,
@@ -25,6 +23,8 @@ import {storage} from "../../../firebase";
 import {getDownloadURL, ref, uploadBytes} from 'firebase/storage';
 import {v4 as uuidv4} from 'uuid';
 import {starsImg} from "../../../constants";
+import BlockTitle from "../ui/BlockTitle";
+import ItemTitle from '../ui/ItemTitle';
 
 const initialItem = {
   title: 'Info',
@@ -109,22 +109,14 @@ const Info: React.FC<IInfoProps> = ({state, setState, editMode, className}) => {
                       ref={provided.innerRef}
                       className={`element ${snapshot.isDragging ? 'active' : ''}`}
                     >
-                      <h2>
-                        {editMode && (
-                          <div className="reorder">
-                            <img src={reorderImg} alt=""/>
-                          </div>
-                        )}
-                        {editMode
-                          ? <input
-                              type="text"
-                              value={item.title}
-                              onChange={(e) => handleElementsState(e, i, setState, state, 'info')}
-                              placeholder='Enter value'
-                            />
-                          : item.title
-                        }
-                      </h2>
+                      <BlockTitle
+                        title={item.title}
+                        editMode={editMode}
+                        field='info'
+                        i={i}
+                        setState={setState}
+                        state={state}
+                      />
                       <DragDropContext onDragEnd={(result: DropResult) => onDragEndItems(result, i, setState, state, 'info')}>
                         <Droppable droppableId={item.title}>
                           {(provided: DroppableProvided) => (
@@ -150,22 +142,17 @@ const Info: React.FC<IInfoProps> = ({state, setState, editMode, className}) => {
                                         'item--rating': item.fieldType === 'rating'
                                       })}
                                     >
-                                      <h3>
-                                        {editMode && item.items.length > 1 && (
-                                          <div className="reorder">
-                                            <img src={reorderImg} alt=""/>
-                                          </div>
-                                        )}
-                                        {editMode
-                                          ? <input
-                                              type="text"
-                                              value={el.title}
-                                              onChange={(e) => handleItemsState(e, i, j, 'title', setState, state, 'info')}
-                                              placeholder='Enter value'
-                                            />
-                                          : el.title
-                                        }
-                                      </h3>
+                                      <ItemTitle
+                                        state={state}
+                                        setState={setState}
+                                        i={i}
+                                        j={j}
+                                        editMode={editMode}
+                                        title={el.title}
+                                        name='title'
+                                        length={item.items.length}
+                                        field='info'
+                                      />
                                       <p>
                                         {item.fieldType === 'rating'
                                           ? editMode
