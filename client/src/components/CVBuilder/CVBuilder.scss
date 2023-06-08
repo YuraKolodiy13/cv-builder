@@ -6,7 +6,7 @@
     gap: 30px;
   }
   &.CVBuilder-editMode{
-    input{
+    input, textarea{
       &:focus{
         outline: 0;
         color: #030303;
@@ -20,7 +20,7 @@
           fill: #030303;
         }
       }
-      input{
+      input, textarea{
         &:focus{
           background-color: #030303;
           color: white;
@@ -66,7 +66,8 @@
       border-bottom: 1px solid #fff;
       &:last-of-type{
         border-color: transparent;
-
+        margin: 0;
+        padding: 0;
       }
       &.active{
         background: red;
@@ -146,7 +147,7 @@
       margin: 0 auto;
     }
   }
-  input{
+  input, textarea{
     border: none;
     border-radius: 0;
     background-color: transparent;
@@ -158,6 +159,7 @@
     box-sizing: border-box;
     transition: .3s;
     padding: 0;
+    resize: none;
     &:focus{
       outline: none;
     }

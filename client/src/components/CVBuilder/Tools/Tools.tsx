@@ -75,10 +75,10 @@ const Tools: React.FC<IToolsProps> = ({pdfRef, setSavingToPdf, state, setState, 
       width: 216, // 216 = letter paper width in mm, 208 = less the 8mm margin
       windowWidth: 816,  // 816 = letter paper pixel width at 96dpi (web), 786 = less the 30px margin
 
-      // html2canvas: {
-      //   logging: false,
-      //   windowWidth: 816 // 816 = letter paper pixel width at 96dpi (web), 786 = less the 30px margin
-      // }
+      html2canvas: {
+        logging: false,
+        windowWidth: 816 // 816 = letter paper pixel width at 96dpi (web), 786 = less the 30px margin
+      }
     });
   }
 
