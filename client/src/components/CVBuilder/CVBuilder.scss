@@ -29,7 +29,7 @@
     }
     .info{
       .item{
-        &.item--rating{
+        &.item__rating{
           padding-right: 25px;
         }
       }
@@ -123,12 +123,12 @@
           }
         }
       }
-      &:not(.item--rating){
+      &:not(.item__rating){
         h3, p{
           padding-right: 30px;
         }
       }
-      &.item--rating{
+      &.item__rating{
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -140,6 +140,26 @@
       a{
         text-decoration: none;
         color: inherit;
+      }
+      .item__header{
+        display: flex;
+        justify-content: space-between;
+        position: relative;
+        margin-bottom: 5px;
+        h3{
+          width: 100%;
+          position: static;
+          padding-right: 0;
+          margin-bottom: 0;
+        }
+        p{
+          padding-right: 0;
+          flex: none;
+          input{
+            width: 150px;
+            text-align: right;
+          }
+        }
       }
     }
     .addMore{

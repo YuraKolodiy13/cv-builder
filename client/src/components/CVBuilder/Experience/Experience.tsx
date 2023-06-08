@@ -137,7 +137,7 @@ const Experience: React.FC<IExperienceProps> = ({state, setState, editMode, clas
                                       ref={provided.innerRef}
                                       className={`item ${snapshot.isDragging ? 'active' : ''}`}
                                     >
-                                      <div className='d-flex' style={{position: 'relative', paddingRight: '32px'}}>
+                                      <div className='item__header'>
                                         <ItemTitle
                                           state={state}
                                           setState={setState}
@@ -149,11 +149,17 @@ const Experience: React.FC<IExperienceProps> = ({state, setState, editMode, clas
                                           length={item.items.length}
                                           field='experience'
                                         />
-                                        <input
-                                          type="text"
-                                          placeholder='Year'
-                                          style={{width: '150px', textAlign: 'right'}}
-                                        />
+                                        <p>
+                                          {editMode
+                                            ? <input
+                                                type="text"
+                                                value={el.year}
+                                                onChange={(e) => handleItemsState(e, i, j, 'year', setState, state, 'experience')}
+                                                placeholder='Year'
+                                              />
+                                            : el.year
+                                          }
+                                        </p>
                                       </div>
                                       <p>
                                         {editMode

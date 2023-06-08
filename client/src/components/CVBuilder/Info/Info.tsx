@@ -139,7 +139,7 @@ const Info: React.FC<IInfoProps> = ({state, setState, editMode, className}) => {
                                       ref={provided.innerRef}
                                       className={clsx('item', {
                                         active: snapshot.isDragging,
-                                        'item--rating': item.fieldType === 'rating'
+                                        'item__rating': item.fieldType === 'rating'
                                       })}
                                     >
                                       <ItemTitle
