@@ -28,6 +28,7 @@
       }
     }
     .info{
+      padding-bottom: 40px;
       .item{
         &.item__rating{
           padding-right: 25px;
@@ -95,8 +96,10 @@
       }
     }
     .item{
-      margin-bottom: 10px;
       position: relative;
+      &:not(:last-of-type){
+        margin-bottom: 10px;
+      }
       &.active {
         background: red;
       }
@@ -124,7 +127,7 @@
         }
       }
       &:not(.item__rating){
-        h3, p{
+        h3, p, h6{
           padding-right: 30px;
         }
       }
@@ -143,6 +146,7 @@
       }
       .item__header{
         display: flex;
+        gap: 10px;
         justify-content: space-between;
         position: relative;
         margin-bottom: 5px;

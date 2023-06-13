@@ -83,16 +83,38 @@ const Tools: React.FC<IToolsProps> = ({pdfRef, setSavingToPdf, state, setState, 
   }
 
   const printDocument = () => {
-    html2canvas(pdfRef.current!, {scale:4, logging: true, allowTaint: false, useCORS: true}).then(canvas => {
-      const data = canvas.toDataURL("image/png");
-      const pdf = new jsPDF("portrait", "px", 'letter');
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = pdf.internal.pageSize.getHeight();
-      pdf.addImage(data, "PNG", 0, 0, pdfWidth, pdfHeight);
-      pdf.save("cv.pdf");
-      setSavingToPdf(false);
+    html2canvas(pdfRef.current!).then((canvas:any) => {
+      const imgWidth = 210;
+      const pageHeight = 295;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      let heightLeft = imgHeight;
+      let position = 0;
+      heightLeft -= pageHeight;
+      const pdf = new jsPDF('p', 'mm');
+      pdf.addImage(canvas, 'PNG', 0, position, imgWidth, imgHeight, '', 'FAST');
+      while (heightLeft >= 0) {
+        position = heightLeft - imgHeight;
+        pdf.addPage();
+        pdf.addImage(canvas, 'PNG', 0, position, imgWidth, imgHeight, '', 'FAST');
+        heightLeft -= pageHeight;
+      }
+      pdf.save('cv.pdf');
+      setSavingToPdf(false)
     });
   };
+
+  const oneMoreMethod = () => {
+    const pdf = new jsPDF('portrait', 'mm', 'a4');
+    const docWidth = pdf.internal.pageSize.getWidth();
+    pdf.html(pdfRef.current!, {
+      autoPaging: 'text',
+      margin: [0, 0, 0, 0],
+      width: docWidth,
+      windowWidth: 816}).then(
+      () => {
+        pdf.save(`payment_plan.pdf`);
+      });
+  }
 
   const openConfirmModal = () => {
     setIsOpenConfirmModal(true);

@@ -152,16 +152,16 @@ const Experience: React.FC<IExperienceProps> = ({state, setState, editMode, clas
                                         <p>
                                           {editMode
                                             ? <input
-                                                type="text"
-                                                value={el.year}
-                                                onChange={(e) => handleItemsState(e, i, j, 'year', setState, state, 'experience')}
-                                                placeholder='Year'
-                                              />
+                                              type="text"
+                                              value={el.year}
+                                              onChange={(e) => handleItemsState(e, i, j, 'year', setState, state, 'experience')}
+                                              placeholder='Year'
+                                            />
                                             : el.year
                                           }
                                         </p>
                                       </div>
-                                      <p>
+                                      <h6>
                                         {editMode
                                           ? <input
                                               type="text"
@@ -171,7 +171,7 @@ const Experience: React.FC<IExperienceProps> = ({state, setState, editMode, clas
                                             />
                                           : el.company
                                         }
-                                      </p>
+                                      </h6>
                                       <p>
                                         <TextareaAutosize
                                           value={el.description}
