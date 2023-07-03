@@ -73,14 +73,17 @@ const Experience: React.FC<IExperienceProps> = ({state, setState, editMode, clas
           }
         </h6>
         <p>
-          <TextareaAutosize
-            value={general.summary}
-            name='summary'
-            minRows={1}
-            placeholder='Summary of Yourself'
-            readOnly={!editMode}
-            onChange={handleGeneral}
-          />
+          {editMode
+            ? <TextareaAutosize
+                value={general.summary}
+                name='summary'
+                minRows={1}
+                placeholder='Summary of Yourself'
+                readOnly={!editMode}
+                onChange={handleGeneral}
+              />
+            : general.summary
+          }
         </p>
       </div>
 
@@ -167,19 +170,27 @@ const Experience: React.FC<IExperienceProps> = ({state, setState, editMode, clas
                                               type="text"
                                               value={el.company}
                                               onChange={(e) => handleItemsState(e, i, j, 'company', setState, state, 'experience')}
-                                              placeholder='Enter value'
+                                              placeholder='Enter value (an empty value will be hidden)'
                                             />
                                           : el.company
                                         }
                                       </h6>
                                       <p>
-                                        <TextareaAutosize
-                                          value={el.description}
-                                          minRows={1}
-                                          placeholder='Enter value'
-                                          readOnly={!editMode}
-                                          onChange={(e) => handleItemsState(e, i, j, 'description', setState, state, 'experience')}
-                                        />
+                                        {editMode
+                                          ? <TextareaAutosize
+                                              value={el.description}
+                                              minRows={1}
+                                              placeholder='Enter value (an empty value will be hidden)'
+                                              onChange={(e) => handleItemsState(e, i, j, 'description', setState, state, 'experience')}
+                                            />
+                                          : el.description && (
+                                            <TextareaAutosize
+                                              defaultValue={el.description}
+                                              minRows={1}
+                                              readOnly={true}
+                                            />
+                                          )
+                                        }
                                       </p>
                                       {editMode && (
                                         <div className="remove" onClick={() => removeItem(i, el.id, setState, state, 'experience')}>
