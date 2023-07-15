@@ -5,6 +5,8 @@ import {Button} from "@mui/material";
 const Homepage = () => {
   return (
     <main className='Homepage'>
+      <img src="https://storage.cloud.google.com/tech_company_logos/snowflake-logo.png" referrerPolicy="no-referrer" alt=""/>
+      <img src="https://storage.cloud.google.com/tech_company_logos/snowflake-logo.png" alt=""/>
       <section className="hero">
         <div className="hero__leftGroup">
           <h1 className="hero__headline">Build your CV</h1>
