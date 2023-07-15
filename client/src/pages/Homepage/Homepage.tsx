@@ -7,6 +7,8 @@ const Homepage = () => {
     <main className='Homepage'>
       <img src="https://storage.cloud.google.com/tech_company_logos/snowflake-logo.png" referrerPolicy="no-referrer" alt=""/>
       <img src="https://storage.cloud.google.com/tech_company_logos/snowflake-logo.png" alt=""/>
+      <img src="https://storage.cloud.google.com/tech_company_logos/snowflake-logo.png" alt=""></img>
+      <img src="https://storage.cloud.google.com/tech_company_logos/snowflake-logo.png" referrerPolicy="no-referrer" alt=""></img>
       <section className="hero">
         <div className="hero__leftGroup">
           <h1 className="hero__headline">Build your CV</h1>
