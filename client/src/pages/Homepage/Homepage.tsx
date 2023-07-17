@@ -1,18 +1,10 @@
-import React, {useRef} from 'react';
+import React from 'react';
 import './Homepage.scss';
 import {Button} from "@mui/material";
-import {useOnScreen} from "../../hooks/useOnScreen";
 
 const Homepage = () => {
-
-  const elementRef = useRef(null);
-  const isOnScreen = useOnScreen(elementRef);
-
   return (
     <main className='Homepage'>
-      <ul>
-        <li ref={elementRef}/>
-      </ul>
       <section className="hero">
         <div className="hero__leftGroup">
           <h1 className="hero__headline">Build your CV</h1>
